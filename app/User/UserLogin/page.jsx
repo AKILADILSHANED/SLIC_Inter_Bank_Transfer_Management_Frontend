@@ -38,11 +38,9 @@ export default function UserLogin() {
         if (response.userAvailability == false) {
           setLoadingStatus(false);
           setErrorMessage(response.userLoginMessage);
-        } else {
-          setTimeout(() => {
-            setLoadingStatus(false);
-            router.push("/User/DashBoard");
-          }, 1000);
+        } else {          
+          router.push(`/User/DashBoard?userFullName=${encodeURIComponent(response.userFullName)}`);
+          setLoadingStatus(false);
         }
       } else {
         setLoadingStatus(false);
