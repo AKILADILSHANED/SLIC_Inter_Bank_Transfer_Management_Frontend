@@ -261,9 +261,9 @@ export default function DashBoard() {
           <label className="ml-2">Settings</label>
         </div>
       </div>
-      <div className="border ml-[280px] mt-[-574px] w-[1075px] h-[575px]">
-          IFrame
-        </div>
+      <div className="ml-[280px] mt-[-574px] w-[1075px] h-[575px] shadow-md">
+        <iframe className="w-[1075px] h-[575px]" ></iframe>
+      </div>
     </div>
   );
 }
