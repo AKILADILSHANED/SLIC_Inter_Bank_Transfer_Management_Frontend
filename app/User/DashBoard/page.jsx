@@ -242,7 +242,7 @@ export default function DashBoard() {
 
         <div className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[40px] w-[245px] hover:bg-slate-700 flex flex-row items-center">
           <svg
-            class="w-6 h-6 text-white dark:text-white ml-2"
+            className="w-6 h-6 text-white dark:text-white ml-2"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -261,6 +261,9 @@ export default function DashBoard() {
           <label className="ml-2">Settings</label>
         </div>
       </div>
+      <div className="border ml-[280px] mt-[-574px] w-[1075px] h-[575px]">
+          IFrame
+        </div>
     </div>
   );
 }
