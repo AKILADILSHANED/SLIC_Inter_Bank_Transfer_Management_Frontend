@@ -1,11 +1,55 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Spinner from "@/app/Spinner/page";
 
 export default function DashBoard() {
   const router = useRouter();
   const fullName = useSearchParams();
+  const [url, setUrl] = useState("");
+  const [loader, setLoader] = useState(false);
+
+  // Create useStates for side panel functions.
+  const [userManage, setUserManage] = useState(false);
+  const [bankAccount, setBankAccount] = useState(false);
+  const [accountBalances, setAccountBalances] = useState(false);
+  const [fundRequest, setFundRequest] = useState(false);
+  const [transfers, setTransfers] = useState(false);
+  const [repoManage, setRepoManage] = useState(false);
+  const [reports, setReports] = useState(false);
+  const [Admin, setAdmin] = useState(false);
+  const [settings, setSettings] = useState(false);
+
+  //Get all useState setters in to an array.
+  let setFunctionArray = [
+    setUserManage,
+    setBankAccount,
+    setAccountBalances,
+    setFundRequest,
+    setTransfers,
+    setRepoManage,
+    setReports,
+    setAdmin,
+    setSettings,
+  ];
+
+  //Implement a single function to handle each function in side panel.
+  const handleClickSidePanelFunction = (currentFunction, url) => {
+    setLoader(true);
+    setTimeout(() => {
+      for (let userClickedFunction of setFunctionArray) {
+        if (userClickedFunction() == currentFunction()) {
+          userClickedFunction(true);
+          setUrl(url);
+        } else {
+          userClickedFunction(false);
+          setUrl("");
+        }
+      }
+      setLoader(false);
+    },1000);
+  };
 
   return (
     <div>
@@ -95,7 +139,9 @@ export default function DashBoard() {
             />
           </svg>
         </div>
-        <div className="ml-10">Welcome {fullName.get("userFullName")} !</div>
+        <div className="ml-10 text-md">
+          Welcome {fullName.get("userFullName")} !
+        </div>
       </div>
 
       <div className="ml-1 mt-2 w-[270px] h-[575px] bg-slate-900 shadow-lg flex flex-col items-center">
@@ -103,7 +149,11 @@ export default function DashBoard() {
           <label className="ml-4 text-lg">Menu</label>
         </div>
 
-        <div className="cursor-pointer text-slate-400 hover:text-white mt-10 rounded-md h-[40px] w-[245px] hover:bg-slate-700 flex flex-row items-center">
+        <div
+          onClick={() =>
+            handleClickSidePanelFunction(setUserManage, "/UserManagement")
+          }
+          className="cursor-pointer text-slate-400 hover:text-white mt-10 rounded-md h-[40px] w-[245px] hover:bg-slate-700 flex flex-row items-center">
           <svg
             className="w-6 h-6 text-white dark:text-white ml-2"
             aria-hidden="true"
@@ -119,6 +169,11 @@ export default function DashBoard() {
             />
           </svg>
           <label className="ml-2">Manage Users</label>
+          {loader && (
+            <div className="ml-2">
+              <Spinner></Spinner>
+            </div>
+          )}
         </div>
 
         <div className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[40px] w-[245px] hover:bg-slate-700 flex flex-row items-center">
@@ -231,6 +286,27 @@ export default function DashBoard() {
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
+            fill="none"
+            viewBox="0 0 24 24">
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13.6 16.733c.234.269.548.456.895.534a1.4 1.4 0 0 0 1.75-.762c.172-.615-.446-1.287-1.242-1.481-.796-.194-1.41-.861-1.241-1.481a1.4 1.4 0 0 1 1.75-.762c.343.077.654.26.888.524m-1.358 4.017v.617m0-5.939v.725M4 15v4m3-6v6M6 8.5 10.5 5 14 7.5 18 4m0 0h-3.5M18 4v3m2 8a5 5 0 1 1-10 0 5 5 0 0 1 10 0Z"
+            />
+          </svg>
+
+          <label className="ml-2">Reports</label>
+        </div>
+
+        <div className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[40px] w-[245px] hover:bg-slate-700 flex flex-row items-center">
+          <svg
+            className="w-6 h-6 text-white dark:text-white ml-2"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
             fill="currentColor"
             viewBox="0 0 24 24">
             <path d="M6 2c-1.10457 0-2 .89543-2 2v4c0 .55228.44772 1 1 1s1-.44772 1-1V4h12v7h-2c-.5523 0-1 .4477-1 1v2h-1c-.5523 0-1 .4477-1 1s.4477 1 1 1h5c.5523 0 1-.4477 1-1V3.85714C20 2.98529 19.3667 2 18.268 2H6Z" />
@@ -262,7 +338,7 @@ export default function DashBoard() {
         </div>
       </div>
       <div className="ml-[280px] mt-[-574px] w-[1075px] h-[575px] shadow-md">
-        <iframe className="w-[1075px] h-[575px]" ></iframe>
+        {url && <iframe className="w-[1075px] h-[575px]" src={url}></iframe>}
       </div>
     </div>
   );
