@@ -44,11 +44,11 @@ export default function UserLogin() {
         }
       } else {
         setLoadingStatus(false);
-        setErrorMessage("An error occuured. Please contact the administrator!");
+        setErrorMessage("Response not received from server. Please contact the administrator!");
       }
     } catch (error) {
       setLoadingStatus(false);
-      setErrorMessage("Error sending request. Please contact administrator!");
+      setErrorMessage("Un-expected error occurred. Please contact administrator!");
     }
   };
 

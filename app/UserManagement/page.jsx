@@ -1,28 +1,94 @@
 "use client";
 import React, { useState } from "react";
+import Spinner from "../Spinner/page";
 
 export default function UserManagement() {
   //Define state variables.
   const [clickRegister, setClickRegister] = useState(false);
-  const [modal, setModal] = useState(false);
+  const [status, setStatus] = useState("");
+  const [userLevel, setUserLevel] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [epf, setEpf] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loader, setLoader] = useState(false);
 
-  //Define function for Register New Button
+  //Define functions for User Registration
   const handleRegisterNewWindow = () => {
     if (!clickRegister) {
       setClickRegister(true);
+      setErrorMessage(false);
+      setPassword("");
+      setConfirmPassword("");
+      setSuccessMessage(false);
     } else {
       setClickRegister(false);
+      setErrorMessage(false);
+      setSuccessMessage(false);
     }
   };
   const handleCancel = () => {
     if (!clickRegister) {
       setClickRegister(true);
+      setErrorMessage(false);
+      setSuccessMessage(false);
     } else {
       setClickRegister(false);
+      setErrorMessage(false);
+      setSuccessMessage(false);
     }
   };
-  const handleRegister = () => {
-    setModal(true);
+  const confirmRegister = async (e) => {
+    setLoader(true);
+    setSuccessMessage(false);
+    setErrorMessage(false);
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setLoader(false);
+      setErrorMessage("Password and Confirmed password is not matched.");
+      setSuccessMessage(false);
+    } else {
+      setErrorMessage(false);
+      setSuccessMessage(false);
+      try {
+        const request = await fetch(
+          "http://localhost:8080/api/v1/user/user-register",
+          {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userTitle: status,
+              userLevel: userLevel,
+              userFirstName: firstName,
+              userLastName: lastName,
+              userEmail: email,
+              userEpf: epf,
+              userPassword: password,
+            }),
+          }
+        );
+        if (request.ok) {
+          const response = await request.text();
+          setLoader(false);
+          setSuccessMessage(response);
+        } else {
+          setLoader(false);
+          setErrorMessage(
+            "Response not received from server. Please contact the administrator!"
+          );
+        }
+      } catch (error) {
+        setLoader(false);
+        setErrorMessage(
+          "Un-expected error occurred. Please contact administrator!"
+        );
+      }
+    }
   };
 
   return (
@@ -140,15 +206,20 @@ export default function UserManagement() {
       {/*Sub windows*/}
       {clickRegister && (
         <div className="w-[full] h-[370px] mt-4 shadow-md">
-          <div className="bg-green-600 w-full h-[30px] flex flex-row items-center">
+          <div className="bg-red-800 w-full h-[30px] flex flex-row items-center">
             <label className="text-white ml-2">Provide User details</label>
           </div>
-          <form className="flex flex-col">
+          <form
+            onSubmit={(e) => {
+              confirmRegister(e);
+            }}
+            className="flex flex-col">
             <div className="flex flex-row mt-4">
               <select
+                onChange={(e) => setStatus(e.target.value)}
                 id="small"
+                required
                 className="block w-[150px] ml-8 p-2 outline-blue-300 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option>Select Status</option>
                 <option value="Mr.">Mr.</option>
                 <option value="Mrs.">Mrs.</option>
                 <option value="Miss.">Miss.</option>
@@ -157,9 +228,10 @@ export default function UserManagement() {
               </select>
 
               <select
+                onChange={(e) => setUserLevel(e.target.value)}
                 id="small"
+                required
                 className="block w-[150px] ml-8 p-2 outline-blue-300 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option>Select User Level</option>
                 <option value="0">Administrator</option>
                 <option value="1.">Authorizer</option>
                 <option value="2">Initiator</option>
@@ -174,7 +246,9 @@ export default function UserManagement() {
                   First Name:
                 </label>
                 <input
+                  onChange={(e) => setFirstName(e.target.value)}
                   type="text"
+                  required
                   placeholder="Enter First Name"
                   id="small-input"
                   className="block ml-8 w-[450px] p-2 outline-blue-300 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -188,7 +262,9 @@ export default function UserManagement() {
                   Last Name:
                 </label>
                 <input
+                  onChange={(e) => setLastName(e.target.value)}
                   type="text"
+                  required
                   placeholder="Enter Last Name"
                   id="small-input"
                   className="block ml-8 w-[450px] p-2 outline-blue-300 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -204,7 +280,9 @@ export default function UserManagement() {
                   Email Address:
                 </label>
                 <input
+                  onChange={(e) => setEmail(e.target.value)}
                   type="email"
+                  required
                   placeholder="example@slicgeneral.com"
                   id="small-input"
                   className="block ml-8 w-[450px] outline-blue-300 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -218,7 +296,9 @@ export default function UserManagement() {
                   EPF:
                 </label>
                 <input
+                  onChange={(e) => setEpf(e.target.value)}
                   type="text"
+                  required
                   placeholder="Enter Last Name"
                   id="small-input"
                   className="block ml-8 w-[450px] outline-blue-300 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -234,7 +314,9 @@ export default function UserManagement() {
                   Password:
                 </label>
                 <input
+                  onChange={(e) => setPassword(e.target.value)}
                   type="password"
+                  required
                   placeholder="Enter Password"
                   id="small-input"
                   className="block ml-8 w-[450px] outline-blue-300 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -248,7 +330,9 @@ export default function UserManagement() {
                   Confirm Password:
                 </label>
                 <input
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   type="password"
+                  required
                   placeholder="Enter Password again"
                   id="small-input"
                   className="block ml-8 w-[450px] outline-blue-300 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -258,10 +342,7 @@ export default function UserManagement() {
 
             <div className="flex flex-row mt-4 ml-8">
               <button
-                onClick={() => {
-                  handleRegister();
-                }}
-                type="button"
+                type="submit"
                 className="flex flex-row items-center border-none justify-center h-[30px] w-[90px] shadow-md text-white bg-blue-700 hover:bg-blue-800 focus:outline-none  font-medium rounded-md text-sm text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 <svg
                   className="w-6 h-6 text-white dark:text-white"
@@ -300,145 +381,92 @@ export default function UserManagement() {
                 </svg>
                 Cancel
               </button>
+              {loader && (
+                <div>
+                  <Spinner></Spinner>
+                </div>
+              )}
             </div>
           </form>
         </div>
       )}
 
-      {/*Error Message Components*/}
-      <div
-        id="alert-border-3"
-        className="flex items-center p-4 mb-4 text-green-800 border-t-4 border-green-300 bg-green-50 dark:text-green-400 dark:bg-gray-800 dark:border-green-800"
-        role="alert">
-        <svg
-          className="shrink-0 w-4 h-4"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="currentColor"
-          viewBox="0 0 20 20">
-          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-        </svg>
-        <div className="ms-3 text-sm font-medium">Message Here....</div>
-        <button
-          type="button"
-          className="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
-          data-dismiss-target="#alert-border-3"
-          aria-label="Close">
-          <span className="sr-only">Dismiss</span>
-          <svg
-            className="w-3 h-3"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 14">
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-            />
-          </svg>
-        </button>
-      </div>
-
-      <div
-        id="alert-border-2"
-        class="flex items-center p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
-        role="alert">
-        <svg
-          class="shrink-0 w-4 h-4"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="currentColor"
-          viewBox="0 0 20 20">
-          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-        </svg>
-        <div class="ms-3 text-sm font-medium">Message Here....</div>
-        <button
-          type="button"
-          class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
-          data-dismiss-target="#alert-border-2"
-          aria-label="Close">
-          <span class="sr-only">Dismiss</span>
-          <svg
-            class="w-3 h-3"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 14">
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-            />
-          </svg>
-        </button>
-      </div>
-
-      {/*Modal Component*/}
-      {modal && (
+      {/*Success message components*/}
+      {successMessage && (
         <div
-          id="popup-modal"
-          tabIndex="-1"
-          className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="relative p-4 w-full max-w-md">
-            <div className="relative bg-white border rounded-lg shadow dark:bg-gray-700">
-              <button
-                type="button"
-                onClick={() => setModal(false)} // Close modal on click
-                className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                <svg
-                  className="w-3 h-3"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 14 14">
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                  />
-                </svg>
-                <span className="sr-only">Close modal</span>
-              </button>
-              <div className="p-4 md:p-5 text-center">
-                <svg
-                  className="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20">
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                  />
-                </svg>
-                <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                  Are you sure you want to register this user?
-                </h3>
-                <button
-                  type="button"
-                  onClick={() => setModal(false)} // Close modal on click
-                  className="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                  Yes, I'm sure
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setModal(false)} // Close modal on click
-                  className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                  No, cancel
-                </button>
-              </div>
-            </div>
-          </div>
+          id="alert-border-3"
+          className="flex items-center p-4 mb-4 text-green-800 border-t-4 border-green-300 bg-green-50 dark:text-green-400 dark:bg-gray-800 dark:border-green-800"
+          role="alert">
+          <svg
+            className="shrink-0 w-4 h-4"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+          </svg>
+          <div className="ms-3 text-sm font-medium">{successMessage}</div>
+          <button
+            type="button"
+            className="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
+            data-dismiss-target="#alert-border-3"
+            aria-label="Close">
+            <span className="sr-only">Dismiss</span>
+            <svg
+              className="w-3 h-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 14">
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+              />
+            </svg>
+          </button>
+        </div>
+      )}
+
+      {/*Error message components*/}
+      {errorMessage && (
+        <div
+          id="alert-border-2"
+          className="flex items-center p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
+          role="alert">
+          <svg
+            className="shrink-0 w-4 h-4"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+          </svg>
+          <div className="ms-3 text-sm font-medium">{errorMessage}</div>
+          <button
+            type="button"
+            className="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+            data-dismiss-target="#alert-border-2"
+            aria-label="Close">
+            <span className="sr-only">Dismiss</span>
+            <svg
+              onClick={() => setErrorMessage(false)}
+              className="w-3 h-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 14">
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+              />
+            </svg>
+          </button>
         </div>
       )}
     </div>
