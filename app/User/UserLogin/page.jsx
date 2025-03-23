@@ -9,7 +9,7 @@ export default function UserLogin() {
   const passwordRef = useRef("");
   const router = useRouter();
   const [loadingStatus, setLoadingStatus] = useState(false);
-
+  
   //Handle Login function
 
   const handleLogin = async (e) => {
@@ -104,7 +104,7 @@ export default function UserLogin() {
                   className="border w-[100px] h-[35px] rounded-md hover:bg-slate-700 flex flex-row items-center justify-center px-2 py-1">
                   {loadingStatus && (
                     <div className="mt-1">
-                      <Spinner />
+                      <Spinner size={25} />
                     </div>
                   )}
                   <div className="px-2">Login</div>
