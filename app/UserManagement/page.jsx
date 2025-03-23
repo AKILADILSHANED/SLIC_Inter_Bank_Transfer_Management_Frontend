@@ -1,20 +1,33 @@
 "use client";
 import { useState } from "react";
 import UserRegister from "../User/UserRegister/page";
+import SearchUser from "../User/UserSearch/page";
 
 export default function UserManagement() {
-  const [clickRegister, setClickRegister] = useState(false);
+  const [clickRegisterUser, setClickRegisterUser] = useState(false);
+  const [clickSearchUser, setClickSearchUser] = useState(false);
+  const [clickUpdateUser, setClickUpdateUser] = useState(false);
+  const [clickDeleteUser, setClickDeleteUser] = useState(false);
 
-  const handleRegister = () => {
-    if (clickRegister == false) {
-      setClickRegister(true);
-    } else {
-      setClickRegister(false);
-    }
+  const arraySetters = [
+    setClickRegisterUser,
+    setClickSearchUser,
+    setClickUpdateUser,
+    setClickDeleteUser,
+  ];
+
+  //Define functions
+  //Handling "Register New" button
+  const handleClick = (setterFunction) => {
+    arraySetters.forEach((setter) => {
+      setter(false);
+    });
+    setterFunction(true);
   };
 
+  //Handle Cancel button in User Register
   const handleCancel = () => {
-    setClickRegister(false);
+    setClickRegisterUser(false);
   };
 
   return (
@@ -39,7 +52,7 @@ export default function UserManagement() {
         </div>
 
         <div
-          onClick={() => handleRegister()}
+          onClick={() => handleClick(setClickRegisterUser)}
           className="flex flex-row items-center justify-center ml-[100px]">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -60,7 +73,9 @@ export default function UserManagement() {
           </div>
         </div>
 
-        <div className="flex flex-row items-center justify-center ml-5">
+        <div
+          onClick={() => handleClick(setClickSearchUser)}
+          className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
             aria-hidden="true"
@@ -129,9 +144,17 @@ export default function UserManagement() {
         </div>
       </div>
 
-      {clickRegister && (
+      {/*Conditionally display the User Register window here*/}
+      {clickRegisterUser && (
         <div className="mt-4">
           <UserRegister onCancel={handleCancel}></UserRegister>
+        </div>
+      )}
+
+      {/*Conditionally display the User Search window here*/}
+      {clickSearchUser && (
+        <div className="mt-4">
+          <SearchUser onCancel={handleCancel}></SearchUser>
         </div>
       )}
     </div>

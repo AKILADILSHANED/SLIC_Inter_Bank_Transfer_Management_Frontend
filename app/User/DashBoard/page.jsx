@@ -185,7 +185,7 @@ export default function DashBoard() {
           <label className="ml-2">Manage Users</label>
           {loader && (
             <div className="ml-2">
-              <Spinner></Spinner>
+              <Spinner size={26}></Spinner>
             </div>
           )}
         </div>
