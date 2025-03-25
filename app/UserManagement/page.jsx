@@ -2,6 +2,7 @@
 import { useState } from "react";
 import UserRegister from "../User/UserRegister/page";
 import SearchUser from "../User/UserSearch/page";
+import UpdateUser from "../User/UserUpdate/page";
 
 export default function UserManagement() {
   const [clickRegisterUser, setClickRegisterUser] = useState(false);
@@ -17,7 +18,7 @@ export default function UserManagement() {
   ];
 
   //Define functions
-  //Handling "Register New" button
+  
   const handleClick = (setterFunction) => {
     arraySetters.forEach((setter) => {
       setter(false);
@@ -26,8 +27,16 @@ export default function UserManagement() {
   };
 
   //Handle Cancel button in User Register
-  const handleCancel = () => {
+  const handleCancelUserRegister = () => {
     setClickRegisterUser(false);
+  };
+  //Handle Cancel button in User Search
+  const handleCancelUserSearch = () => {
+    setClickSearchUser(false);
+  };
+  //Handle Cancel button in User Update
+  const handleCancelUserUpdate = () => {
+    setClickUpdateUser(false);
   };
 
   return (
@@ -97,7 +106,9 @@ export default function UserManagement() {
           </div>
         </div>
 
-        <div className="flex flex-row items-center justify-center ml-5">
+        <div
+          onClick={() => handleClick(setClickUpdateUser)}
+          className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
             aria-hidden="true"
@@ -147,14 +158,20 @@ export default function UserManagement() {
       {/*Conditionally display the User Register window here*/}
       {clickRegisterUser && (
         <div className="mt-4">
-          <UserRegister onCancel={handleCancel}></UserRegister>
+          <UserRegister onCancel={handleCancelUserRegister}></UserRegister>
         </div>
       )}
 
       {/*Conditionally display the User Search window here*/}
       {clickSearchUser && (
         <div className="mt-4">
-          <SearchUser onCancel={handleCancel}></SearchUser>
+          <SearchUser onCancel={handleCancelUserSearch}></SearchUser>
+        </div>
+      )}
+
+      {clickUpdateUser && (
+        <div>
+          <UpdateUser onCancel={handleCancelUserUpdate}></UpdateUser>
         </div>
       )}
     </div>
