@@ -43,21 +43,23 @@ export default function SearchUser() {
         );
         if (request.ok) {
           const respnse = await request.json();
-          if (respnse.returnMessage == null) {
-            setCurrentUser(respnse);
+          if (respnse.success == true) {
+            setCurrentUser(respnse.responseObject);
             setUserDetailsWindow(true);
           } else {
             setMessageStatus(true);
-            setMessage(respnse.returnMessage);
+            setMessage(respnse.message);
             setUserDetailsWindow(false);
           }
         } else {
-          alert("No response received from the server. Please contact the administrator!");
+          setMessageStatus(true);
+          setMessage("No response received from the server. Please contact the administrator!");
           setUserDetailsWindow(false);
         }
         setLoader(false);
       } catch (error) {
-        alert("Un-expected error occuured. Please contact administrator!");
+        setMessageStatus(true);
+        setMessage("Un-expected error occuured. Please contact administrator!");
         setUserDetailsWindow(false);
       }
       setLoader(false);
