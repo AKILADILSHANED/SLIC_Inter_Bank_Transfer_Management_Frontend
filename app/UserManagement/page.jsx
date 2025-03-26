@@ -3,6 +3,7 @@ import { useState } from "react";
 import UserRegister from "../User/UserRegister/page";
 import SearchUser from "../User/UserSearch/page";
 import UpdateUser from "../User/UserUpdate/page";
+import UserDelete from "../User/DeleteUser/page";
 
 export default function UserManagement() {
   const [clickRegisterUser, setClickRegisterUser] = useState(false);
@@ -18,7 +19,7 @@ export default function UserManagement() {
   ];
 
   //Define functions
-  
+
   const handleClick = (setterFunction) => {
     arraySetters.forEach((setter) => {
       setter(false);
@@ -37,6 +38,10 @@ export default function UserManagement() {
   //Handle Cancel button in User Update
   const handleCancelUserUpdate = () => {
     setClickUpdateUser(false);
+  };
+  //Handle Cancel button in User Delete
+  const handleCancelUserDelete = () => {
+    setClickDeleteUser(false);
   };
 
   return (
@@ -131,7 +136,9 @@ export default function UserManagement() {
           </div>
         </div>
 
-        <div className="flex flex-row items-center justify-center ml-5">
+        <div 
+        onClick={() => handleClick(setClickDeleteUser)}
+        className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
             aria-hidden="true"
@@ -172,6 +179,12 @@ export default function UserManagement() {
       {clickUpdateUser && (
         <div>
           <UpdateUser onCancel={handleCancelUserUpdate}></UpdateUser>
+        </div>
+      )}
+
+      {clickDeleteUser && (
+        <div>
+          <UserDelete onCancel={handleCancelUserDelete}></UserDelete>
         </div>
       )}
     </div>
