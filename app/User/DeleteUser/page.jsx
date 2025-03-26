@@ -1,19 +1,19 @@
-"use client"
+"use client";
 import React from "react";
 import Spinner from "@/app/Spinner/page";
 import { useState } from "react";
 import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 
-export default function UpdateUser({ onCancel }) {
+export default function UserDelete({ onCancel }) {
   const [userId, setUserId] = useState("");
   const [errorMessageStatus, setErrorMessageStatus] = useState(false);
   const [successMessageStatus, setSuccessMessageStatus] = useState(false);
   const [message, setMessage] = useState("");
   const [loader, setLoader] = useState(false);
-  const [updateLoader, setUpdateLoader] = useState(false);
+  const [deleteLoader, setDeleteLoader] = useState(false);
   const [userDetailsWindow, setUserDetailsWindow] = useState(false);
-
+  
   //Defined states for Updating text fields.
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -88,27 +88,20 @@ export default function UpdateUser({ onCancel }) {
     }
   };
 
-  //Define Update function;
-  const handleUserUpdate = async () => {
+  //Define Delete function;
+  const handleUserDelete = async () => {
     setErrorMessageStatus(false);
     setMessage(false);
     setSuccessMessageStatus(false);
     try {
-      setUpdateLoader(true);
+      setDeleteLoader(true);
       const request = await fetch(
-        "http://localhost:8080/api/v1/user/user-update",
+        `http://localhost:8080/api/v1/user/user-delete?userId=${encodeURIComponent(
+          userId
+        )}`,
         {
           method: "PUT",
           credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userId: userId,
-            userFirstName: firstName,
-            userLastName: lastName,
-            userEpf: epf,
-            userEmail: email,
-            userLevel: userLevel,
-          }),
         }
       );
       if (request.ok) {
@@ -116,23 +109,23 @@ export default function UpdateUser({ onCancel }) {
         if (response.success == true) {
           setSuccessMessageStatus(true);
           setMessage(response.message);
-          setUpdateLoader(false);
+          setDeleteLoader(false);
         } else {
           setErrorMessageStatus(true);
           setMessage(response.message);
-          setUpdateLoader(false);
+          setDeleteLoader(false);
         }
       } else {
         setErrorMessageStatus(true);
         setMessage(
-          "Unable to update the user at this moment. Please contact administrator!"
+          "Unable to delete the user at this moment. Please contact administrator!"
         );
-        setUpdateLoader(false);
+        setDeleteLoader(false);
       }
     } catch (error) {
       setErrorMessageStatus(true);
       setMessage("Un-expected error occurred. Please contact administrator!");
-      setUpdateLoader(false);
+      setDeleteLoader(false);
     }
   };
 
@@ -141,7 +134,7 @@ export default function UpdateUser({ onCancel }) {
       <div className="h-[120px] w-full shadow-md mt-4">
         <div className="bg-red-800 h-[30px] flex flex-row items-center">
           <label className="text-white text-lg ml-2 font-serif">
-            Update User Details
+            Delete User
           </label>
         </div>
         <div className="flex flex-row items-center mt-5">
@@ -188,7 +181,7 @@ export default function UpdateUser({ onCancel }) {
           <div className="shadow mt-5 h-[374px]">
             <div className="bg-slate-600 h-[30px] flex flex-row items-center">
               <label className="text-white text-lg font-serif ml-2">
-                User Details for provided User ID
+                Please check User details before confirm deletion
               </label>
             </div>
             <div>
@@ -201,7 +194,7 @@ export default function UpdateUser({ onCancel }) {
                   </label>
                   <input
                     type="text"
-                    onChange={(e) => setFirstName(e.target.value)}
+                    readOnly
                     value={firstName}
                     id="small-input"
                     className="block w-[500px] outline-blue-400 px-2 py-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -216,7 +209,7 @@ export default function UpdateUser({ onCancel }) {
                   </label>
                   <input
                     type="text"
-                    onChange={(e) => setLastName(e.target.value)}
+                    readOnly
                     value={lastName}
                     id="small-input"
                     className="block w-[500px] outline-blue-400 px-2 py-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -233,7 +226,7 @@ export default function UpdateUser({ onCancel }) {
                   </label>
                   <input
                     type="text"
-                    onChange={(e) => setEpf(e.target.value)}
+                    readOnly
                     value={epf}
                     id="small-input"
                     className="block w-[500px] outline-blue-400 px-2 py-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -248,7 +241,7 @@ export default function UpdateUser({ onCancel }) {
                   </label>
                   <input
                     type="text"
-                    onChange={(e) => setEmail(e.target.value)}
+                    readOnly
                     value={email}
                     id="small-input"
                     className="block w-[500px] outline-blue-400 px-2 py-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -280,7 +273,7 @@ export default function UpdateUser({ onCancel }) {
                   </label>
                   <select
                     type="text"
-                    onChange={(e) => setUserLevel(e.target.value)}
+                    readOnly
                     value={userLevel}
                     id="small-input"
                     className="block w-[500px] outline-blue-400 px-2 py-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -326,40 +319,40 @@ export default function UpdateUser({ onCancel }) {
               <div className="mt-3 ml-2 flex flex-row justify-center">
                 <div>
                   <button
-                    onClick={() => handleUserUpdate()}
+                    onClick={() => handleUserDelete()}
                     type="submit"
-                    className="flex flex-row items-center justify-center rounded-md w-[120px] h-[30px] shadow-md bg-green-700 text-white hover:bg-green-600">
-                    {updateLoader && (
+                    className="flex flex-row items-center justify-center rounded-md w-[120px] h-[30px] shadow-md bg-red-700 text-white hover:bg-red-600">
+                    {deleteLoader && (
                       <div>
                         <Spinner size={20}></Spinner>
                       </div>
                     )}
                     <svg
-                      className="w-6 h-6 text-white dark:text-white mr-1"
+                      className="w-6 h-6 text-white dark:text-white"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
                       height="24"
                       fill="none"
-                      viewBox="0 0 24 24">
+                      viewBox="0 0 28 28">
                       <path
                         stroke="currentColor"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth="2"
-                        d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
+                        d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
                       />
                     </svg>
-                    Update
+                    Delete
                   </button>
                 </div>
                 <div>
                   <button
                     onClick={() => handleCancel()}
                     type="button"
-                    className="flex flex-row items-center justify-center rounded-md w-[120px] h-[30px] shadow-md ml-2 bg-red-700 text-white hover:bg-red-600">
+                    className="flex flex-row items-center justify-center rounded-md w-[120px] h-[30px] shadow-md ml-2 bg-white border text-slate-400 border-slate-400 hover:bg-slate-100 hover:text-blue-600">
                     <svg
-                      className="w-6 h-6 text-white mr-1 dark:text-white"
+                      className="w-6 h-6 text-slate-400 hover:text-blue-600 mr-1 dark:text-white"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
