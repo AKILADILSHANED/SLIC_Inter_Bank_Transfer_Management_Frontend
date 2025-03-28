@@ -177,7 +177,7 @@ export default function UserRegister({ onCancel }) {
                 <input
                   onChange={(e) => setEpf(e.target.value)}
                   id="small"
-                  placeholder="Enter Last Name"
+                  placeholder="Enter EPF"
                   required
                   className="outline-none block w-[350px] ml-[106px] p-1 px-2 text-md text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
               </div>
@@ -205,7 +205,7 @@ export default function UserRegister({ onCancel }) {
                   onChange={(e) => setConfirmedPassword(e.target.value)}
                   type="password"
                   id="small"
-                  placeholder="Enter Last Name"
+                  placeholder="Enter Password"
                   required
                   className="outline-none block w-[350px] ml-2 p-1 px-2 text-md text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
               </div>
