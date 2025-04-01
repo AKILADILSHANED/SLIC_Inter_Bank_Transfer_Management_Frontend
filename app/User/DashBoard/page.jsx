@@ -8,7 +8,8 @@ export default function DashBoard() {
   const router = useRouter();
   const fullName = useSearchParams();
   const [url, setUrl] = useState("");
-  const [loader, setLoader] = useState(false);
+  const [loaderUserManagement, setLoaderUserManagement] = useState(false);
+  const [loaderAccountManagement, setLoaderAccountManagement] = useState(false);
 
   // Create useStates for side panel functions.
   const [userManage, setUserManage] = useState(false);
@@ -35,8 +36,8 @@ export default function DashBoard() {
   ];
 
   //Implement a single function to handle each function in side panel.
-  const handleClickSidePanelFunction = (currentFunction, url) => {
-    setLoader(true);
+  const handleClickSidePanelFunction = (currentFunction, url, loaderSetter) => {
+    loaderSetter(true);
     setTimeout(() => {
       for (let userClickedFunction of setFunctionArray) {
         if (userClickedFunction() == currentFunction()) {
@@ -47,7 +48,7 @@ export default function DashBoard() {
           setUrl("");
         }
       }
-      setLoader(false);
+      loaderSetter(false);
     }, 1000);
   };
 
@@ -165,7 +166,11 @@ export default function DashBoard() {
 
         <div
           onClick={() =>
-            handleClickSidePanelFunction(setUserManage, "/UserManagement")
+            handleClickSidePanelFunction(
+              setUserManage,
+              "/UserManagement",
+              setLoaderUserManagement
+            )
           }
           className="cursor-pointer text-slate-400 hover:text-white mt-10 rounded-md h-[40px] w-[245px] hover:bg-slate-700 flex flex-row items-center">
           <svg
@@ -183,14 +188,22 @@ export default function DashBoard() {
             />
           </svg>
           <label className="ml-2">Manage Users</label>
-          {loader && (
+          {loaderUserManagement && (
             <div className="ml-2">
-              <Spinner size={26}></Spinner>
+              <Spinner size={24}></Spinner>
             </div>
           )}
         </div>
 
-        <div className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[40px] w-[245px] hover:bg-slate-700 flex flex-row items-center">
+        <div
+          onClick={() =>
+            handleClickSidePanelFunction(
+              setBankAccount,
+              "/AccountManagement",
+              setLoaderAccountManagement
+            )
+          }
+          className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[40px] w-[245px] hover:bg-slate-700 flex flex-row items-center">
           <svg
             className="w-6 h-6 text-white dark:text-white ml-2"
             aria-hidden="true"
@@ -208,6 +221,11 @@ export default function DashBoard() {
           </svg>
 
           <label className="ml-2">Bank Accounts</label>
+          {loaderAccountManagement && (
+            <div className="ml-2">
+              <Spinner size={24}></Spinner>
+            </div>
+          )}
         </div>
 
         <div className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[40px] w-[245px] hover:bg-slate-700 flex flex-row items-center">
