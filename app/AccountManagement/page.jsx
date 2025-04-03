@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import RegisterAccount from "./AccountRegister/page";
+import SearchAccount from "./AccountSearch/page";
+import UpdateAccount from "./AccountUpdate/page";
 
 export default function AccountManagement() {
   //Define states;
@@ -12,9 +14,9 @@ export default function AccountManagement() {
   //const [handleCancelAccountRegister, setHandleCancelAccountRegister] = useState(false);
 
   //Define cancel functionality;
-  const handleCancel = (setterCancel)=>{
+  const handleCancel = (setterCancel) => {
     setterCancel(false);
-  }
+  };
 
   //Define an array for setter functions;
   const arraySetters = [
@@ -35,21 +37,21 @@ export default function AccountManagement() {
   return (
     <div>
       <div className="bg-slate-800 w-full h-[45px] flex flex-row items-center">
-      <svg
-            className="w-6 h-6 text-white dark:text-white ml-2"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24">
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeWidth="2"
-              d="M3 21h18M4 18h16M6 10v8m4-8v8m4-8v8m4-8v8M4 9.5v-.955a1 1 0 0 1 .458-.84l7-4.52a1 1 0 0 1 1.084 0l7 4.52a1 1 0 0 1 .458.84V9.5a.5.5 0 0 1-.5.5h-15a.5.5 0 0 1-.5-.5Z"
-            />
-          </svg>
+        <svg
+          className="w-6 h-6 text-white dark:text-white ml-2"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24">
+          <path
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeWidth="2"
+            d="M3 21h18M4 18h16M6 10v8m4-8v8m4-8v8m4-8v8M4 9.5v-.955a1 1 0 0 1 .458-.84l7-4.52a1 1 0 0 1 1.084 0l7 4.52a1 1 0 0 1 .458.84V9.5a.5.5 0 0 1-.5.5h-15a.5.5 0 0 1-.5-.5Z"
+          />
+        </svg>
         <div>
           <label className="text-white text-xl ml-1">
             Account Management |
@@ -65,22 +67,25 @@ export default function AccountManagement() {
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
-            fill="currentColor"
+            fill="none"
             viewBox="0 0 24 24">
             <path
-              fillRule="evenodd"
-              d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z"
-              clipRule="evenodd"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
             />
           </svg>
+
           <div className="text-sm text-white hover:bg-slate-700 w-[110px] h-[32] flex flex-col items-center justify-center rounded-md">
             <button>Register New</button>
           </div>
         </div>
 
         <div
-        onClick={() => handleClick(setAccountSearch)}
-        className="flex flex-row items-center justify-center ml-5">
+          onClick={() => handleClick(setAccountSearch)}
+          className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
             aria-hidden="true"
@@ -102,9 +107,9 @@ export default function AccountManagement() {
           </div>
         </div>
 
-        <div 
-        onClick={() => handleClick(setAccountUpdate)}
-        className="flex flex-row items-center justify-center ml-5">
+        <div
+          onClick={() => handleClick(setAccountUpdate)}
+          className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
             aria-hidden="true"
@@ -127,9 +132,9 @@ export default function AccountManagement() {
           </div>
         </div>
 
-        <div 
-        onClick={() => handleClick(setAccountDelete)}
-        className="flex flex-row items-center justify-center ml-5">
+        <div
+          onClick={() => handleClick(setAccountDelete)}
+          className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
             aria-hidden="true"
@@ -155,7 +160,19 @@ export default function AccountManagement() {
 
       {accountRegister && (
         <div className="mt-4">
-          <RegisterAccount onCancel={()=>handleCancel(setAccountRegister)}/>
+          <RegisterAccount onCancel={() => handleCancel(setAccountRegister)} />
+        </div>
+      )}
+
+      {accountSearch && (
+        <div>
+          <SearchAccount onCancel={() => handleCancel(setAccountSearch)} />
+        </div>
+      )}
+
+      {accountUpdate && (
+        <div>
+          <UpdateAccount onCancel={() => handleCancel(setAccountUpdate)} />
         </div>
       )}
     </div>

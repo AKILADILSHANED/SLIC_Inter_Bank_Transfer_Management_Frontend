@@ -3,7 +3,7 @@ import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import Spinner from "@/app/Spinner/page";
 import React, { useState } from "react";
 
-export default function RegisterAccount({onCancel}) {
+export default function RegisterAccount({ onCancel }) {
   const [spinner, setSpinner] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -16,11 +16,10 @@ export default function RegisterAccount({onCancel}) {
   const [textGlCode, setGlCode] = useState("");
   const [textAccountNumber, setAccountNumber] = useState("");
 
-
   //Define handle cancel;
-  const handleCancel = ()=>{
+  const handleCancel = () => {
     setClickCancel(false);
-  }
+  };
 
   //Define handle register function;
   const handleRegister = async (e) => {
@@ -89,7 +88,7 @@ export default function RegisterAccount({onCancel}) {
               Provide Bank Account Details
             </label>
           </div>
-          <div className="shadow h-[290px] flex flex-col">
+          <div className="shadow-md h-[290px] flex flex-col">
             <div className="flex flex-row mt-4">
               <label
                 htmlFor="small"
@@ -169,8 +168,8 @@ export default function RegisterAccount({onCancel}) {
                 id="small"
                 className="block w-[200px] ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="">-Select Account Type-</option>
-                <option value="0">Current Account</option>
-                <option value="1">Saving Account</option>
+                <option value="1">Current Account</option>
+                <option value="2">Saving Account</option>
               </select>
             </div>
 
@@ -229,7 +228,7 @@ export default function RegisterAccount({onCancel}) {
               </button>
 
               <button
-              onClick={()=>onCancel()}
+                onClick={() => onCancel()}
                 type="button"
                 className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                 Cancel
