@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import RegisterAccount from "./AccountRegister/page";
 import SearchAccount from "./AccountSearch/page";
 import UpdateAccount from "./AccountUpdate/page";
+import DeleteAccount from "./AccountDelete/page";
 
 export default function AccountManagement() {
   //Define states;
@@ -173,6 +174,12 @@ export default function AccountManagement() {
       {accountUpdate && (
         <div>
           <UpdateAccount onCancel={() => handleCancel(setAccountUpdate)} />
+        </div>
+      )}
+
+      {accountDelete && (
+        <div>
+          <DeleteAccount onCancel={() => handleCancel(setAccountDelete)} />
         </div>
       )}
     </div>
