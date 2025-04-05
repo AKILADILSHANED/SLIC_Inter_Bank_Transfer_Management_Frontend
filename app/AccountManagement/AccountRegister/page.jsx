@@ -16,11 +16,6 @@ export default function RegisterAccount({ onCancel }) {
   const [textGlCode, setGlCode] = useState("");
   const [textAccountNumber, setAccountNumber] = useState("");
 
-  //Define handle cancel;
-  const handleCancel = () => {
-    setClickCancel(false);
-  };
-
   //Define handle register function;
   const handleRegister = async (e) => {
     e.preventDefault();

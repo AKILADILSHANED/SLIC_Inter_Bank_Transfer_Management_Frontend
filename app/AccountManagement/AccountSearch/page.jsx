@@ -3,7 +3,7 @@ import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import Spinner from "@/app/Spinner/page";
 import React, { useState } from "react";
 
-export default function SearchAccount({ onCancel }) {
+export default function SearchAccount() {
   //Define state variables;
   const [errorMessage, setErrorMessage] = useState(false);
   const [accountId, setAccountId] = useState("");
@@ -69,7 +69,8 @@ export default function SearchAccount({ onCancel }) {
             Account ID:
           </label>
           <input
-            onChange={(e) => setAccountId(e.target.value)}
+            onChange={(e) => setAccountId(e.target.value.toUpperCase())}
+            value={accountId.toUpperCase()}
             id="small"
             placeholder="Enter Bank Account ID"
             required
