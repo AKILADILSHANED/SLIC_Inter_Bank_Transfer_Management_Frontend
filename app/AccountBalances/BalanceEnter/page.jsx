@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 
 export default function EnterBalance() {
- 
   //Define state variables;
   const [displayTable, setDisplayTable] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
@@ -52,7 +51,7 @@ export default function EnterBalance() {
         "http://localhost:8080/api/v1/account-balance/get-accounts",
         {
           method: "GET",
-          credentials: "include",
+          credentials: "include"
         }
       );
       if (request.ok) {
@@ -199,7 +198,7 @@ export default function EnterBalance() {
                       </td>
                       <td className="p-3">
                         <button
-                        onClick={()=>handleSave(element.accountId,balance)}
+                          onClick={() => handleSave(element.accountId, balance)}
                           data-ripple-light="true"
                           className="rounded-md px-3 h-[30px] bg-slate-800 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2"
                           type="button">

@@ -2,6 +2,7 @@
 import React from "react";
 import { useState } from "react";
 import EnterBalance from "./BalanceEnter/page";
+import DisplayBalance from "./BalanceDisplay/page";
 
 export default function page() {
   //Define states;
@@ -160,13 +161,13 @@ export default function page() {
         </div>
       )}
 
-      {/*accountSearch && (
+      {displayBalance && (
         <div>
-          <SearchAccount onCancel={() => handleCancel(setAccountSearch)} />
+          <DisplayBalance onCancel={() => handleCancel(setDisplayBalance)} />
         </div>
       )}
 
-      {accountUpdate && (
+      {/*accountUpdate && (
         <div>
           <UpdateAccount onCancel={() => handleCancel(setAccountUpdate)} />
         </div>
