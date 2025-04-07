@@ -10,6 +10,7 @@ export default function DashBoard() {
   const [url, setUrl] = useState("");
   const [loaderUserManagement, setLoaderUserManagement] = useState(false);
   const [loaderAccountManagement, setLoaderAccountManagement] = useState(false);
+  const [loaderAccountBalances, setLoaderAccountBalances] = useState(false);
 
   // Create useStates for side panel functions.
   const [userManage, setUserManage] = useState(false);
@@ -39,15 +40,11 @@ export default function DashBoard() {
   const handleClickSidePanelFunction = (currentFunction, url, loaderSetter) => {
     loaderSetter(true);
     setTimeout(() => {
-      for (let userClickedFunction of setFunctionArray) {
-        if (userClickedFunction() == currentFunction()) {
-          userClickedFunction(true);
-          setUrl(url);
-        } else {
+      for (let userClickedFunction of setFunctionArray) {        
           userClickedFunction(false);
-          setUrl("");
-        }
       }
+      setUrl(url);
+      currentFunction(true);
       loaderSetter(false);
     }, 1000);
   };
@@ -228,7 +225,13 @@ export default function DashBoard() {
           )}
         </div>
 
-        <div className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[40px] w-[245px] hover:bg-slate-700 flex flex-row items-center">
+        <div
+        onClick={()=>handleClickSidePanelFunction(
+          setAccountBalances,
+          "/AccountBalances",
+          setLoaderAccountBalances
+        )}
+        className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[40px] w-[245px] hover:bg-slate-700 flex flex-row items-center">
           <svg
             className="w-6 h-6 text-white dark:text-white ml-2"
             aria-hidden="true"
@@ -247,6 +250,11 @@ export default function DashBoard() {
           </svg>
 
           <label className="ml-2">Account Balances</label>
+          {loaderAccountBalances && (
+            <div className="ml-2">
+              <Spinner size={24}></Spinner>
+            </div>
+          )}
         </div>
 
         <div className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[40px] w-[245px] hover:bg-slate-700 flex flex-row items-center">

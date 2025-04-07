@@ -1,16 +1,15 @@
 "use client";
-import React, { useState } from "react";
-import RegisterAccount from "./AccountRegister/page";
-import SearchAccount from "./AccountSearch/page";
-import UpdateAccount from "./AccountUpdate/page";
-import DeleteAccount from "./AccountDelete/page";
+import React from "react";
+import { useState } from "react";
+import EnterBalance from "./BalanceEnter/page";
+import DisplayBalance from "./BalanceDisplay/page";
 
-export default function AccountManagement() {
+export default function page() {
   //Define states;
-  const [accountRegister, setAccountRegister] = useState(false);
-  const [accountSearch, setAccountSearch] = useState(false);
-  const [accountUpdate, setAccountUpdate] = useState(false);
-  const [accountDelete, setAccountDelete] = useState(false);
+  const [newBalanceEnter, setNewBalanceEnter] = useState(false);
+  const [displayBalance, setDisplayBalance] = useState(false);
+  const [updateBalance, setUpdateBalance] = useState(false);
+  const [deleteBalance, setDeleteBalance] = useState(false);
 
   //Define cancel functionality;
   const handleCancel = (setterCancel) => {
@@ -19,10 +18,10 @@ export default function AccountManagement() {
 
   //Define an array for setter functions;
   const arraySetters = [
-    setAccountRegister,
-    setAccountSearch,
-    setAccountUpdate,
-    setAccountDelete,
+    setNewBalanceEnter,
+    setDisplayBalance,
+    setUpdateBalance,
+    setDeleteBalance,
   ];
 
   //Define function for handling each main function user clicks;
@@ -47,18 +46,17 @@ export default function AccountManagement() {
           <path
             stroke="currentColor"
             strokeLinecap="round"
+            strokeLinejoin="round"
             strokeWidth="2"
-            d="M3 21h18M4 18h16M6 10v8m4-8v8m4-8v8m4-8v8M4 9.5v-.955a1 1 0 0 1 .458-.84l7-4.52a1 1 0 0 1 1.084 0l7 4.52a1 1 0 0 1 .458.84V9.5a.5.5 0 0 1-.5.5h-15a.5.5 0 0 1-.5-.5Z"
+            d="M8 17.345a4.76 4.76 0 0 0 2.558 1.618c2.274.589 4.512-.446 4.999-2.31.487-1.866-1.273-3.9-3.546-4.49-2.273-.59-4.034-2.623-3.547-4.488.486-1.865 2.724-2.899 4.998-2.31.982.236 1.87.793 2.538 1.592m-3.879 12.171V21m0-18v2.2"
           />
         </svg>
         <div>
-          <label className="text-white text-xl ml-1">
-            Account Management |
-          </label>
+          <label className="text-white text-xl ml-1">Account Balances |</label>
         </div>
 
         <div
-          onClick={() => handleClick(setAccountRegister)}
+          onClick={() => handleClick(setNewBalanceEnter)}
           className="flex flex-row items-center justify-center ml-[100px]">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -77,13 +75,13 @@ export default function AccountManagement() {
             />
           </svg>
 
-          <div className="text-sm text-white hover:bg-slate-700 w-[110px] h-[32] flex flex-col items-center justify-center rounded-md">
-            <button>Register New</button>
+          <div className="text-sm text-white hover:bg-slate-700 w-[140px] h-[32] flex flex-col items-center justify-center rounded-md">
+            <button>Enter New Balance</button>
           </div>
         </div>
 
         <div
-          onClick={() => handleClick(setAccountSearch)}
+          onClick={() => handleClick(setDisplayBalance)}
           className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -101,13 +99,13 @@ export default function AccountManagement() {
             />
           </svg>
 
-          <div className="text-sm text-white hover:bg-slate-700 w-[100px] h-[32] flex flex-col items-center justify-center rounded-md">
-            <button>Search Account</button>
+          <div className="text-sm text-white hover:bg-slate-700 w-[120px] h-[32] flex flex-col items-center justify-center rounded-md">
+            <button>Display Balance</button>
           </div>
         </div>
 
         <div
-          onClick={() => handleClick(setAccountUpdate)}
+          onClick={() => handleClick(setUpdateBalance)}
           className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -127,12 +125,12 @@ export default function AccountManagement() {
           </svg>
 
           <div className="text-sm text-white hover:bg-slate-700 w-[120px] h-[32] flex flex-col items-center justify-center rounded-md">
-            <button>Update Details</button>
+            <button>Update Balance</button>
           </div>
         </div>
 
         <div
-          onClick={() => handleClick(setAccountDelete)}
+          onClick={() => handleClick(setDeleteBalance)}
           className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -151,25 +149,25 @@ export default function AccountManagement() {
             />
           </svg>
 
-          <div className="text-sm text-white hover:bg-slate-700 w-[100px] h-[32] flex flex-col items-center justify-center rounded-md">
-            <button>Delete Account</button>
+          <div className="text-sm text-white hover:bg-slate-700 w-[120px] h-[32] flex flex-col items-center justify-center rounded-md">
+            <button>Delete Balance</button>
           </div>
         </div>
       </div>
 
-      {accountRegister && (
+      {newBalanceEnter && (
         <div className="mt-4">
-          <RegisterAccount onCancel={() => handleCancel(setAccountRegister)} />
+          <EnterBalance onCancel={() => handleCancel(setAccountRegister)} />
         </div>
       )}
 
-      {accountSearch && (
+      {displayBalance && (
         <div>
-          <SearchAccount onCancel={() => handleCancel(setAccountSearch)} />
+          <DisplayBalance onCancel={() => handleCancel(setDisplayBalance)} />
         </div>
       )}
 
-      {accountUpdate && (
+      {/*accountUpdate && (
         <div>
           <UpdateAccount onCancel={() => handleCancel(setAccountUpdate)} />
         </div>
@@ -179,7 +177,7 @@ export default function AccountManagement() {
         <div>
           <DeleteAccount onCancel={() => handleCancel(setAccountDelete)} />
         </div>
-      )}
+      )*/}
     </div>
   );
 }
