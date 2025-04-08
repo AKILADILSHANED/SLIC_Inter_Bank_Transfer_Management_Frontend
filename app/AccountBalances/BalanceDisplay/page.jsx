@@ -124,6 +124,11 @@ export default function DisplayBalance() {
                       Balance
                     </p>
                   </th>
+                  <th className="p-4 border-b border-slate-300 bg-slate-50 text-right">
+                    <p className="block text-sm font-normal leading-none text-slate-500">
+                      Outstanding Balance
+                    </p>
+                  </th>
                   <th className="p-4 border-b border-slate-300 bg-slate-50">
                     <p className="block text-sm font-normal leading-none text-slate-500">
                       Delete Status
@@ -167,6 +172,16 @@ export default function DisplayBalance() {
                               maximumFractionDigits: 2,
                             })
                           : element.balanceAmount}
+                      </p>
+                    </td>
+                    <td className="p-4 border-b border-slate-200 text-right">
+                      <p className="block text-sm text-slate-800">
+                        {typeof element.balanceAmount === "number"
+                          ? element.balanceAmount.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : element.outstandingBalance}
                       </p>
                     </td>
                     <td className="p-4 border-b border-slate-200">
