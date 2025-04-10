@@ -3,10 +3,15 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Spinner from "@/app/Spinner/page";
+import { Suspense } from "react";
+
+function FullNameComponent() {
+  const name = useSearchParams();
+  return <div>Welcome {name.get("userFullName")} !</div>;
+}
 
 export default function DashBoard() {
   const router = useRouter();
-  const fullName = useSearchParams();
   const [url, setUrl] = useState("");
   const [loaderUserManagement, setLoaderUserManagement] = useState(false);
   const [loaderAccountManagement, setLoaderAccountManagement] = useState(false);
@@ -40,8 +45,8 @@ export default function DashBoard() {
   const handleClickSidePanelFunction = (currentFunction, url, loaderSetter) => {
     loaderSetter(true);
     setTimeout(() => {
-      for (let userClickedFunction of setFunctionArray) {        
-          userClickedFunction(false);
+      for (let userClickedFunction of setFunctionArray) {
+        userClickedFunction(false);
       }
       setUrl(url);
       currentFunction(true);
@@ -152,7 +157,9 @@ export default function DashBoard() {
               clipRule="evenodd"
             />
           </svg>
-          <div className="ml-1">Welcome {fullName.get("userFullName")} !</div>
+          <Suspense fallback={"Loading User Info..."} className="ml-1">
+            <FullNameComponent />
+          </Suspense>
         </div>
       </div>
 
@@ -226,12 +233,14 @@ export default function DashBoard() {
         </div>
 
         <div
-        onClick={()=>handleClickSidePanelFunction(
-          setAccountBalances,
-          "/AccountBalances",
-          setLoaderAccountBalances
-        )}
-        className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[40px] w-[245px] hover:bg-slate-700 flex flex-row items-center">
+          onClick={() =>
+            handleClickSidePanelFunction(
+              setAccountBalances,
+              "/AccountBalances",
+              setLoaderAccountBalances
+            )
+          }
+          className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[40px] w-[245px] hover:bg-slate-700 flex flex-row items-center">
           <svg
             className="w-6 h-6 text-white dark:text-white ml-2"
             aria-hidden="true"

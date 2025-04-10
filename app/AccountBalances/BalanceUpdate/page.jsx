@@ -4,7 +4,7 @@ import Spinner from "@/app/Spinner/page";
 import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 
-export default function UpdateBalance({onCancel}) {
+export default function UpdateBalance({ onCancel }) {
   //Define State variables;
   const [textBalanceId, setTextBalanceId] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -113,7 +113,7 @@ export default function UpdateBalance({onCancel}) {
         setErrorMessage(
           "Un-expected error occurred. Please contact administrator!"
         );
-      }finally{
+      } finally {
         setSaveSpinner(false);
       }
     }
@@ -162,7 +162,7 @@ export default function UpdateBalance({onCancel}) {
       )}
       {successMessage && (
         <div>
-          <SUccessMessage messageValue={successMessage}/>
+          <SUccessMessage messageValue={successMessage} />
         </div>
       )}
 
@@ -289,7 +289,7 @@ export default function UpdateBalance({onCancel}) {
                         onClick={() => handleSave()}
                         type="button"
                         className="flex flex-row items-center h-[30px] justify-center px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-md hover:bg-blue-800 outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        {saveSpinner && <Spinner size={20}/>}
+                        {saveSpinner && <Spinner size={20} />}
                         <svg
                           className="w-6 h-6 mr-1 text-white dark:text-white"
                           aria-hidden="true"
@@ -319,7 +319,7 @@ export default function UpdateBalance({onCancel}) {
           </div>
           <div>
             <button
-            onClick={()=>onCancel()}
+              onClick={() => onCancel()}
               type="button"
               className="text-white ml-2 mt-3 h-[32px] flex flex-row items-center bg-red-700 hover:bg-red-600 outline-none focus:ring-4 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
               Cancel
