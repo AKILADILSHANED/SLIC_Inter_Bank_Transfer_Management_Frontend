@@ -1,3 +1,4 @@
+"use client"
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import Spinner from "@/app/Spinner/page";
