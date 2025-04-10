@@ -1,4 +1,5 @@
-"use client";
+"use client"; // ← Add this at the top
+import { Suspense } from "react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
