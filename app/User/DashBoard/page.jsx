@@ -388,7 +388,7 @@ export default function DashBoard() {
           </div>
         </div>
         <div className="ml-[0.5%] mt-[0.5%] w-[82%] h-[98%] shadow-md">
-          {url && <iframe className="w-[100%] h-[100%]" src={url}></iframe>}
+          {url && <iframe className="w-[100%] h-[100%]" src={url}></iframe>}        
         </div>
       </div>
     </div>
