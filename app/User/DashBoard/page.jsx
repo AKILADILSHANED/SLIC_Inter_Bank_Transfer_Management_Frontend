@@ -163,8 +163,8 @@ export default function DashBoard() {
         </div>
       </div>
 
-      <div className="flex flex-row w-screen h-screen items-center justify-center">
-        <div className="ml-[0.2%] mt-[0.5%] w-[20%] h-[98%] bg-slate-900 shadow-lg flex flex-col items-center">
+      <div className="flex flex-row w-screen h-screen justify-start">
+        <div className="ml-[0.2%] mt-[0.5%] w-[18%] h-[98%] bg-slate-900 shadow-lg flex flex-col items-center">
           <div className="text-white bg-slate-700 h-[6%] w-[95%] mt-2 rounded-md hover:bg-slate-600 flex flex-row items-center">
             <label className="ml-4 text-lg">Menu</label>
           </div>
@@ -387,11 +387,10 @@ export default function DashBoard() {
             <label className="ml-2">Settings</label>
           </div>
         </div>
-         <div className="ml-[0.2%] mt-[0.5%] w-[80%] h-[98%] shadow-md">
-          {url && <iframe className="w-[1075px] h-[575px]" src={url}></iframe>}
+        <div className="ml-[0.5%] mt-[0.5%] w-[82%] h-[98%] shadow-md">
+          {url && <iframe className="w-[100%] h-[100%]" src={url}></iframe>}        
         </div>
       </div>
-
     </div>
   );
 }
