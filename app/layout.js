@@ -27,3 +27,10 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+export const metadata = {
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+  }
+}
