@@ -1,4 +1,4 @@
-"use client";
+"use client"; // ← Add this at the top
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -387,10 +387,16 @@ export default function DashBoard() {
             <label className="ml-2">Settings</label>
           </div>
         </div>
-        <div className="ml-[0.2%] mt-[0.5%] w-[80%] h-[98%] shadow-md">
-          {url && <iframe className="w-[1075px] h-[575px]" src={url}></iframe>}
-        </div>
+         <div className="ml-[280px] mt-[-574px] shadow-md w-[calc(100vw-280px)] h-[calc(100vh-45px)]">
+  {url && (
+    <iframe 
+      className="w-full h-full border-none" 
+      src={url}
+    />
+  )}
+</div>
       </div>
+
     </div>
   );
 }
