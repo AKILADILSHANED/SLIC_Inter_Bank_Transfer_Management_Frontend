@@ -5,6 +5,10 @@ import React, { useState } from "react";
 import Spinner from "@/app/Spinner/page";
 
 export default function UpdateAccount({ onCancel }) {
+
+  //Define base url;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   //Define state variables;
   const [textAccountID, setTextAccountID] = useState("");
   const [accountDetailsWindow, setAccountDetailsWindow] = useState(false);
@@ -36,7 +40,7 @@ export default function UpdateAccount({ onCancel }) {
     } else {
       try {
         const request = await fetch(
-          `http://localhost:8080/api/v1/bank-account/account-searchForUpdate?accountId=${encodeURIComponent(
+          `${baseUrl}/api/v1/bank-account/account-searchForUpdate?accountId=${encodeURIComponent(
             textAccountID
           )}`,
           {
@@ -86,7 +90,7 @@ export default function UpdateAccount({ onCancel }) {
     try {
       setSpinnerUpdate(true);
       const request = await fetch(
-        "http://localhost:8080/api/v1/bank-account/account-update",
+        `${baseUrl}/api/v1/bank-account/account-update`,
         {
           method: "PUT",
           credentials: "include",

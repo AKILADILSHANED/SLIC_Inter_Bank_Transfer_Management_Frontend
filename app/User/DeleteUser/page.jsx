@@ -6,6 +6,10 @@ import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 
 export default function UserDelete({ onCancel }) {
+
+  //Define base url;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const [userId, setUserId] = useState("");
   const [errorMessageStatus, setErrorMessageStatus] = useState(false);
   const [successMessageStatus, setSuccessMessageStatus] = useState(false);
@@ -43,7 +47,7 @@ export default function UserDelete({ onCancel }) {
     } else {
       try {
         const request = await fetch(
-          `http://localhost:8080/api/v1/user/user-search?userId=${encodeURIComponent(
+          `${baseUrl}/api/v1/user/user-search?userId=${encodeURIComponent(
             userId
           )}`,
           {
@@ -96,7 +100,7 @@ export default function UserDelete({ onCancel }) {
     try {
       setDeleteLoader(true);
       const request = await fetch(
-        `http://localhost:8080/api/v1/user/user-delete?userId=${encodeURIComponent(
+        `${baseUrl}/api/v1/user/user-delete?userId=${encodeURIComponent(
           userId
         )}`,
         {

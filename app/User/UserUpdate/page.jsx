@@ -6,6 +6,11 @@ import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 
 export default function UpdateUser({ onCancel }) {
+  
+  //Define base url;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  //Define state variables;
   const [userId, setUserId] = useState("");
   const [errorMessageStatus, setErrorMessageStatus] = useState(false);
   const [successMessageStatus, setSuccessMessageStatus] = useState(false);
@@ -43,7 +48,7 @@ export default function UpdateUser({ onCancel }) {
     } else {
       try {
         const request = await fetch(
-          `http://localhost:8080/api/v1/user/user-search?userId=${encodeURIComponent(
+          `${baseUrl}/api/v1/user/user-search?userId=${encodeURIComponent(
             userId
           )}`,
           {
@@ -96,7 +101,7 @@ export default function UpdateUser({ onCancel }) {
     try {
       setUpdateLoader(true);
       const request = await fetch(
-        "http://localhost:8080/api/v1/user/user-update",
+        `${baseUrl}/api/v1/user/user-update`,
         {
           method: "PUT",
           credentials: "include",

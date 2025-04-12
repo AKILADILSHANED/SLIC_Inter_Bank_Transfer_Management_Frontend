@@ -5,6 +5,10 @@ import Spinner from "@/app/Spinner/page";
 import React, { useState } from "react";
 
 export default function RegisterAccount({ onCancel }) {
+
+  //Define base url;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const [spinner, setSpinner] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -36,7 +40,7 @@ export default function RegisterAccount({ onCancel }) {
     } else {
       try {
         const request = await fetch(
-          "http://localhost:8080/api/v1/bank-account/account-register",
+            `${baseUrl}/api/v1/bank-account/account-register`,
           {
             method: "POST",
             credentials: "include",

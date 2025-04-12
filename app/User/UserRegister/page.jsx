@@ -5,6 +5,10 @@ import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import Spinner from "@/app/Spinner/page";
 
 export default function UserRegister({ onCancel }) {
+
+  //Define base url;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   //Define State Variables
   const [userStatus, setUserStatus] = useState("");
   const [userLevel, setUserLevel] = useState("");
@@ -43,7 +47,7 @@ export default function UserRegister({ onCancel }) {
       } else {
         try {
           const request = await fetch(
-            "http://localhost:8080/api/v1/user/user-register",
+            `${baseUrl}/api/v1/user/user-register`,
             {
               method: "POST",
               credentials: "include",

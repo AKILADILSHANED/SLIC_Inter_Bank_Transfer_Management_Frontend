@@ -11,6 +11,9 @@ export default function DisplayBalance() {
   const [accountBalanceTable, setAccountBalanceTable] = useState(false);
   const [balancesObject, setBalancesObject] = useState([{}]);
 
+  //Base URL;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   //Define getBalance function;
   const getBalances = async () => {
     setErrorMessage("");
@@ -22,7 +25,7 @@ export default function DisplayBalance() {
       try {
         setSpinner(true);
         const request = await fetch(
-          `http://localhost:8080/api/v1/account-balance/get-balances?balanceDate=${encodeURIComponent(
+          `${baseUrl}/api/v1/account-balance/get-balances?balanceDate=${encodeURIComponent(
             selectedDate
           )}`,
           {
