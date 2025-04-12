@@ -4,6 +4,10 @@ import { useRouter } from "next/navigation";
 import Spinner from "@/app/Spinner/page";
 
 export default function UserLogin() {
+
+  //Define base url;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const [errorMessage, setErrorMessage] = useState("");
   const emailRef = useRef("");
   const passwordRef = useRef("");
@@ -20,7 +24,7 @@ export default function UserLogin() {
     setLoadingStatus(true);
     try {
       const request = await fetch(
-        `http://localhost:8080/api/v1/user/user-login?userEmail=${encodeURIComponent(
+        `${baseUrl}/api/v1/user/user-login?userEmail=${encodeURIComponent(
           email
         )}&userPassword=${encodeURIComponent(password)}`,
         {

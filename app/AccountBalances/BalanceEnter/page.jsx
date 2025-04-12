@@ -5,6 +5,10 @@ import React, { useState } from "react";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 
 export default function EnterBalance() {
+
+  //Define base url;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   //Define state variables;
   const [displayTable, setDisplayTable] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
@@ -48,7 +52,7 @@ export default function EnterBalance() {
       setSuccessMessage(false);
 
       const request = await fetch(
-        "http://localhost:8080/api/v1/account-balance/get-accounts",
+        `${baseUrl}/api/v1/account-balance/get-accounts`,
         {
           method: "GET",
           credentials: "include"
@@ -85,7 +89,7 @@ export default function EnterBalance() {
     } else {
       try {
         const request = await fetch(
-          `http://localhost:8080/api/v1/account-balance/save-balance?accountId=${encodeURIComponent(
+          `${baseUrl}/api/v1/account-balance/save-balance?accountId=${encodeURIComponent(
             accountId
           )}&balanceAmount=${encodeURIComponent(balance)}`,
           {

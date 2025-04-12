@@ -5,6 +5,10 @@ import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 
 export default function UpdateBalance({ onCancel }) {
+
+  //Define base url;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   //Define State variables;
   const [textBalanceId, setTextBalanceId] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -35,7 +39,7 @@ export default function UpdateBalance({ onCancel }) {
       try {
         setSpinner(true);
         const request = await fetch(
-          `http://localhost:8080/api/v1/account-balance/balance-update?balanceId=${encodeURIComponent(
+          `${baseUrl}/api/v1/account-balance/balance-update?balanceId=${encodeURIComponent(
             textBalanceId
           )}`,
           {
@@ -82,7 +86,7 @@ export default function UpdateBalance({ onCancel }) {
       try {
         setSaveSpinner(true);
         const request = await fetch(
-          "http://localhost:8080/api/v1/account-balance/save-balance-update",
+          `${baseUrl}/api/v1/account-balance/save-balance-update`,
           {
             method: "POST",
             credentials: "include",

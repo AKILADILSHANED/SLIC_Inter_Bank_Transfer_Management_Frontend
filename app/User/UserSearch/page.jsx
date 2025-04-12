@@ -5,6 +5,11 @@ import Spinner from "@/app/Spinner/page";
 import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 
 export default function SearchUser({ onCancel }) {
+
+  //Define base url;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  //Define state variables;
   const [userId, setUserId] = useState("");
   const [messageStatus, setMessageStatus] = useState(false);
   const [message, setMessage] = useState("");
@@ -22,7 +27,6 @@ export default function SearchUser({ onCancel }) {
   const [userDetailsWindow, setUserDetailsWindow] = useState(false);
 
   //Define search function.
-
   const handleCancel = () => {
     onCancel();
   };
@@ -39,7 +43,7 @@ export default function SearchUser({ onCancel }) {
       setMessageStatus(false);
       try {
         const request = await fetch(
-          `http://localhost:8080/api/v1/user/user-search?userId=${encodeURIComponent(
+          `${baseUrl}/api/v1/user/user-search?userId=${encodeURIComponent(
             userId
           )}`,
           {

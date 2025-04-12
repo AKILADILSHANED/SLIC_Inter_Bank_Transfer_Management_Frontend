@@ -4,6 +4,10 @@ import Spinner from "@/app/Spinner/page";
 import React, { useState } from "react";
 
 export default function SearchAccount() {
+
+  //Define base url;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   //Define state variables;
   const [errorMessage, setErrorMessage] = useState(false);
   const [accountId, setAccountId] = useState("");
@@ -22,7 +26,7 @@ export default function SearchAccount() {
       try {
         setLoader(true);
         const request = await fetch(
-          `http://localhost:8080/api/v1/bank-account/account-search?accountId=${encodeURIComponent(
+          `${baseUrl}/api/v1/bank-account/account-search?accountId=${encodeURIComponent(
             accountId
           )}`,
           {

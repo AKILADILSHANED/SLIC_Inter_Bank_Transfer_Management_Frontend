@@ -6,6 +6,10 @@ import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 
 export default function DeleteAccount({ onCancel }) {
+
+  //Define base url;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   //Define state variables;
   const [textAccountID, setTextAccountID] = useState("");
   const [accountDetailsWindow, setAccountDetailsWindow] = useState(false);
@@ -28,7 +32,7 @@ export default function DeleteAccount({ onCancel }) {
     } else {
       try {
         const request = await fetch(
-          `http://localhost:8080/api/v1/bank-account/account-searchForUpdate?accountId=${encodeURIComponent(
+          `${baseUrl}/api/v1/bank-account/account-searchForUpdate?accountId=${encodeURIComponent(
             textAccountID
           )}`,
           {
@@ -69,7 +73,7 @@ export default function DeleteAccount({ onCancel }) {
     try {
       setSpinnerDelete(true);
       const request = await fetch(
-        `http://localhost:8080/api/v1/bank-account/account-delete?accountId=${encodeURIComponent(accountData.accountId)}`,
+        `${baseUrl}/api/v1/bank-account/account-delete?accountId=${encodeURIComponent(accountData.accountId)}`,
         {
           method: "PUT",
           credentials: "include",          
