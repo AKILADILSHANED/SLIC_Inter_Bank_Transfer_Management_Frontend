@@ -5,7 +5,6 @@ import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 
 export default function UpdateBalance({ onCancel }) {
-
   //Define base url;
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -106,7 +105,6 @@ export default function UpdateBalance({ onCancel }) {
             setErrorMessage(response.message);
           } else {
             setSucceessMessage(response.message);
-            setAdjustmentAmount("");
           }
         } else {
           setErrorMessage(
@@ -119,6 +117,8 @@ export default function UpdateBalance({ onCancel }) {
         );
       } finally {
         setSaveSpinner(false);
+        setActionState("");
+        setAdjustmentAmount("");
       }
     }
   };
@@ -178,148 +178,154 @@ export default function UpdateBalance({ onCancel }) {
             </label>
           </div>
           <div>
-            <div className="relative flex flex-col w-full h-full overflow-scroll text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
-              <table className="w-full text-left table-auto min-w-max">
-                <thead>
-                  <tr>
-                    <th className="p-4 border-b border-slate-300 bg-slate-50">
-                      <p className="block text-sm font-normal leading-none text-slate-500">
-                        Balance ID
-                      </p>
-                    </th>
-                    <th className="p-4 border-b border-slate-300 bg-slate-50">
-                      <p className="block text-sm font-normal leading-none text-slate-500">
-                        Bank
-                      </p>
-                    </th>
-                    <th className="p-4 border-b border-slate-300 bg-slate-50">
-                      <p className="block text-sm font-normal leading-none text-slate-500">
-                        Account Number
-                      </p>
-                    </th>
-                    <th className="p-4 border-b border-slate-300 bg-slate-50">
-                      <p className="block text-sm font-normal leading-none text-slate-500">
-                        Balance
-                      </p>
-                    </th>
-                    <th className="p-4 border-b border-slate-300 bg-slate-50">
-                      <p className="block text-sm font-normal leading-none text-slate-500">
-                        Outstanding Balance
-                      </p>
-                    </th>
-                    <th className="p-4 border-b border-slate-300 bg-slate-50">
-                      <p className="block text-sm font-normal leading-none text-slate-500">
-                        Action
-                      </p>
-                    </th>
-                    <th className="p-4 border-b border-slate-300 bg-slate-50 text-left">
-                      <p className="block text-sm font-normal leading-none text-slate-500">
-                        Adjustment Amount
-                      </p>
-                    </th>
-                    <th className="p-4 border-b border-slate-300 bg-slate-50 text-left">
-                      <p className="block text-sm font-normal leading-none text-slate-500">
-                        Save
-                      </p>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="hover:bg-slate-50">
-                    <td className="p-4 border-b border-slate-200">
-                      <p className="block text-sm text-slate-800">
-                        {balanceData.balanceId}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-slate-200">
-                      <p className="block text-sm text-slate-800">
-                        {balanceData.bank}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-slate-200">
-                      <p className="block text-sm text-slate-800">
-                        {balanceData.accountNumber}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-slate-200">
-                      <p className="block text-sm text-slate-800">
-                        {typeof balanceData.balanceAmount === "number"
-                          ? balanceData.balanceAmount.toLocaleString(
-                              undefined,
-                              {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              }
-                            )
-                          : balanceData.balanceAmount}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-slate-200">
-                      <p className="block text-sm text-slate-800">
-                        {typeof balanceData.balanceAmount === "number"
-                          ? balanceData.balanceAmount.toLocaleString(
-                              undefined,
-                              {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              }
-                            )
-                          : balanceData.outstandingBalance}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-slate-200">
-                      <label className="sr-only">Underline select</label>
-                      <select
-                        id="underline_select"
-                        onChange={(e) => setActionState(e.target.value)}
-                        className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                        <option value="">- Select Adjustment Type -</option>
-                        <option value="+">Add Balance (+)</option>
-                        <option value="-">Deduct Balance (-)</option>
-                      </select>
-                    </td>
-                    <td className="p-4 border-b border-slate-200 text-right">
-                      <div>
-                        <input
-                          type="text"
-                          onChange={(e) => setAdjustmentAmount(e.target.value)}
-                          placeholder="Enter Adjustment Amount"
-                          id="small-input"
-                          className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg outline-none bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
-                      </div>
-                    </td>
-                    <td className="p-4 border-b border-slate-200 text-left">
-                      <button
-                        onClick={() => handleSave()}
-                        type="button"
-                        className="flex flex-row items-center h-[30px] justify-center px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-md hover:bg-blue-800 outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        {saveSpinner && <Spinner size={20} />}
-                        <svg
-                          className="w-6 h-6 mr-1 text-white dark:text-white"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          fill="currentColor"
-                          viewBox="0 0 28 28">
-                          <path
-                            fillRule="evenodd"
-                            d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm3 11a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6H8v-6Zm1-7V5h6v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z"
-                            clipRule="evenodd"
-                          />
-                          <path
-                            fillRule="evenodd"
-                            d="M14 17h-4v-2h4v2Z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        Save
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <form>
+              <div className="relative flex flex-col w-full h-full overflow-scroll text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
+                <table className="w-full text-left table-auto min-w-max">
+                  <thead>
+                    <tr>
+                      <th className="p-4 border-b border-slate-300 bg-slate-50">
+                        <p className="block text-sm font-normal leading-none text-slate-500">
+                          Balance ID
+                        </p>
+                      </th>
+                      <th className="p-4 border-b border-slate-300 bg-slate-50">
+                        <p className="block text-sm font-normal leading-none text-slate-500">
+                          Bank
+                        </p>
+                      </th>
+                      <th className="p-4 border-b border-slate-300 bg-slate-50">
+                        <p className="block text-sm font-normal leading-none text-slate-500">
+                          Account Number
+                        </p>
+                      </th>
+                      <th className="p-4 border-b border-slate-300 bg-slate-50">
+                        <p className="block text-sm font-normal leading-none text-slate-500">
+                          Balance
+                        </p>
+                      </th>
+                      <th className="p-4 border-b border-slate-300 bg-slate-50">
+                        <p className="block text-sm font-normal leading-none text-slate-500">
+                          Outstanding Balance
+                        </p>
+                      </th>
+                      <th className="p-4 border-b border-slate-300 bg-slate-50">
+                        <p className="block text-sm font-normal leading-none text-slate-500">
+                          Action
+                        </p>
+                      </th>
+                      <th className="p-4 border-b border-slate-300 bg-slate-50 text-left">
+                        <p className="block text-sm font-normal leading-none text-slate-500">
+                          Adjustment Amount
+                        </p>
+                      </th>
+                      <th className="p-4 border-b border-slate-300 bg-slate-50 text-left">
+                        <p className="block text-sm font-normal leading-none text-slate-500">
+                          Save
+                        </p>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="hover:bg-slate-50">
+                      <td className="p-4 border-b border-slate-200">
+                        <p className="block text-sm text-slate-800">
+                          {balanceData.balanceId}
+                        </p>
+                      </td>
+                      <td className="p-4 border-b border-slate-200">
+                        <p className="block text-sm text-slate-800">
+                          {balanceData.bank}
+                        </p>
+                      </td>
+                      <td className="p-4 border-b border-slate-200">
+                        <p className="block text-sm text-slate-800">
+                          {balanceData.accountNumber}
+                        </p>
+                      </td>
+                      <td className="p-4 border-b border-slate-200">
+                        <p className="block text-sm text-slate-800">
+                          {typeof balanceData.balanceAmount === "number"
+                            ? balanceData.balanceAmount.toLocaleString(
+                                undefined,
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                }
+                              )
+                            : balanceData.balanceAmount}
+                        </p>
+                      </td>
+                      <td className="p-4 border-b border-slate-200">
+                        <p className="block text-sm text-slate-800">
+                          {typeof balanceData.outstandingBalance === "number"
+                            ? balanceData.outstandingBalance.toLocaleString(
+                                undefined,
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                }
+                              )
+                            : balanceData.outstandingBalance}
+                        </p>
+                      </td>
+                      <td className="p-4 border-b border-slate-200">
+                        <label className="sr-only">Underline select</label>
+                        <select
+                          id="underline_select"
+                          onChange={(e) => setActionState(e.target.value)}
+                          value={actionState}
+                          className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                          <option value="">- Select Adjustment Type -</option>
+                          <option value="+">Add Balance (+)</option>
+                          <option value="-">Deduct Balance (-)</option>
+                        </select>
+                      </td>
+                      <td className="p-4 border-b border-slate-200 text-right">
+                        <div>
+                          <input
+                            type="text"
+                            onChange={(e) =>
+                              setAdjustmentAmount(e.target.value)
+                            }
+                            value={adjustmentAmount}
+                            placeholder="Enter Adjustment Amount"
+                            id="small-input"
+                            className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg outline-none bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
+                        </div>
+                      </td>
+                      <td className="p-4 border-b border-slate-200 text-left">
+                        <button
+                          onClick={() => handleSave()}
+                          type="button"
+                          className="flex flex-row items-center h-[30px] justify-center px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-md hover:bg-blue-800 outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                          {saveSpinner && <Spinner size={20} />}
+                          <svg
+                            className="w-6 h-6 mr-1 text-white dark:text-white"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="currentColor"
+                            viewBox="0 0 28 28">
+                            <path
+                              fillRule="evenodd"
+                              d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm3 11a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6H8v-6Zm1-7V5h6v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z"
+                              clipRule="evenodd"
+                            />
+                            <path
+                              fillRule="evenodd"
+                              d="M14 17h-4v-2h4v2Z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          Save
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </form>
           </div>
           <div>
             <button
