@@ -4,6 +4,7 @@ import { useState } from "react";
 import EnterBalance from "./BalanceEnter/page";
 import DisplayBalance from "./BalanceDisplay/page";
 import UpdateBalance from "./BalanceUpdate/page";
+import DeleteBalance from "./BalanceDelete/page";
 
 export default function page() {
   //Define states;
@@ -174,11 +175,11 @@ export default function page() {
         </div>
       )}
 
-      {/*accountDelete && (
+      {deleteBalance && (
         <div>
-          <DeleteAccount onCancel={() => handleCancel(setAccountDelete)} />
+          <DeleteBalance onCancel={() => handleCancel(setDeleteBalance)} />
         </div>
-      )*/}
+      )}
     </div>
   );
 }

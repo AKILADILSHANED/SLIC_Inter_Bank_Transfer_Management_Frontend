@@ -179,8 +179,8 @@ export default function DisplayBalance() {
                     </td>
                     <td className="p-4 border-b border-slate-200 text-right">
                       <p className="block text-sm text-slate-800">
-                        {typeof element.balanceAmount === "number"
-                          ? element.balanceAmount.toLocaleString(undefined, {
+                        {typeof element.outstandingBalance === "number"
+                          ? element.outstandingBalance.toLocaleString(undefined, {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             })
