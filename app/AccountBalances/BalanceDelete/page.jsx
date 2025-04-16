@@ -146,7 +146,7 @@ export default function DeleteBalance({ onCancel }) {
         <div className="mt-4 shadow-md h-[220px]">
           <div className="bg-slate-600 h-[30px] flex flex-row items-center">
             <label className="text-white text-lg ml-2 font-serif">
-              Balance Details for provided Balance ID
+              Please check balance details before confirm the deletion
             </label>
           </div>
           <div>

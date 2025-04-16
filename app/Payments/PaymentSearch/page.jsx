@@ -9,7 +9,7 @@ export default function PaymentSearch({ onCancel }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   //Define state variables;
-  const [textPaymentType, setTextPaymentType] = useState("");
+  const [textPaymentId, setTextPaymentId] = useState("");
   const [spinnerSearch, setSpinnerSearch] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const [paymentDetailsWindow, setPaymentDetailsWindow] = useState(false);
@@ -19,13 +19,13 @@ export default function PaymentSearch({ onCancel }) {
   const handleSearch = async () => {
     setErrorMessage("");
     setPaymentDetailsWindow(false);
-    if(textPaymentType == ""){
+    if(textPaymentId == ""){
         setErrorMessage("Please provide a Payment ID!");
     }else{
         try{
             setSpinnerSearch(true);
             const request = await fetch(
-                `${baseUrl}/api/v1/payment/payment-search?paymentId=${encodeURIComponent(textPaymentType)}`,
+                `${baseUrl}/api/v1/payment/payment-search?paymentId=${encodeURIComponent(textPaymentId)}`,
                 {
                     method:"GET",
                     credentials:"include"
@@ -66,8 +66,8 @@ export default function PaymentSearch({ onCancel }) {
             Payment ID:
           </label>
           <input
-            onChange={(e) => setTextPaymentType(e.target.value)}
-            value={textPaymentType.toUpperCase()}
+            onChange={(e) => setTextPaymentId(e.target.value)}
+            value={textPaymentId.toUpperCase()}
             id="small"
             placeholder="Enter Payment ID"
             required

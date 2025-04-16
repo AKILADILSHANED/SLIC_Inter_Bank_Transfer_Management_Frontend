@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import PaymentRegister from "./RegisterPayment/page";
 import PaymentSearch from "./PaymentSearch/page";
+import UpdatePayment from "./PaymentUpdate/page";
 
 export default function AccountManagement() {
   //Define states;
