@@ -1,4 +1,7 @@
+"use client"
 import React, { useState } from "react";
+import Spinner from "@/app/Spinner/page";
+import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 
 export default function PaymentSearch({ onCancel }) {
 
@@ -29,7 +32,7 @@ export default function PaymentSearch({ onCancel }) {
                 }
             );
             if(request.ok){
-                const response = request.json();
+                const response = await request.json();
                 if(response.success == false){
                     setErrorMessage(response.message);
                 }else{
