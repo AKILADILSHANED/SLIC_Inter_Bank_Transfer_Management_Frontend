@@ -1,10 +1,10 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import Spinner from "@/app/Spinner/page";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 
-export default function UpdatePayment({ onCancel }) {
+export default function DeletePayment({ onCancel }) {
   //Define Base URL;
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -12,7 +12,7 @@ export default function UpdatePayment({ onCancel }) {
   const [textPaymentId, setTextPaymentId] = useState("");
   const [textPaymentType, setTextPaymentType] = useState("");
   const [spinnerSearch, setSpinnerSearch] = useState(false);
-  const [spinnerUpdate, setSpinnerUpdate] = useState(false);
+  const [spinnerDelete, setSpinnerDelete] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false);
   const [paymentDetailsWindow, setPaymentDetailsWindow] = useState(false);
@@ -61,41 +61,44 @@ export default function UpdatePayment({ onCancel }) {
     }
   };
 
-  //Define handleUpdate function;
-  const handleUpdate = async (e)=>{
-    e.preventDefault();
-    try{
-        setSpinnerUpdate(true);        
-        const request = await fetch(            
-            `${baseUrl}/api/v1/payment/payment-update?paymentType=${encodeURIComponent(textPaymentType)}&paymentId=${encodeURIComponent(paymentData.paymentId)}`,
-            {
-                method:"PUT",
-                credentials:"include"
-            }
-        );
-        if(request.ok){
-            const response = await request.json();
-            if(response.success == false){
-                setErrorMessage(response.message);
-            }else{
-                setSuccessMessage(response.message);
-            }
-        }else{
-            setErrorMessage("No response from server. Please contact administrator!");
+  //Define handleDelete function;
+  const handleDelete = async () => {
+    try {
+      setSpinnerDelete(true);
+      const request = await fetch(
+        `${baseUrl}/api/v1/payment/payment-delete?paymentId=${encodeURIComponent(paymentData.paymentId)}`,
+        {
+          method: "PUT",
+          credentials: "include",
         }
-    }catch(error){
-        setErrorMessage("Un-expected error occurred. Please contact administrator!");
-    }finally{
-        setSpinnerUpdate(false);
+      );
+      if (request.ok) {
+        const response = await request.json();
+        if (response.success == false) {
+          setErrorMessage(response.message);
+        } else {
+          setSuccessMessage(response.message);
+        }
+      } else {
+        setErrorMessage(
+          "No response from server. Please contact administrator!"
+        );
+      }
+    } catch (error) {
+      setErrorMessage(
+        "Un-expected error occurred. Please contact administrator!"
+      );
+    } finally {
+      setSpinnerDelete(false);
     }
-  }
+  };
 
   return (
     <div>
       <div className="flex flex-col mt-4">
         <div className="bg-red-800 h-[30px] flex flex-row items-center">
           <label className="text-white ml-3 text-lg font-serif">
-            Update Payment Details
+            Delete Payment Details
           </label>
         </div>
 
@@ -134,11 +137,10 @@ export default function UpdatePayment({ onCancel }) {
       )}
 
       {paymentDetailsWindow && (
-        <form onSubmit={(e)=>handleUpdate(e)}>
         <div className="mt-5 shadow-md h-[250px] w-full">
           <div className="bg-slate-600 h-[30px] flex flex-row items-center">
             <label className="text-white text-lg font-serif ml-2">
-              Payment details for provided Payment ID
+              Please check Payment details before confirm deletion
             </label>
           </div>
 
@@ -158,8 +160,7 @@ export default function UpdatePayment({ onCancel }) {
             <div>
               <label className="ml-2 text-sm">Payment Type:</label>
               <input
-                required
-                onChange={(e) => setTextPaymentType(e.target.value)}
+                readOnly
                 value={textPaymentType}
                 type="text"
                 className="outline-none text-sm block w-[350px] ml-2 p-1 px-2 text-md text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -191,10 +192,11 @@ export default function UpdatePayment({ onCancel }) {
 
           <div className="flex flex-row items-center mt-4">
             <button
+              onClick={() => handleDelete()}
               type="Submit"
               className="border flex flex-row ml-2 h-[30px] items-center justify-center w-[90px] text-white bg-blue-700 hover:bg-blue-600 rounded-md border-none">
-              {spinnerUpdate && <Spinner size={20}></Spinner>}
-              <label className="ml-1">Update</label>
+              {spinnerDelete && <Spinner size={20}></Spinner>}
+              <label className="ml-1">Delete</label>
             </button>
             <button
               onClick={() => onCancel()}
@@ -204,7 +206,6 @@ export default function UpdatePayment({ onCancel }) {
             </button>
           </div>
         </div>
-        </form>
       )}
     </div>
   );
