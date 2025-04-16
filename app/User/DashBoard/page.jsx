@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -16,11 +16,13 @@ export default function DashBoard() {
   const [loaderUserManagement, setLoaderUserManagement] = useState(false);
   const [loaderAccountManagement, setLoaderAccountManagement] = useState(false);
   const [loaderAccountBalances, setLoaderAccountBalances] = useState(false);
+  const [loaderPayments, setLoaderPayments] = useState(false);
 
   // Create useStates for side panel functions.
   const [userManage, setUserManage] = useState(false);
   const [bankAccount, setBankAccount] = useState(false);
   const [accountBalances, setAccountBalances] = useState(false);
+  const [payments, setPayments] = useState(false);
   const [fundRequest, setFundRequest] = useState(false);
   const [transfers, setTransfers] = useState(false);
   const [repoManage, setRepoManage] = useState(false);
@@ -33,6 +35,7 @@ export default function DashBoard() {
     setUserManage,
     setBankAccount,
     setAccountBalances,
+    setPayments,
     setFundRequest,
     setTransfers,
     setRepoManage,
@@ -267,6 +270,40 @@ export default function DashBoard() {
             )}
           </div>
 
+          <div 
+          onClick={() =>
+            handleClickSidePanelFunction(
+              setPayments,
+              "/Payments",
+              setLoaderPayments
+            )
+          }
+          className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
+            <svg
+              className="w-6 h-6 text-white dark:text-white ml-2"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24">
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 14h2m3 0h4m2 2h2m0 0h2m-2 0v2m0-2v-2m-5 4H4c-.55228 0-1-.4477-1-1V7c0-.55228.44772-1 1-1h16c.5523 0 1 .44772 1 1v4M3 10h18"
+              />
+            </svg>
+
+            <label className="ml-2">Payments</label>
+            {loaderPayments && (
+              <div className="ml-2">
+                <Spinner size={24}></Spinner>
+              </div>
+            )}
+          </div>
+
           <div className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
             <svg
               className="w-6 h-6 text-white dark:text-white ml-2"
@@ -388,7 +425,7 @@ export default function DashBoard() {
           </div>
         </div>
         <div className="ml-[0.5%] mt-[0.5%] w-[82%] h-[98%] shadow-md">
-          {url && <iframe className="w-[100%] h-[100%]" src={url}></iframe>}        
+          {url && <iframe className="w-[100%] h-[100%]" src={url}></iframe>}
         </div>
       </div>
     </div>
