@@ -1,71 +1,58 @@
 import React, { useState } from "react";
-import Spinner from "@/app/Spinner/page";
-import SUccessMessage from "@/app/Messages/SuccessMessage/page";
-import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 
-export default function PaymentRegister({ onCancel }) {
-  //Define base url;
+export default function PaymentSearch({ onCancel }) {
+
+  //Define Base URL;
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   //Define state variables;
   const [textPaymentType, setTextPaymentType] = useState("");
   const [spinnerSearch, setSpinnerSearch] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [paymentDetailsWindow, setPaymentDetailsWindow] = useState(false);
   const [paymentData, setPaymentData] = useState({});
-  const [paymentRegisterDataWindow, setPaymentRegisterDataWindow] =
-    useState(false);
 
-  //Define handleRegister function;
-  const handleRegister = async () => {
-    setSuccessMessage("");
+  //Define handleSearch function;
+  const handleSearch = async () => {
     setErrorMessage("");
-    setPaymentRegisterDataWindow(false);
-    if (textPaymentType == "") {
-      setErrorMessage("Please provide a Payment Name!");
-    } else {
-      try {
-        setSpinnerSearch(true);
-        const request = await fetch(
-          `${baseUrl}/api/v1/payment/registerPayment?paymentType=${encodeURIComponent(
-            textPaymentType
-          )}`,
-          {
-            method: "POST",
-            credentials: "include",
-          }
-        );
-        if (request.ok) {
-          const response = await request.json();
-          if (response.success == false) {
-            setErrorMessage(response.message);
-          } else {
-            setPaymentData(response.responseObject);
-            setPaymentRegisterDataWindow(true);
-            setSuccessMessage(response.message);
-          }
-        } else {
-          setErrorMessage(
-            "No response from server. Please contact administrator!"
-          );
+    setPaymentDetailsWindow(false);
+    if(textPaymentType == ""){
+        setErrorMessage("Please provide a Payment ID!");
+    }else{
+        try{
+            setSpinnerSearch(true);
+            const request = await fetch(
+                `${baseUrl}/api/v1/payment/payment-search?paymentId=${encodeURIComponent(textPaymentType)}`,
+                {
+                    method:"GET",
+                    credentials:"include"
+                }
+            );
+            if(request.ok){
+                const response = request.json();
+                if(response.success == false){
+                    setErrorMessage(response.message);
+                }else{
+                    setPaymentData(response.responseObject);
+                    setPaymentDetailsWindow(true);
+                }
+            }else{
+                setErrorMessage("No response from server. Please contact administrator!");
+            }
+        }catch(error){
+            setErrorMessage("Un-expected eror occurred. Please contact administrator!");
+        }finally{
+            setSpinnerSearch(false);
         }
-      } catch (error) {
-        setErrorMessage(
-          "Un-expected error occurred. Please contact administrator!"
-        );
-      } finally {
-        setSpinnerSearch(false);
-        setTextPaymentType("");
-      }
     }
   };
 
   return (
     <div>
-      <div className="flex flex-col">
+      <div className="flex flex-col mt-4">
         <div className="bg-red-800 h-[30px] flex flex-row items-center">
           <label className="text-white ml-3 text-lg font-serif">
-            Provide Payment Details
+            Search Payment Details
           </label>
         </div>
 
@@ -73,41 +60,36 @@ export default function PaymentRegister({ onCancel }) {
           <label
             htmlFor="small"
             className="block mb-2 text-md font-medium text-gray-900 dark:text-white ml-3">
-            Payment Type:
+            Payment ID:
           </label>
           <input
             onChange={(e) => setTextPaymentType(e.target.value)}
-            value={textPaymentType}
+            value={textPaymentType.toUpperCase()}
             id="small"
-            placeholder="Enter Payment Name"
+            placeholder="Enter Payment ID"
             required
             className="outline-none block w-[350px] ml-2 p-1 px-2 text-md text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
           <button
-            onClick={() => handleRegister()}
+            onClick={() => handleSearch()}
             type="button"
             className="border flex flex-row ml-2 h-[32px] items-center justify-center w-[100px] text-white bg-blue-700 hover:bg-blue-600 rounded-md border-none">
             {spinnerSearch && <Spinner size={20}></Spinner>}
-            <label className="ml-1">Register</label>
+            <label className="ml-1">Search</label>
           </button>
         </div>
       </div>
 
-      {successMessage && (
-        <div className="mt-4">
-          <SUccessMessage messageValue={successMessage} />
-        </div>
-      )}
       {errorMessage && (
         <div className="mt-4">
           <ErrorMessage messageValue={errorMessage} />
         </div>
       )}
 
-      {paymentRegisterDataWindow && (
+      {paymentDetailsWindow && (
         <div className="mt-5">
           <div className="bg-slate-600 h-[30px] flex flex-row items-center">
             <label className="text-white text-lg font-serif ml-2">
-              Payment registration details
+              Payment details for provided Payment ID
             </label>
           </div>
 

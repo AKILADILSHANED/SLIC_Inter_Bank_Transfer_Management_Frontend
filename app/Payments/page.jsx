@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import PaymentRegister from "./RegisterPayment/page";
+import PaymentSearch from "./PaymentSearch/page";
 
 export default function AccountManagement() {
   //Define states;
@@ -163,7 +164,7 @@ export default function AccountManagement() {
 
       {paymentSearch && (
         <div>
-          <SearchPayment onCancel={() => handleCancel(setPaymentSearch)} />
+          <PaymentSearch onCancel={() => handleCancel(setPaymentSearch)} />
         </div>
       )}
 
