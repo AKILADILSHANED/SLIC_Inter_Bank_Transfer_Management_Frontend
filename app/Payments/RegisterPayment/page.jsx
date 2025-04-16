@@ -42,7 +42,7 @@ export default function PaymentRegister({ onCancel }) {
           } else {
             setPaymentData(response.responseObject);
             setPaymentRegisterDataWindow(true);
-            setSuccessMessage(response.message);
+            setSuccessMessage(response.message);            
           }
         } else {
           setErrorMessage(
@@ -55,6 +55,7 @@ export default function PaymentRegister({ onCancel }) {
         );
       } finally {
         setSpinnerSearch(false);
+        setTextPaymentType("");
       }
     }
   };
@@ -76,6 +77,7 @@ export default function PaymentRegister({ onCancel }) {
           </label>
           <input
             onChange={(e) => setTextPaymentType(e.target.value)}
+            value={textPaymentType}
             id="small"
             placeholder="Enter Payment Name"
             required
