@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import NewRequest from "./NewRequest/page";
+import SearchRequest from "./RequestDetails/page";
 
 export default function FundRequest() {
   //Define states;
@@ -158,13 +159,13 @@ export default function FundRequest() {
         </div>
       )}
 
-      {/*
+      
     {requestDetails && (
         <div>
-          <SearchAccount onCancel={() => handleCancel(setAccountSearch)} />
+          <SearchRequest onCancel={() => handleCancel(setRequestDetails)} />
         </div>
       )}
-
+{/*
       {requestUpdate && (
         <div>
           <UpdateAccount onCancel={() => handleCancel(setAccountUpdate)} />

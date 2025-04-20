@@ -5,7 +5,7 @@ import Spinner from "@/app/Spinner/page";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 
-export default function NewRequest() {
+export default function NewRequest({ onCancel }) {
   //Define base url;
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -26,7 +26,7 @@ export default function NewRequest() {
   const [requestAmount, setRequestAmount] = useState("");
   const [requestType, setRequestType] = useState("");
   const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0]
+    new Date().toLocaleDateString('en-CA')
   );
 
   //Define loadBankAccounts function;
@@ -121,7 +121,7 @@ export default function NewRequest() {
         );
       }
     } catch (error) {
-        alert(error.message);
+      alert(error.message);
       setErrorMessage(
         "Un-expected error occurred. Please contact administrator!"
       );
@@ -139,7 +139,7 @@ export default function NewRequest() {
           </label>
         </div>
 
-        <form>
+        <form onSubmit={(e) => handleSubmit(e)}>
           <div className="flex flex-col shadow-md h-[290px]">
             <div className="flex flex-row items-center gap-15 mt-6 ml-2">
               <div>
@@ -256,13 +256,21 @@ export default function NewRequest() {
               </div>
             </div>
 
-            <button
-              type="submit"
-              onClick={(e)=>handleSubmit(e)}
-              className="border flex flex-row ml-4 mt-4 h-[30px] items-center justify-center w-[80px] text-white bg-blue-700 hover:bg-blue-600 rounded-md border-none">
-              {requestSaveSpinner && <Spinner size={20} />}
-              <label>Save</label>
-            </button>
+            <div className="flex flex-row items-center">
+              <button
+                type="submit"
+                className="border flex flex-row ml-4 mt-4 h-[30px] items-center justify-center w-[80px] text-white bg-blue-700 hover:bg-blue-600 rounded-md border-none">
+                {requestSaveSpinner && <Spinner size={20} />}
+                <label>Save</label>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onCancel()}
+                className="border flex flex-row ml-2 mt-4 h-[30px] items-center justify-center w-[80px] text-white bg-red-700 hover:bg-red-600 rounded-md border-none">
+                <label>Cancel</label>
+              </button>
+            </div>
           </div>
         </form>
         {successMessage && (
