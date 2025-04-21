@@ -17,6 +17,7 @@ export default function DashBoard() {
   const [loaderAccountManagement, setLoaderAccountManagement] = useState(false);
   const [loaderAccountBalances, setLoaderAccountBalances] = useState(false);
   const [loaderPayments, setLoaderPayments] = useState(false);
+  const [loaderFundRequest, setLoaderFundRequest] = useState(false);
 
   // Create useStates for side panel functions.
   const [userManage, setUserManage] = useState(false);
@@ -270,15 +271,15 @@ export default function DashBoard() {
             )}
           </div>
 
-          <div 
-          onClick={() =>
-            handleClickSidePanelFunction(
-              setPayments,
-              "/Payments",
-              setLoaderPayments
-            )
-          }
-          className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
+          <div
+            onClick={() =>
+              handleClickSidePanelFunction(
+                setPayments,
+                "/Payments",
+                setLoaderPayments
+              )
+            }
+            className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
             <svg
               className="w-6 h-6 text-white dark:text-white ml-2"
               aria-hidden="true"
@@ -304,7 +305,15 @@ export default function DashBoard() {
             )}
           </div>
 
-          <div className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
+          <div
+            onClick={() =>
+              handleClickSidePanelFunction(
+                setFundRequest,
+                "/FundRequest",
+                setLoaderFundRequest
+              )
+            }
+            className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
             <svg
               className="w-6 h-6 text-white dark:text-white ml-2"
               aria-hidden="true"
@@ -322,6 +331,11 @@ export default function DashBoard() {
             </svg>
 
             <label className="ml-2">Fund Requests</label>
+            {loaderFundRequest && (
+              <div className="ml-2">
+                <Spinner size={24}></Spinner>
+              </div>
+            )}
           </div>
 
           <div className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
