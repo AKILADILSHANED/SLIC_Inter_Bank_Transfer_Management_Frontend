@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import NewRequest from "./NewRequest/page";
 import SearchRequest from "./RequestDetails/page";
+import UpdateRequest from "./RequestUpdate/page";
 
 export default function FundRequest() {
   //Define states;
@@ -165,13 +166,13 @@ export default function FundRequest() {
           <SearchRequest onCancel={() => handleCancel(setRequestDetails)} />
         </div>
       )}
-{/*
+
       {requestUpdate && (
         <div>
-          <UpdateAccount onCancel={() => handleCancel(setAccountUpdate)} />
+          <UpdateRequest onCancel={() => handleCancel(setRequestUpdate)} />
         </div>
       )}
-
+{/*
       {requestDelete && (
         <div>
           <DeleteAccount onCancel={() => handleCancel(setAccountDelete)} />
