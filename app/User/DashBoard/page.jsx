@@ -60,7 +60,7 @@ export default function DashBoard() {
 
   return (
     <div className="flex flex-col h-screen overflow-auto">
-      <div className="bg-blue-900 hover:bg-blue-800 shadow-md mt-1 h-[7.5%] w-full text-white flex flex-row items-center">
+      <div className="bg-blue-800 hover:bg-blue-900 shadow-md mt-1 h-[8.5%] w-full text-white flex flex-row items-center">
         <div className="ml-4">
           <svg
             className="w-6 h-6 text-white dark:text-white cursor-pointer"
@@ -69,7 +69,7 @@ export default function DashBoard() {
             width="24"
             height="24"
             fill="none"
-            viewBox="0 0 20 20">
+            viewBox="0 0 21 21">
             <path
               stroke="currentColor"
               strokeLinecap="round"
@@ -83,7 +83,7 @@ export default function DashBoard() {
         <div>
           <input
             type="text"
-            className="border border-white outline-none px-2 ml-6 rounded-sm w-[300px]"
+            className="border border-white outline-none px-2 ml-6 rounded-sm w-[300px] h-[35px]"
             placeholder="Search Anything here"
           />
         </div>

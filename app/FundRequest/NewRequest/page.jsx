@@ -130,6 +130,15 @@ export default function NewRequest({ onCancel }) {
     }
   };
 
+  //define handleKeyDown function; This will be restricted typing minus values in the text box;
+  const handleKeyDown = (e)=>{
+    if(e.key === "-"){
+      e.preventDefault();
+    }else{
+      //No code block to be run;
+    }
+  }
+
   return (
     <div>
       <div className="flex flex-col">
@@ -214,6 +223,7 @@ export default function NewRequest({ onCancel }) {
                 <input
                   id="small"
                   type="number"
+                  onKeyDown={handleKeyDown}
                   onChange={(e) => setRequestAmount(e.target.value)}
                   placeholder="Enter Request Amount"
                   required
