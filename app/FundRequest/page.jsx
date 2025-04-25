@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import NewRequest from "./NewRequest/page";
 import SearchRequest from "./RequestDetails/page";
 import UpdateRequest from "./RequestUpdate/page";
+import DeleteRequest from "./RequestDelete/page";
 
 export default function FundRequest() {
   //Define states;
@@ -172,12 +173,12 @@ export default function FundRequest() {
           <UpdateRequest onCancel={() => handleCancel(setRequestUpdate)} />
         </div>
       )}
-{/*
+
       {requestDelete && (
         <div>
-          <DeleteAccount onCancel={() => handleCancel(setAccountDelete)} />
+          <DeleteRequest onCancel={() => handleCancel(setRequestDelete)} />
         </div>
-      )}*/}
+      )}
     </div>
   );
 }
