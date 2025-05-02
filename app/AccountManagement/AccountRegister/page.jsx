@@ -3,6 +3,7 @@ import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import Spinner from "@/app/Spinner/page";
 import React, { useState } from "react";
+import { useEffect } from "react";
 
 export default function RegisterAccount({ onCancel }) {
 
@@ -15,11 +16,41 @@ export default function RegisterAccount({ onCancel }) {
 
   //Define state variables to store user input data;
   const [textBank, setTextBank] = useState("");
+  const [bankList, setBankList] = useState([]);
   const [textBranch, setTextBranch] = useState("");
   const [textAccountType, setAccountType] = useState("");
   const [textCurrency, setCurrency] = useState("");
   const [textGlCode, setGlCode] = useState("");
   const [textAccountNumber, setAccountNumber] = useState("");
+
+  //define getBankList function;
+  const getBankList = async ()=>{
+    try{
+      const request = await fetch(
+        `${baseUrl}/api/v1/bank/bank-list`,
+        {
+          method:"GET",
+          credentials:"include"
+        }
+      );
+      if(request.ok){
+        const response = await request.json();
+        if(response.success == false){
+          setErrorMessage(response.message);
+        }else{
+          setBankList(response.responseObject);
+        }
+      }else{
+        setErrorMessage("Unable to fetch Bank List. Please contact administrator!");
+      }
+    }catch(error){
+      setErrorMessage("Un-expected error occurred. Please contact administrator!");
+    }
+  }
+
+  useEffect(()=>{
+    getBankList();
+  },[]);
 
   //Define handle register function;
   const handleRegister = async (e) => {
@@ -46,7 +77,7 @@ export default function RegisterAccount({ onCancel }) {
             credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              bankName: textBank,
+              bank: textBank,
               bankBranch: textBranch,
               accountType: textAccountType,
               currency: textCurrency,
@@ -97,51 +128,13 @@ export default function RegisterAccount({ onCancel }) {
               </label>
               <select
                 onChange={(e) => setTextBank(e.target.value)}
+                value={textBank}
                 id="small"
                 className="block w-[200px] ml-[94px] p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option value="">-Select Bank-</option>
-                <option value="Amana Bank PLC">Amana Bank PLC</option>
-                <option value="Bank of Ceylon">Bank of Ceylon</option>
-                <option value="Bank of China Ltd">Bank of China Ltd</option>
-                <option value="Cargills Bank PLC">Cargills Bank PLC</option>
-                <option value="Citibank">Citibank</option>
-                <option value="Commercial Bank of Ceylon PLC">
-                  Commercial Bank of Ceylon PLC
-                </option>
-                <option value="Deutsche Bank">Deutsche Bank</option>
-                <option value="DFCC Bank PLC">DFCC Bank PLC</option>
-                <option value="Habib Bank Ltd">Habib Bank Ltd</option>
-                <option value="Hatton National Bank PLC">
-                  Hatton National Bank PLC
-                </option>
-                <option value="Indian Bank">Indian Bank</option>
-                <option value="Indian Overseas Bank">
-                  Indian Overseas Bank
-                </option>
-                <option value="MCB Bank Ltd">MCB Bank Ltd</option>
-                <option value="National Development Bank PLC">
-                  National Development Bank PLC
-                </option>
-                <option value="Nations Trust Bank PLC">
-                  Nations Trust Bank PLC
-                </option>
-                <option value="Pan Asia Banking Corporation PLC">
-                  Pan Asia Banking Corporation PLC
-                </option>
-                <option value="People's Bank">People's Bank</option>
-                <option value="Public Bank Berhad">Public Bank Berhad</option>
-                <option value="Sampath Bank PLC">Sampath Bank PLC</option>
-                <option value="Seylan Bank PLC">Seylan Bank PLC</option>
-                <option value="Standard Chartered Bank">
-                  Standard Chartered Bank
-                </option>
-                <option value="State Bank of India">State Bank of India</option>
-                <option value="The Hongkong & Shanghai Banking Corporation Ltd (HSBC)">
-                  The Hongkong & Shanghai Banking Corporation Ltd (HSBC)
-                </option>
-                <option value="Union Bank of Colombo PLC">
-                  Union Bank of Colombo PLC
-                </option>
+                <option value="">-Select Bank-</option> 
+                {bankList.map(element=>(
+                  <option key={element.bankName} value={element.bankId}>{element.bankName}</option> 
+                ))}                               
               </select>
             </div>
 

@@ -15,7 +15,7 @@ export default function EnterBalance() {
   const [successMessage, setSuccessMessage] = useState(false);
   const [spinner, setSpinner] = useState(false);
   const [accountObject, setAccountObject] = useState([{}]);
-  const [balance, setBalance] = useState("");
+  const [balance, setBalance] = useState({accountId:null, balanceAmount:null});
 
   const handleKeyDown = (e) => {
     // Allow: Backspace, Delete, Tab, Arrow Keys
@@ -203,7 +203,7 @@ export default function EnterBalance() {
                       <td className="p-3">
                         <button
                           onClick={() => handleSave(element.accountId, balance)}
-                          data-ripple-light="true"
+                          data-ripple-light="true"                          
                           className="rounded-md px-3 h-[30px] bg-slate-800 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2"
                           type="button">
                           Submit

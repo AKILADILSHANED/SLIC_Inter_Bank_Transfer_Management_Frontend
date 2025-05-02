@@ -3,6 +3,7 @@ import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 import React, { useState } from "react";
 import Spinner from "@/app/Spinner/page";
+import { useEffect } from "react";
 
 export default function UpdateAccount({ onCancel }) {
 
@@ -16,6 +17,7 @@ export default function UpdateAccount({ onCancel }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [spinnerSearch, setSpinnerSearch] = useState(false);
   const [spinnerUpdate, setSpinnerUpdate] = useState(false);
+  const [bankList, setBankList] = useState([]);
 
   //Define states to holds values of account details;
   const [accountId, setAccountId] = useState("");
@@ -55,7 +57,7 @@ export default function UpdateAccount({ onCancel }) {
           } else {
             //Set values for each state;
             setAccountId(response.responseObject.accountId);
-            setBank(response.responseObject.bankName);
+            setBank(response.responseObject.bank);
             setBranch(response.responseObject.bankBranch);
             setAccountType(response.responseObject.accountType);
             setCurrency(response.responseObject.currency);
@@ -82,6 +84,35 @@ export default function UpdateAccount({ onCancel }) {
     }
   };
 
+  //define getBankList function;
+    const getBankList = async ()=>{
+      try{
+        const request = await fetch(
+          `${baseUrl}/api/v1/bank/bank-list`,
+          {
+            method:"GET",
+            credentials:"include"
+          }
+        );
+        if(request.ok){
+          const response = await request.json();
+          if(response.success == false){
+            setErrorMessage(response.message);
+          }else{
+            setBankList(response.responseObject);
+          }
+        }else{
+          setErrorMessage("Unable to fetch Bank List. Please contact administrator!");
+        }
+      }catch(error){
+        setErrorMessage("Un-expected error occurred. Please contact administrator!");
+      }
+    }
+  
+    useEffect(()=>{
+      getBankList();
+    },[]);
+
   //Define Update function;
   const handleUpdateAccount = async () => {
     setSpinnerUpdate(false);
@@ -97,7 +128,7 @@ export default function UpdateAccount({ onCancel }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             accountId: accountId,
-            bankName: bank,
+            bank: bank,
             bankBranch: branch,
             accountType: accountType,
             currency: currency,
@@ -203,52 +234,13 @@ export default function UpdateAccount({ onCancel }) {
               </label>
               <select
                 value={bank}
-                onChange={(e) => setBank(e.target.value)}
-                type="text"
+                onChange={(e) => setBank(e.target.value)}                
                 id="small-input"
                 className="block w-[500px] outline-blue-400 px-2 py-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option value="Amana Bank PLC">Amana Bank PLC</option>
-                <option value="Bank of Ceylon">Bank of Ceylon</option>
-                <option value="Bank of China Ltd">Bank of China Ltd</option>
-                <option value="Cargills Bank PLC">Cargills Bank PLC</option>
-                <option value="Citibank">Citibank</option>
-                <option value="Commercial Bank of Ceylon PLC">
-                  Commercial Bank of Ceylon PLC
-                </option>
-                <option value="Deutsche Bank">Deutsche Bank</option>
-                <option value="DFCC Bank PLC">DFCC Bank PLC</option>
-                <option value="Habib Bank Ltd">Habib Bank Ltd</option>
-                <option value="Hatton National Bank PLC">
-                  Hatton National Bank PLC
-                </option>
-                <option value="Indian Bank">Indian Bank</option>
-                <option value="Indian Overseas Bank">
-                  Indian Overseas Bank
-                </option>
-                <option value="MCB Bank Ltd">MCB Bank Ltd</option>
-                <option value="National Development Bank PLC">
-                  National Development Bank PLC
-                </option>
-                <option value="Nations Trust Bank PLC">
-                  Nations Trust Bank PLC
-                </option>
-                <option value="Pan Asia Banking Corporation PLC">
-                  Pan Asia Banking Corporation PLC
-                </option>
-                <option value="People's Bank">People's Bank</option>
-                <option value="Public Bank Berhad">Public Bank Berhad</option>
-                <option value="Sampath Bank PLC">Sampath Bank PLC</option>
-                <option value="Seylan Bank PLC">Seylan Bank PLC</option>
-                <option value="Standard Chartered Bank">
-                  Standard Chartered Bank
-                </option>
-                <option value="State Bank of India">State Bank of India</option>
-                <option value="The Hongkong & Shanghai Banking Corporation Ltd (HSBC)">
-                  The Hongkong & Shanghai Banking Corporation Ltd (HSBC)
-                </option>
-                <option value="Union Bank of Colombo PLC">
-                  Union Bank of Colombo PLC
-                </option>
+                
+                {bankList.map(element =>(
+                  <option key={element.bankId}value={element.bankId}>{element.bankName}</option>
+                ))}                
               </select>
             </div>
           </div>

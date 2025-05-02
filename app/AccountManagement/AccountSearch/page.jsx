@@ -163,7 +163,7 @@ export default function SearchAccount() {
                   </td>
                   <td className="p-4 border-b border-slate-200">
                     <p className="block text-sm text-slate-800">
-                      {responseData.bankName}
+                      {responseData.bank}
                     </p>
                   </td>
                   <td className="p-4 border-b border-slate-200">
