@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import AddChannel from "./AddChannel/page";
 import ChannelDetails from "./ChannelDetails/page";
 import RemoveChannel from "./RemoveChannel/page";
+import PriorityLevel from "./PriorityLevel/page";
 
 export default function Administrator() {
   //Define state variables;
@@ -129,9 +130,10 @@ export default function Administrator() {
                   Channel Details
                 </button>
               </div>
-              <div 
-              onClick={()=>handleSubFunction(setRemoveChannel)}
-              className="py-1" role="none">
+              <div
+                onClick={() => handleSubFunction(setRemoveChannel)}
+                className="py-1"
+                role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
                   role="menuitem"
@@ -140,7 +142,9 @@ export default function Administrator() {
                   Remove Channel
                 </button>
               </div>
-              <div className="py-1" role="none">
+              <div 
+              onClick={() => handleSubFunction(setPriorityLevel)}
+              className="py-1" role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
                   role="menuitem"
@@ -273,7 +277,13 @@ export default function Administrator() {
 
       {removeChannel && (
         <div>
-          <RemoveChannel onCancel={() => handleCancel(setRemoveChannel)}/>
+          <RemoveChannel onCancel={() => handleCancel(setRemoveChannel)} />
+        </div>
+      )}
+
+      {priorityLevel && (
+        <div>
+          <PriorityLevel onCancel={() => handleCancel(setPriorityLevel)} />
         </div>
       )}
     </div>
