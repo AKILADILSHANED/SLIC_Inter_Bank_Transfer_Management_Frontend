@@ -43,7 +43,7 @@ export default function SearchRequest({ onCancel }) {
         if (response.success == false) {
           setErrorMessage(response.message);
         } else {
-          if (response.responseObject.requestType == 0) {
+          if (requestType == 0) {
             setRequestList(response.responseObject);
             setActualRequestDetailsWindow(true);
           } else {

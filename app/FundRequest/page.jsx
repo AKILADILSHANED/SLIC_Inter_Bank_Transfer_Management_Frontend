@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import NewRequest from "./NewRequest/page";
 import SearchRequest from "./RequestDetails/page";
 import UpdateRequest from "./RequestUpdate/page";
+import DeleteRequest from "./RequestDelete/page";
+import ApproveRequest from "./RequestApprove/page";
+import ReverseApprove from "./ApproveReverse/page";
 
 export default function FundRequest() {
   //Define states;
@@ -10,6 +13,8 @@ export default function FundRequest() {
   const [requestDetails, setRequestDetails] = useState(false);
   const [requestUpdate, setRequestUpdate] = useState(false);
   const [requestDelete, setRequestDelete] = useState(false);
+  const [requestApprove, setRequestApprove] = useState(false);
+  const [reverseApprove, setReverseApprove] = useState(false);
 
   //Define cancel functionality;
   const handleCancel = (setterCancel) => {
@@ -22,6 +27,8 @@ export default function FundRequest() {
     setRequestDetails,
     setRequestUpdate,
     setRequestDelete,
+    setRequestApprove,
+    setReverseApprove,
   ];
 
   //Define function for handling each main function user clicks;
@@ -56,7 +63,7 @@ export default function FundRequest() {
 
         <div
           onClick={() => handleClick(setNewRequest)}
-          className="flex flex-row items-center justify-center ml-[100px]">
+          className="flex flex-row items-center justify-center ml-[75px]">
           <svg
             className="w-6 h-6 text-white dark:text-white"
             aria-hidden="true"
@@ -74,14 +81,14 @@ export default function FundRequest() {
             />
           </svg>
 
-          <div className="text-sm text-white hover:bg-slate-700 w-[110px] h-[32] flex flex-col items-center justify-center rounded-md">
+          <div className="text-sm text-white hover:bg-slate-700 w-[105px] h-[32] flex flex-col items-center justify-center rounded-md">
             <button>New Request</button>
           </div>
         </div>
 
         <div
           onClick={() => handleClick(setRequestDetails)}
-          className="flex flex-row items-center justify-center ml-5">
+          className="flex flex-row items-center justify-center ml-1">
           <svg
             className="w-6 h-6 text-white dark:text-white"
             aria-hidden="true"
@@ -105,7 +112,7 @@ export default function FundRequest() {
 
         <div
           onClick={() => handleClick(setRequestUpdate)}
-          className="flex flex-row items-center justify-center ml-5">
+          className="flex flex-row items-center justify-center ml-1">
           <svg
             className="w-6 h-6 text-white dark:text-white"
             aria-hidden="true"
@@ -130,7 +137,7 @@ export default function FundRequest() {
 
         <div
           onClick={() => handleClick(setRequestDelete)}
-          className="flex flex-row items-center justify-center ml-5">
+          className="flex flex-row items-center justify-center ml-1">
           <svg
             className="w-6 h-6 text-white dark:text-white"
             aria-hidden="true"
@@ -148,8 +155,58 @@ export default function FundRequest() {
             />
           </svg>
 
-          <div className="text-sm text-white hover:bg-slate-700 w-[120px] h-[32] flex flex-col items-center justify-center rounded-md">
+          <div className="text-sm text-white hover:bg-slate-700 w-[110px] h-[32] flex flex-col items-center justify-center rounded-md">
             <button>Request Delete</button>
+          </div>
+        </div>
+
+        <div
+          onClick={() => handleClick(setRequestApprove)}
+          className="flex flex-row items-center justify-center ml-1">
+          <svg
+            className="w-6 h-6 text-white dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24">
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 21a9 9 0 1 1 0-18c1.052 0 2.062.18 3 .512M7 9.577l3.923 3.923 8.5-8.5M17 14v6m-3-3h6"
+            />
+          </svg>
+
+          <div className="text-sm text-white hover:bg-slate-700 w-[80px] h-[32] flex flex-col items-center justify-center rounded-md">
+            <button>Approvals</button>
+          </div>
+        </div>
+
+        <div
+          onClick={() => handleClick(setReverseApprove)}
+          className="flex flex-row items-center justify-center ml-1">
+          <svg
+            className="w-6 h-6 text-white dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24">
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M5 12h14M5 12l4-4m-4 4 4 4"
+            />
+          </svg>
+
+          <div className="text-sm text-white hover:bg-slate-700 w-[125px] h-[32] flex flex-col items-center justify-center rounded-md">
+            <button>Reverse Approval</button>
           </div>
         </div>
       </div>
@@ -160,8 +217,7 @@ export default function FundRequest() {
         </div>
       )}
 
-      
-    {requestDetails && (
+      {requestDetails && (
         <div>
           <SearchRequest onCancel={() => handleCancel(setRequestDetails)} />
         </div>
@@ -172,12 +228,24 @@ export default function FundRequest() {
           <UpdateRequest onCancel={() => handleCancel(setRequestUpdate)} />
         </div>
       )}
-{/*
+
       {requestDelete && (
         <div>
-          <DeleteAccount onCancel={() => handleCancel(setAccountDelete)} />
+          <DeleteRequest onCancel={() => handleCancel(setRequestDelete)} />
         </div>
-      )}*/}
+      )}
+
+      {requestApprove && (
+        <div>
+          <ApproveRequest onCancel={() => handleCancel(setRequestApprove)} />
+        </div>
+      )}
+
+      {reverseApprove && (
+        <div>
+          <ReverseApprove onCancel={() => handleCancel(setReverseApprove)} />
+        </div>
+      )}
     </div>
   );
 }

@@ -18,6 +18,7 @@ export default function DashBoard() {
   const [loaderAccountBalances, setLoaderAccountBalances] = useState(false);
   const [loaderPayments, setLoaderPayments] = useState(false);
   const [loaderFundRequest, setLoaderFundRequest] = useState(false);
+  const [loaderAdmin, setLoaderAdmin] = useState(false);
 
   // Create useStates for side panel functions.
   const [userManage, setUserManage] = useState(false);
@@ -48,14 +49,13 @@ export default function DashBoard() {
   //Implement a single function to handle each function in side panel.
   const handleClickSidePanelFunction = (currentFunction, url, loaderSetter) => {
     loaderSetter(true);
-    setTimeout(() => {
-      for (let userClickedFunction of setFunctionArray) {
-        userClickedFunction(false);
-      }
-      setUrl(url);
-      currentFunction(true);
-      loaderSetter(false);
-    }, 1000);
+
+    for (let userClickedFunction of setFunctionArray) {
+      userClickedFunction(false);
+    }
+    setUrl(url);
+    currentFunction(true);
+    loaderSetter(false);
   };
 
   return (
@@ -146,9 +146,9 @@ export default function DashBoard() {
             />
           </svg>
         </div>
-        <div className="ml-10 text-md flex f;ex-row">
+        <div className="ml-10 text-md flex flex-row items-center">
           <svg
-            className="w-6 h-6 text-white dark:text-white ml-10"
+            className="w-6 h-6 text-white dark:text-white ml-10 mr-2"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -161,7 +161,7 @@ export default function DashBoard() {
               clipRule="evenodd"
             />
           </svg>
-          <Suspense fallback={"Loading User Info..."} className="ml-1">
+          <Suspense fallback={"Loading User Info..."}>
             <FullNameComponent />
           </Suspense>
         </div>
@@ -401,7 +401,15 @@ export default function DashBoard() {
             <label className="ml-2">Reports</label>
           </div>
 
-          <div className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
+          <div 
+          onClick={() =>
+            handleClickSidePanelFunction(
+              setAdmin,
+              "/Administrator",
+              setLoaderAdmin
+            )
+          }
+          className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
             <svg
               className="w-6 h-6 text-white dark:text-white ml-2"
               aria-hidden="true"

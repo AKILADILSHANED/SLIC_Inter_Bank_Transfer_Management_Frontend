@@ -77,7 +77,7 @@ export default function AccountManagement() {
             />
           </svg>
 
-          <div className="text-sm text-white hover:bg-slate-700 w-[110px] h-[32] flex flex-col items-center justify-center rounded-md">
+          <div className="text-sm text-white hover:bg-slate-700 w-[100px] h-[32] flex flex-col items-center justify-center rounded-md">
             <button>Register New</button>
           </div>
         </div>
@@ -101,7 +101,7 @@ export default function AccountManagement() {
             />
           </svg>
 
-          <div className="text-sm text-white hover:bg-slate-700 w-[100px] h-[32] flex flex-col items-center justify-center rounded-md">
+          <div className="text-sm text-white hover:bg-slate-700 w-[110px] h-[32] flex flex-col items-center justify-center rounded-md">
             <button>Search Account</button>
           </div>
         </div>
@@ -126,7 +126,7 @@ export default function AccountManagement() {
             />
           </svg>
 
-          <div className="text-sm text-white hover:bg-slate-700 w-[120px] h-[32] flex flex-col items-center justify-center rounded-md">
+          <div className="text-sm text-white hover:bg-slate-700 w-[110px] h-[32] flex flex-col items-center justify-center rounded-md">
             <button>Update Details</button>
           </div>
         </div>
@@ -151,7 +151,7 @@ export default function AccountManagement() {
             />
           </svg>
 
-          <div className="text-sm text-white hover:bg-slate-700 w-[100px] h-[32] flex flex-col items-center justify-center rounded-md">
+          <div className="text-sm text-white hover:bg-slate-700 w-[110px] h-[32] flex flex-col items-center justify-center rounded-md">
             <button>Delete Account</button>
           </div>
         </div>
