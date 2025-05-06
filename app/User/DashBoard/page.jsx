@@ -18,6 +18,7 @@ export default function DashBoard() {
   const [loaderAccountBalances, setLoaderAccountBalances] = useState(false);
   const [loaderPayments, setLoaderPayments] = useState(false);
   const [loaderFundRequest, setLoaderFundRequest] = useState(false);
+  const [loaderAdmin, setLoaderAdmin] = useState(false);
 
   // Create useStates for side panel functions.
   const [userManage, setUserManage] = useState(false);
@@ -400,7 +401,15 @@ export default function DashBoard() {
             <label className="ml-2">Reports</label>
           </div>
 
-          <div className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
+          <div 
+          onClick={() =>
+            handleClickSidePanelFunction(
+              setAdmin,
+              "/Administrator",
+              setLoaderAdmin
+            )
+          }
+          className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
             <svg
               className="w-6 h-6 text-white dark:text-white ml-2"
               aria-hidden="true"
