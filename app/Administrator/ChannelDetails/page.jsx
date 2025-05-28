@@ -28,7 +28,6 @@ export default function ChannelDetails() {
           setErrorMessage(response.message);
         } else {
           setChannelData(response.responseObject);
-          console.log(channelData.channelId);
         }
       } else {
         setErrorMessage(

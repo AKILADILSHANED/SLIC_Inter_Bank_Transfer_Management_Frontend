@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import AddChannel from "./AddChannel/page";
 import ChannelDetails from "./ChannelDetails/page";
 import RemoveChannel from "./RemoveChannel/page";
+import PriorityLevel from "./PriorityLevel/page";
+import NewTransferOption from "./NewTransferOption/page";
 
 export default function Administrator() {
   //Define state variables;
@@ -14,12 +16,15 @@ export default function Administrator() {
   const [removeChannel, setRemoveChannel] = useState(false);
   const [priorityLevel, setPriorityLevel] = useState(false);
 
+  const [transferOption,setTransferOption] = useState(false);
+
   //Define subFunction array;
   const arraySubFunction = [
     setAddChannel,
     setChannelDetails,
     setRemoveChannel,
     setPriorityLevel,
+    setTransferOption,
   ];
 
   //Define handleCancel function;
@@ -34,6 +39,7 @@ export default function Administrator() {
     }
     selectedFunction(true);
     setChannelDropdown(false);
+    setoptionDropdown(false);
   };
 
   return (
@@ -129,9 +135,10 @@ export default function Administrator() {
                   Channel Details
                 </button>
               </div>
-              <div 
-              onClick={()=>handleSubFunction(setRemoveChannel)}
-              className="py-1" role="none">
+              <div
+                onClick={() => handleSubFunction(setRemoveChannel)}
+                className="py-1"
+                role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
                   role="menuitem"
@@ -140,7 +147,9 @@ export default function Administrator() {
                   Remove Channel
                 </button>
               </div>
-              <div className="py-1" role="none">
+              <div 
+              onClick={() => handleSubFunction(setPriorityLevel)}
+              className="py-1" role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
                   role="menuitem"
@@ -175,7 +184,7 @@ export default function Administrator() {
               />
             </svg>
 
-            <button
+            <button            
               type="button"
               className="inline-flex w-full border-none bg-slate-800 hover:bg-slate-700 justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm text-white shadow-xs"
               id="menu-button"
@@ -204,7 +213,9 @@ export default function Administrator() {
               aria-orientation="vertical"
               aria-labelledby="menu-button"
               tabIndex="-1">
-              <div className="py-1" role="none">
+              <div 
+              onClick={() => handleSubFunction(setTransferOption)}
+              className="py-1" role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
                   role="menuitem"
@@ -273,7 +284,19 @@ export default function Administrator() {
 
       {removeChannel && (
         <div>
-          <RemoveChannel onCancel={() => handleCancel(setRemoveChannel)}/>
+          <RemoveChannel onCancel={() => handleCancel(setRemoveChannel)} />
+        </div>
+      )}
+
+      {priorityLevel && (
+        <div>
+          <PriorityLevel onCancel={() => handleCancel(setPriorityLevel)} />
+        </div>
+      )}
+
+      {transferOption && (
+        <div>
+          <NewTransferOption onCancel={() => handleCancel(setTransferOption)} />
         </div>
       )}
     </div>
