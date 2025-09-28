@@ -1,0 +1,107 @@
+"use client";
+import React, { useEffect, useState } from 'react'
+import ErrorMessage from '@/app/Messages/ErrorMessage/page';
+
+export default function AvailableTransferOptions() {
+    //Define base url;
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+
+    //Define state variables
+    const [transferOptions, setTransferOptions] = useState([]);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    //Define handleFetchOptions function
+    const handleFetchOptions = async () => {
+        try {
+            const request = await fetch(
+                `${baseUrl}/api/v1/transferOption/displayAvailableOptions`,
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            );
+            if (request.ok) {
+                const response = await request.json();
+                if (response.success == false) {
+                    setErrorMessage(response.message)
+                } else {
+                    setTransferOptions(response.responseObject);
+                }
+            } else {
+                setErrorMessage(response.responseObject)
+            }
+        } catch (error) {
+            setErrorMessage("Un-expected error occurred. Please contact the administrator!");
+        }
+
+    }
+
+    useEffect(() => {
+        handleFetchOptions();
+    }, []);
+
+
+    return (
+        <div className="mt-4">
+            <div className="bg-red-800 h-[30px] flex flex-row items-center">
+                <label className="text-white ml-3 text-lg font-serif">
+                    Transfer Option Details
+                </label>
+            </div>
+            <div>{errorMessage && <ErrorMessage messageValue={errorMessage} />}</div>
+            <div className="relative overflow-x-auto">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" className="px-6 py-3">
+                                Option ID
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Defined Date
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Defined By
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Active Status
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Delete Status
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Delete By
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                From Account
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                To Account
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Transfer Chanel
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {transferOptions.map((element) => (
+                            <tr
+                                key={element.optionId}
+                                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                <td className="px-6 py-4">{element.optionId}</td>
+                                <td className="px-6 py-4">{element.definedDate}</td>
+                                <td className="px-6 py-4">{element.definedBy}</td>
+                                <td className="px-6 py-4">{element.isActive}</td>
+                                <td className="px-6 py-4">{element.isDeleted}</td>
+                                <td className="px-6 py-4">{element.deletedBy}</td>
+                                <td className="px-6 py-4">{element.fromAccount}</td>
+                                <td className="px-6 py-4">{element.toAccount}</td>
+                                <td className="px-6 py-4">{element.transferChannel}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    )
+}

@@ -5,6 +5,8 @@ import EnterBalance from "./BalanceEnter/page";
 import DisplayBalance from "./BalanceDisplay/page";
 import UpdateBalance from "./BalanceUpdate/page";
 import DeleteBalance from "./BalanceDelete/page";
+import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from 'next/navigation';
 
 export default function page() {
   //Define states;
@@ -12,6 +14,8 @@ export default function page() {
   const [displayBalance, setDisplayBalance] = useState(false);
   const [updateBalance, setUpdateBalance] = useState(false);
   const [deleteBalance, setDeleteBalance] = useState(false);
+  const router = useRouter();
+  const { hasPermission } = useAuth();
 
   //Define cancel functionality;
   const handleCancel = (setterCancel) => {
@@ -27,7 +31,12 @@ export default function page() {
   ];
 
   //Define function for handling each main function user clicks;
-  const handleClick = (setterFunction) => {
+  const handleClick = (setterFunction, requiredPermission) => {
+    // First, check for permission
+    if (requiredPermission && !hasPermission(requiredPermission)) {
+        router.push('/AccessDenied'); // Redirect if no permission
+        return;
+    }
     arraySetters.forEach((setter) => {
       setter(false);
     });
@@ -58,7 +67,7 @@ export default function page() {
         </div>
 
         <div
-          onClick={() => handleClick(setNewBalanceEnter)}
+          onClick={() => handleClick(setNewBalanceEnter, 'FUNC-009')}
           className="flex flex-row items-center justify-center ml-[100px]">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -83,7 +92,7 @@ export default function page() {
         </div>
 
         <div
-          onClick={() => handleClick(setDisplayBalance)}
+          onClick={() => handleClick(setDisplayBalance, 'FUNC-010')}
           className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -107,7 +116,7 @@ export default function page() {
         </div>
 
         <div
-          onClick={() => handleClick(setUpdateBalance)}
+          onClick={() => handleClick(setUpdateBalance, 'FUNC-011')}
           className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -132,7 +141,7 @@ export default function page() {
         </div>
 
         <div
-          onClick={() => handleClick(setDeleteBalance)}
+          onClick={() => handleClick(setDeleteBalance, 'FUNC-012')}
           className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"

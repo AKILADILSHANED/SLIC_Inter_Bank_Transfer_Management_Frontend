@@ -20,6 +20,9 @@ export default function NewRequest({ onCancel }) {
   const [paymentList, setPaymentList] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [prediction, setPrediction] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const [bankAccount, setBankAccount] = useState("");
   const [paymentType, setPaymentType] = useState("");
@@ -131,13 +134,49 @@ export default function NewRequest({ onCancel }) {
   };
 
   //define handleKeyDown function; This will be restricted typing minus values in the text box;
-  const handleKeyDown = (e)=>{
-    if(e.key === "-"){
+  const handleKeyDown = (e) => {
+    if (e.key === "-") {
       e.preventDefault();
-    }else{
+    } else {
       //No code block to be run;
     }
   }
+
+
+  //Define base url;
+  const baseUrlforPrediction = process.env.NEXT_PUBLIC_API_BASE_URL_CLAIM_PREDICTION;
+
+  //Define handlePrediction function;
+  const handlePrediction = async () => {
+    setIsLoading(true);
+    setError('');
+
+    try {
+      setIsLoading(true);
+      // The URL of Python Flask backend API
+      const response = await fetch(`${baseUrlforPrediction}/predict`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ date: selectedDate }), // Send the date in the request body
+      });
+
+      if (!response.ok) {
+        // Handle HTTP errors like 400 or 500
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Something went wrong');
+      }
+
+      const result = await response.json();
+      setRequestAmount(result.predicted_cost);
+
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -215,20 +254,30 @@ export default function NewRequest({ onCancel }) {
 
             <div className="flex flex-row items-center gap-15 mt-4 ml-2">
               <div>
-                <label
-                  htmlFor="small"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white ml-3">
-                  Request Amount:
-                </label>
-                <input
-                  id="small"
-                  type="number"
-                  onKeyDown={handleKeyDown}
-                  onChange={(e) => setRequestAmount(e.target.value)}
-                  placeholder="Enter Request Amount"
-                  required
-                  className="outline-none block w-[400px] ml-2 p-1 px-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
+                <div>
+                  <label
+                    htmlFor="small"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white ml-3">
+                    Request Amount:
+                  </label>
+                  <input
+                    id="small"
+                    type="number"
+                    onKeyDown={handleKeyDown}
+                    onChange={(e) => setRequestAmount(e.target.value)}
+                    value={requestAmount}
+                    placeholder="Enter Request Amount"
+                    required
+                    className="outline-none block w-[400px] ml-2 p-1 px-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
+                </div>
+                <div className="flex flex-row ml-3 mt-1" onClick={()=>handlePrediction()}>
+                  <a href="#" className="text-sm text-blue-500 dark:text-blue-400 transition-all duration-200">
+                    <label className="hover:underline">Predict Motor Payment</label>                    
+                  </a>
+                  {isLoading && <div className="ml-4"><Spinner size={20}/></div>}
+                </div>
               </div>
+
               <div>
                 <label
                   htmlFor="small"
@@ -269,7 +318,7 @@ export default function NewRequest({ onCancel }) {
             <div className="flex flex-row items-center">
               <button
                 type="submit"
-                className="border flex flex-row ml-4 mt-4 h-[30px] items-center justify-center w-[80px] text-white bg-blue-700 hover:bg-blue-600 rounded-md border-none">
+                className="border flex flex-row ml-4 mt-2 h-[30px] items-center justify-center w-[80px] text-white bg-blue-700 hover:bg-blue-600 rounded-md border-none">
                 {requestSaveSpinner && <Spinner size={20} />}
                 <label>Save</label>
               </button>
@@ -277,7 +326,7 @@ export default function NewRequest({ onCancel }) {
               <button
                 type="button"
                 onClick={() => onCancel()}
-                className="border flex flex-row ml-2 mt-4 h-[30px] items-center justify-center w-[80px] text-white bg-red-700 hover:bg-red-600 rounded-md border-none">
+                className="border flex flex-row ml-2 mt-2 h-[30px] items-center justify-center w-[80px] text-white bg-red-700 hover:bg-red-600 rounded-md border-none">
                 <label>Cancel</label>
               </button>
             </div>

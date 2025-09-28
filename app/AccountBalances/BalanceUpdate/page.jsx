@@ -205,11 +205,6 @@ export default function UpdateBalance({ onCancel }) {
                       </th>
                       <th className="p-4 border-b border-slate-300 bg-slate-50">
                         <p className="block text-sm font-normal leading-none text-slate-500">
-                          Outstanding Balance
-                        </p>
-                      </th>
-                      <th className="p-4 border-b border-slate-300 bg-slate-50">
-                        <p className="block text-sm font-normal leading-none text-slate-500">
                           Action
                         </p>
                       </th>
@@ -253,19 +248,6 @@ export default function UpdateBalance({ onCancel }) {
                                 }
                               )
                             : balanceData.balanceAmount}
-                        </p>
-                      </td>
-                      <td className="p-4 border-b border-slate-200">
-                        <p className="block text-sm text-slate-800">
-                          {typeof balanceData.outstandingBalance === "number"
-                            ? balanceData.outstandingBalance.toLocaleString(
-                                undefined,
-                                {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                }
-                              )
-                            : balanceData.outstandingBalance}
                         </p>
                       </td>
                       <td className="p-4 border-b border-slate-200">

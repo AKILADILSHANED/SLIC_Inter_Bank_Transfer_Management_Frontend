@@ -3,8 +3,10 @@ import React, { useState } from "react";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import Spinner from "@/app/Spinner/page";
+import Router, { useRouter } from "next/navigation";
 
 export default function UserRegister({ onCancel }) {
+  const router = useRouter();
 
   //Define base url;
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -16,8 +18,8 @@ export default function UserRegister({ onCancel }) {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [epf, setEpf] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmedPassword, setConfirmedPassword] = useState("");
+  const [department, setDepartment] = useState("");
+  const [section, setSection] = useState("");
 
   const [successMessage, setSuccessMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
@@ -31,59 +33,48 @@ export default function UserRegister({ onCancel }) {
   const userRegister = async (e) => {
     setLoader(true);
     e.preventDefault();
-    if (!userStatus || !userLevel) {
-      setSuccessMessage("");
-      setErrorMessage(
-        "Please select both User Status and User Level from drop down box!"
+    setSuccessMessage("");
+    setErrorMessage("");
+    try {
+      const request = await fetch(
+        `${baseUrl}/api/v1/user/user-register`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userTitle: userStatus,
+            userLevel: userLevel,
+            userFirstName: firstName.trim(),
+            userLastName: lastName.trim(),
+            department: department.trim(),
+            section: section.trim(),
+            userEmail: email.trim(),
+            userEpf: epf.trim(),
+          }),
+        }
       );
-      setLoader(false);
-    } else {
-      if (password !== confirmedPassword) {
-        setSuccessMessage("");
-        setErrorMessage(
-          "Pasword and Confirmed password does not matched. Please check!"
-        );
-        setLoader(false);
-      } else {
-        try {
-          const request = await fetch(
-            `${baseUrl}/api/v1/user/user-register`,
-            {
-              method: "POST",
-              credentials: "include",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                userTitle: userStatus,
-                userLevel: userLevel,
-                userFirstName: firstName.trim(),
-                userLastName: lastName.trim(),
-                userEmail: email.trim(),
-                userEpf: epf.trim(),
-                userPassword: password.trim(),
-              }),
-            }
-          );
-          if (request.ok) {
-            const response = await request.text();
-            setErrorMessage("");
-            setSuccessMessage(response);
-            setLoader(false);
-          } else {
-            setSuccessMessage("");
-            setErrorMessage(
-              "No response received from server. Please contact administrator!"
-            );
-            setLoader(false);
-          }
-        } catch (error) {
-          setSuccessMessage("");
-          setErrorMessage(
-            error +
-              " (Un-expected error occurred. Please contact administrator!)"
-          );
+      if (request.ok) {
+        const response = await request.json();
+        if (response.success == false) {
+          setErrorMessage(response.message);
+          setLoader(false);
+        } else {
+          setSuccessMessage(response.message);
           setLoader(false);
         }
+      } else {
+        setErrorMessage(
+          "No response received from server. Please contact administrator!"
+        );
+        setLoader(false);
       }
+    } catch (error) {
+      setErrorMessage(
+        error +
+        " (Un-expected error occurred. Please contact administrator!)"
+      );
+      setLoader(false);
     }
   };
 
@@ -108,6 +99,7 @@ export default function UserRegister({ onCancel }) {
                 <select
                   onChange={(e) => setUserStatus(e.target.value)}
                   id="small"
+                  required
                   className="block w-[200px] ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                   <option value="">-Select Status-</option>
                   <option value="Mr.">Mr.</option>
@@ -125,11 +117,11 @@ export default function UserRegister({ onCancel }) {
                 <select
                   onChange={(e) => setUserLevel(e.target.value)}
                   id="small"
+                  required
                   className="block w-[200px] ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                   <option value="">-Select User Level-</option>
-                  <option value="0">Administrator</option>
-                  <option value="1">Authorizer</option>
-                  <option value="2">Initiator</option>
+                  <option value="0">General User</option>
+                  <option value="1">Administrator</option>
                 </select>
               </div>
 
@@ -190,28 +182,35 @@ export default function UserRegister({ onCancel }) {
                 <label
                   htmlFor="small"
                   className="block mb-2 text-md font-medium text-gray-900 dark:text-white ml-3">
-                  Password:
+                  Department
                 </label>
-                <input
-                  onChange={(e) => setPassword(e.target.value)}
-                  type="password"
+                <select
+                  onChange={(e) => setDepartment(e.target.value)}
                   id="small"
-                  placeholder="Enter Password"
                   required
-                  className="outline-none block w-[350px] ml-[15px] p-1 px-2 text-md text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
+                  className="block w-[200px] ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option value="">-Select Department-</option>
+                  <option value="Finance Department">Finance Department</option>
+                </select>
 
                 <label
                   htmlFor="small"
                   className="block mb-2 text-md font-medium text-gray-900 dark:text-white ml-15">
-                  Confirm Password:
+                  Section:
                 </label>
-                <input
-                  onChange={(e) => setConfirmedPassword(e.target.value)}
-                  type="password"
+                <select
+                  onChange={(e) => setSection(e.target.value)}
                   id="small"
-                  placeholder="Enter Password"
                   required
-                  className="outline-none block w-[350px] ml-2 p-1 px-2 text-md text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
+                  className="block w-[200px] ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option value="">-Select Section-</option>
+                  <option value="Investment">Investment</option>
+                  <option value="Payment">Payment</option>
+                  <option value="Salaries">Salaries</option>
+                  <option value="Motor Payments">Motor Payments</option>
+                  <option value="Tax">Tax</option>
+                  <option value="Investment">Miscellanious Payments</option>
+                </select>
               </div>
 
               <div className="flex flex-row items-center mt-4 ml-25">

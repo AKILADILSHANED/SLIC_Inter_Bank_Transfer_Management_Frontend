@@ -4,12 +4,16 @@ import UserRegister from "../User/UserRegister/page";
 import SearchUser from "../User/UserSearch/page";
 import UpdateUser from "../User/UserUpdate/page";
 import UserDelete from "../User/DeleteUser/page";
+import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from 'next/navigation';
 
 export default function UserManagement() {
   const [clickRegisterUser, setClickRegisterUser] = useState(false);
   const [clickSearchUser, setClickSearchUser] = useState(false);
   const [clickUpdateUser, setClickUpdateUser] = useState(false);
   const [clickDeleteUser, setClickDeleteUser] = useState(false);
+  const router = useRouter();
+  const { hasPermission } = useAuth();
 
   const arraySetters = [
     setClickRegisterUser,
@@ -20,7 +24,12 @@ export default function UserManagement() {
 
   //Define functions
 
-  const handleClick = (setterFunction) => {
+  const handleClick = (setterFunction, requiredPermission) => {
+    // First, check for permission
+    if (requiredPermission && !hasPermission(requiredPermission)) {
+        router.push('/AccessDenied'); // Redirect if no permission
+        return;
+    }
     arraySetters.forEach((setter) => {
       setter(false);
     });
@@ -66,7 +75,7 @@ export default function UserManagement() {
         </div>
 
         <div
-          onClick={() => handleClick(setClickRegisterUser)}
+          onClick={() => handleClick(setClickRegisterUser, 'FUNC-001')}
           className="flex flex-row items-center justify-center ml-[100px]">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -88,7 +97,7 @@ export default function UserManagement() {
         </div>
 
         <div
-          onClick={() => handleClick(setClickSearchUser)}
+          onClick={() => handleClick(setClickSearchUser, 'FUNC-002')}
           className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -112,7 +121,7 @@ export default function UserManagement() {
         </div>
 
         <div
-          onClick={() => handleClick(setClickUpdateUser)}
+          onClick={() => handleClick(setClickUpdateUser, 'FUNC-003')}
           className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -137,7 +146,7 @@ export default function UserManagement() {
         </div>
 
         <div 
-        onClick={() => handleClick(setClickDeleteUser)}
+        onClick={() => handleClick(setClickDeleteUser, 'FUNC-004')}
         className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"

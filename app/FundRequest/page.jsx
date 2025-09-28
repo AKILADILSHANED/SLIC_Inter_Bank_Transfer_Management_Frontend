@@ -6,6 +6,8 @@ import UpdateRequest from "./RequestUpdate/page";
 import DeleteRequest from "./RequestDelete/page";
 import ApproveRequest from "./RequestApprove/page";
 import ReverseApprove from "./ApproveReverse/page";
+import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from 'next/navigation';
 
 export default function FundRequest() {
   //Define states;
@@ -15,6 +17,8 @@ export default function FundRequest() {
   const [requestDelete, setRequestDelete] = useState(false);
   const [requestApprove, setRequestApprove] = useState(false);
   const [reverseApprove, setReverseApprove] = useState(false);
+  const router = useRouter();
+  const { hasPermission } = useAuth();
 
   //Define cancel functionality;
   const handleCancel = (setterCancel) => {
@@ -32,7 +36,12 @@ export default function FundRequest() {
   ];
 
   //Define function for handling each main function user clicks;
-  const handleClick = (setterFunction) => {
+  const handleClick = (setterFunction, requiredPermission) => {
+    // First, check for permission
+    if (requiredPermission && !hasPermission(requiredPermission)) {
+        router.push('/AccessDenied'); // Redirect if no permission
+        return;
+    }
     arraySetters.forEach((setter) => {
       setter(false);
     });
@@ -62,7 +71,7 @@ export default function FundRequest() {
         </div>
 
         <div
-          onClick={() => handleClick(setNewRequest)}
+          onClick={() => handleClick(setNewRequest, 'FUNC-017')}
           className="flex flex-row items-center justify-center ml-[75px]">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -87,7 +96,7 @@ export default function FundRequest() {
         </div>
 
         <div
-          onClick={() => handleClick(setRequestDetails)}
+          onClick={() => handleClick(setRequestDetails, 'FUNC-018')}
           className="flex flex-row items-center justify-center ml-1">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -111,7 +120,7 @@ export default function FundRequest() {
         </div>
 
         <div
-          onClick={() => handleClick(setRequestUpdate)}
+          onClick={() => handleClick(setRequestUpdate, 'FUNC-019')}
           className="flex flex-row items-center justify-center ml-1">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -136,7 +145,7 @@ export default function FundRequest() {
         </div>
 
         <div
-          onClick={() => handleClick(setRequestDelete)}
+          onClick={() => handleClick(setRequestDelete, 'FUNC-020')}
           className="flex flex-row items-center justify-center ml-1">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -161,7 +170,7 @@ export default function FundRequest() {
         </div>
 
         <div
-          onClick={() => handleClick(setRequestApprove)}
+          onClick={() => handleClick(setRequestApprove, 'FUNC-021')}
           className="flex flex-row items-center justify-center ml-1">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -186,7 +195,7 @@ export default function FundRequest() {
         </div>
 
         <div
-          onClick={() => handleClick(setReverseApprove)}
+          onClick={() => handleClick(setReverseApprove, 'FUNC-022')}
           className="flex flex-row items-center justify-center ml-1">
           <svg
             className="w-6 h-6 text-white dark:text-white"
