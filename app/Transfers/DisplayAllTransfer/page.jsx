@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import Spinner from '@/app/Spinner/page'
 import { useState } from 'react';
