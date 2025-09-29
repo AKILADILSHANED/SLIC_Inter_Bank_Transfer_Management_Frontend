@@ -6,7 +6,6 @@ import Image from "next/image";
 import { useAuth } from '@/app/context/AuthContext';
 
 export default function UserLogin() {
-
   //Define base url;
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -28,7 +27,6 @@ export default function UserLogin() {
   const { login } = useAuth();
 
   //Handle Login function
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage("");
@@ -68,8 +66,8 @@ export default function UserLogin() {
 
   //Handle Password Reset function
   const handlePasswordReset = async () => {
-    setModalSuccessMessage(false);
-    SetModalErrorMessage(false);
+    setModalSuccessMessage("");
+    SetModalErrorMessage("");
     setModalLoadingStatus(true);
     if (resetPassword != resetRetypedPassword) {
       SetModalErrorMessage("New Password and Re-typed password should be same!");
@@ -104,186 +102,230 @@ export default function UserLogin() {
         setModalLoadingStatus(false);
       }
     }
-
   }
 
-
   return (
-    <div className="bg-[#02255a] w-full min-h-screen flex flex-row">
-      <div>
+    <div className="bg-[#02255a] min-h-screen flex flex-col lg:flex-row items-center justify-center p-4">
+      {/* Background Image - Hidden on mobile, visible on larger screens */}
+      <div className="hidden lg:block lg:flex-1 max-w-2xl">
         <Image
           src="/building01.png"
           alt="Building"
-          width={500}
-          height={300}
-          className="scale-100 float-left mt-[70px] border opacity-20"
+          width={600}
+          height={400}
+          className="w-full h-auto opacity-20 object-cover rounded-lg"
+          priority
         />
       </div>
-      <div className="min-h-screen flex flex-col">
-        <div className="text-white font-serif text-3xl items-center justify-center flex">
-          <label className="mt-7">
+
+      {/* Login Form Section */}
+      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-2xl">
+        {/* Title */}
+        <div className="text-white font-serif text-xl md:text-2xl lg:text-3xl text-center mb-8 lg:mb-12 px-4">
+          <label className="mt-4 lg:mt-8">
             Daily Inter Bank Transfers Management - SLICGL
           </label>
         </div>
-        <form onSubmit={(e) => handleLogin(e)}>
-          <div className=" flex flex-col items-center justify-center mt-35">
-            <div className="border border-white h-[270px] w-[600px] rounded-xl">
-              <div className="flex flex-row justify-center mt-2">
-                <label className="text-white text-xl font-serif">
-                  Please provide login credentials
-                </label>
-              </div>
 
-              <div className="flex flex-row items-center justify-center text-white mt-15">
-                <div className="font-serif text-lg">
-                  <label>Login ID: </label>
-                </div>
-                <div className="font-serif text-lg">
-                  <input
-                    type="email"
-                    className="ml-2 w-[300px] border border-white rounded-sm outline-none px-2 bg-slate-200 text-slate-900"
-                    placeholder="Enter E-mail"
-                    required
-                    ref={emailRef}
-                  />
-                </div>
-              </div>
-              <div className="ml-[-5px] flex flex-row items-center justify-center text-white mt-4">
-                <div className="font-serif text-lg">
-                  <label>Password: </label>
-                </div>
-                <div className="font-serif text-lg">
-                  <input
-                    type="password"
-                    className="ml-2 w-[300px] border border-white rounded-sm outline-none px-2  bg-slate-200 text-slate-900"
-                    placeholder="Enter Password"
-                    required
-                    ref={passwordRef}
-                  />
-                </div>
-              </div>
-
-              <div className="gap-2 flex flex-row items-center justify-center text-white mt-4">
-                <div className="font-serif text-lg">
-                  <button
-                    type="submit"
-                    className="border w-[100px] h-[35px] rounded-md hover:bg-slate-700 flex flex-row items-center justify-center px-2 py-1">
-                    {loadingStatus && (
-                      <div className="mt-1">
-                        <Spinner size={25} />
-                      </div>
-                    )}
-                    <div className="px-2">Login</div>
-                  </button>
-                </div>
-                <div className="font-serif text-lg">
-                  <div>
-                    <button
-                      data-dialog-target="sign-in-modal"
-                      onClick={() => setShowModal(true)}
-                      className="border w-[100px] h-[35px] rounded-md hover:bg-slate-700 flex flex-row items-center justify-center px-2 py-1">
-                      Reset
-                    </button>
-                    {showModal &&
-                      <div
-                        data-dialog-backdrop="sign-in-modal"
-                        data-dialog-backdrop-close="true"
-                        // Add an onClick handler to the backdrop to close the modal            
-                        // Conditionally apply classes based on the `showModal` state
-                        className={`pointer-events-auto fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300 ${showModal ? "opacity-100" : "opacity-0"
-                          }`}
-                      >
-                        <div
-                          data-dialog="sign-in-modal"
-                          className="relative mx-auto w-full max-w-[24rem] rounded-lg overflow-hidden shadow-sm"
-                        >
-                          <button
-                            onClick={() => setShowModal(false)}
-                            className="absolute top-2 right-2 z-10 p-1 rounded-full hover:bg-slate-700 transition-colors"
-                            aria-label="Close modal"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-6 w-6 text-white"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M6 18L18 6M6 6l12 12"
-                              />
-                            </svg>
-                          </button>
-
-                          <div className="relative flex flex-col bg-white">
-                            <div className="relative m-2.5 items-center flex justify-center text-white h-24 rounded-md bg-slate-800">
-                              <h3 className="text-2xl">
-                                Reset Password
-                              </h3>
-                            </div>
-                            <div className="flex flex-col gap-4 p-6">
-                              <div className="w-full max-w-sm min-w-[200px]">
-                                <label className="block mb-2 text-sm text-slate-600">
-                                  Email Address
-                                </label>
-                                <input value={resetEmail} onChange={(e) => setResetEmail(e.target.value)} required type="email" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" placeholder="Your Email Address" />
-                              </div>
-
-                              <div className="w-full max-w-sm min-w-[200px]">
-                                <label className="block mb-2 text-sm text-slate-600">
-                                  Temporary Password
-                                </label>
-                                <input value={resetTempPassword} onChange={(e) => SetResetTempPassword(e.target.value)} required type="password" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" placeholder="Your Temporary Password" />
-                              </div>
-
-                              <div className="w-full max-w-sm min-w-[200px]">
-                                <label className="block mb-2 text-sm text-slate-600">
-                                  New Password
-                                </label>
-                                <input maxLength={10} value={resetPassword} onChange={(e) => SetResetPassword(e.target.value)} required type="password" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" placeholder="Your New Password" />
-                              </div>
-
-                              <div className="w-full max-w-sm min-w-[200px]">
-                                <label className="block mb-2 text-sm text-slate-600">
-                                  Re-type Password
-                                </label>
-                                <input maxLength={10} value={resetRetypedPassword} onChange={(e) => SetResetRetypedPassword(e.target.value)} required type="password" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" placeholder="Re-type Password" />
-                              </div>
-                            </div>
-                            <div className="p-6 pt-0">
-                              <button onClick={() => handlePasswordReset()} className="w-full flex items-center justify-center gap-1 rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
-                                {modalLoadingStatus && (
-                                  <div className="mt-1">
-                                    <Spinner size={25} />
-                                  </div>
-                                )}
-                                Change Password
-                              </button>
-                            </div>
-                            {modalSuccessMessage && <div className="ml-[25px]"><label className="text-sm text-green-500">{modalSuccessMessage}</label></div>}
-                            {modalErrorMessage && <div className="ml-[25px]"><label className="text-sm text-red-500">{modalErrorMessage}</label></div>}
-                          </div>
-                        </div>
-                      </div>
-                    }
-                  </div>
-                </div>
-              </div>
-              {errorMessage && (
-                <div className="ml-[15px] flex flex-row items-center justify-center text-white mt-2">
-                  <div className="text-md">
-                    <label className="text-red-500">{errorMessage}</label>
-                  </div>
-                </div>
-              )}
+        {/* Login Form */}
+        <form onSubmit={handleLogin} className="w-full max-w-md">
+          <div className="border border-white rounded-xl p-6 md:p-8 bg-[#02255a]/80 backdrop-blur-sm w-full">
+            {/* Form Title */}
+            <div className="flex justify-center mb-6">
+              <label className="text-white text-lg md:text-xl font-serif text-center">
+                Please provide login credentials
+              </label>
             </div>
+
+            {/* Email Input */}
+            <div className="flex flex-col mb-4">
+              <label className="text-white font-serif text-sm md:text-lg mb-2">
+                Login ID:
+              </label>
+              <input
+                type="email"
+                className="w-full px-3 py-2 border border-white rounded-sm outline-none bg-slate-200 text-slate-900 placeholder-slate-600 text-sm md:text-base"
+                placeholder="Enter E-mail"
+                required
+                ref={emailRef}
+              />
+            </div>
+
+            {/* Password Input */}
+            <div className="flex flex-col mb-6">
+              <label className="text-white font-serif text-sm md:text-lg mb-2">
+                Password:
+              </label>
+              <input
+                type="password"
+                className="w-full px-3 py-2 border border-white rounded-sm outline-none bg-slate-200 text-slate-900 placeholder-slate-600 text-sm md:text-base"
+                placeholder="Enter Password"
+                required
+                ref={passwordRef}
+              />
+            </div>
+
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                type="submit"
+                className="flex items-center justify-center gap-2 border border-white text-white w-full sm:w-auto px-6 py-2 rounded-md hover:bg-slate-700 transition-colors duration-200 font-serif text-sm md:text-base"
+                disabled={loadingStatus}
+              >
+                {loadingStatus && <Spinner size={20} />}
+                Login
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => setShowModal(true)}
+                className="border border-white text-white w-full sm:w-auto px-6 py-2 rounded-md hover:bg-slate-700 transition-colors duration-200 font-serif text-sm md:text-base"
+              >
+                Reset
+              </button>
+            </div>
+
+            {/* Error Message */}
+            {errorMessage && (
+              <div className="mt-4 text-center">
+                <label className="text-red-400 text-sm">{errorMessage}</label>
+              </div>
+            )}
           </div>
         </form>
-        <div className="text-slate-500 text-sm ml-9"><label>Solution by Akila Edirisooriya. All Right Reserved &copy; 2025</label></div>
-      </div>      
+
+        {/* Footer */}
+        <div className="mt-6 lg:mt-8 text-center">
+          <label className="text-slate-400 text-xs md:text-sm">
+            Solution by Akila Edirisooriya. All Right Reserved &copy; 2025
+          </label>
+        </div>
+      </div>
+
+      {/* Reset Password Modal */}
+      {showModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="bg-white rounded-lg w-full max-w-md mx-auto overflow-hidden shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="bg-slate-800 text-white p-4 text-center relative">
+              <h3 className="text-xl font-semibold">Reset Password</h3>
+              <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-3 right-3 p-1 rounded-full hover:bg-slate-700 transition-colors"
+                aria-label="Close modal"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-4 md:p-6 space-y-4">
+              {/* Email */}
+              <div>
+                <label className="block mb-2 text-sm text-slate-600">
+                  Email Address
+                </label>
+                <input
+                  value={resetEmail}
+                  onChange={(e) => setResetEmail(e.target.value)}
+                  required
+                  type="email"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 text-slate-700 text-sm"
+                  placeholder="Your Email Address"
+                />
+              </div>
+
+              {/* Temporary Password */}
+              <div>
+                <label className="block mb-2 text-sm text-slate-600">
+                  Temporary Password
+                </label>
+                <input
+                  value={resetTempPassword}
+                  onChange={(e) => SetResetTempPassword(e.target.value)}
+                  required
+                  type="password"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 text-slate-700 text-sm"
+                  placeholder="Your Temporary Password"
+                />
+              </div>
+
+              {/* New Password */}
+              <div>
+                <label className="block mb-2 text-sm text-slate-600">
+                  New Password
+                </label>
+                <input
+                  maxLength={10}
+                  value={resetPassword}
+                  onChange={(e) => SetResetPassword(e.target.value)}
+                  required
+                  type="password"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 text-slate-700 text-sm"
+                  placeholder="Your New Password"
+                />
+              </div>
+
+              {/* Re-type Password */}
+              <div>
+                <label className="block mb-2 text-sm text-slate-600">
+                  Re-type Password
+                </label>
+                <input
+                  maxLength={10}
+                  value={resetRetypedPassword}
+                  onChange={(e) => SetResetRetypedPassword(e.target.value)}
+                  required
+                  type="password"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 text-slate-700 text-sm"
+                  placeholder="Re-type Password"
+                />
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 md:p-6 pt-0">
+              <button
+                onClick={handlePasswordReset}
+                disabled={modalLoadingStatus}
+                className="w-full flex items-center justify-center gap-2 bg-slate-800 text-white py-2 px-4 rounded-md hover:bg-slate-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
+              >
+                {modalLoadingStatus && <Spinner size={20} />}
+                Change Password
+              </button>
+
+              {/* Success/Error Messages */}
+              <div className="mt-4 text-center">
+                {modalSuccessMessage && (
+                  <p className="text-green-600 text-sm">{modalSuccessMessage}</p>
+                )}
+                {modalErrorMessage && (
+                  <p className="text-red-600 text-sm">{modalErrorMessage}</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
