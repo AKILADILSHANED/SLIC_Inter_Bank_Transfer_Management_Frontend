@@ -1,4 +1,4 @@
-"use state"
+"use client"
 import React, { useState } from "react";
 import Spinner from "@/app/Spinner/page";
 import { useEffect } from "react";

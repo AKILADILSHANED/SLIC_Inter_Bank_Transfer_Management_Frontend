@@ -163,11 +163,6 @@ export default function SearchRequest({ onCancel }) {
                   </th>
                   <th className="p-4 border-b border-slate-300 bg-slate-50 text-right">
                     <p className="block text-sm font-normal leading-none text-slate-500">
-                      Outstanding Amount
-                    </p>
-                  </th>
-                  <th className="p-4 border-b border-slate-300 bg-slate-50 text-right">
-                    <p className="block text-sm font-normal leading-none text-slate-500">
                       Request Date
                     </p>
                   </th>
@@ -230,20 +225,7 @@ export default function SearchRequest({ onCancel }) {
                             })
                           : element.requestAmount}
                       </p>
-                    </td>
-                    <td className="p-4 border-b border-slate-200 text-right">
-                      <p className="block text-sm text-slate-800">
-                        {typeof element.outstandingAmount === "number"
-                          ? element.outstandingAmount.toLocaleString(
-                              undefined,
-                              {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              }
-                            )
-                          : element.outstandingAmount}
-                      </p>
-                    </td>
+                    </td>                    
                     <td className="p-4 border-b border-slate-200">
                       <p className="block text-sm text-slate-800">
                         {element.requestDate}

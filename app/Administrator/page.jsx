@@ -5,18 +5,37 @@ import ChannelDetails from "./ChannelDetails/page";
 import RemoveChannel from "./RemoveChannel/page";
 import PriorityLevel from "./PriorityLevel/page";
 import NewTransferOption from "./NewTransferOption/page";
+import AvailableTransferOptions from "./AvailableTransferOptions/page";
+import TransferOptionDelete from "./TransferOptionDelete/page";
+import TransferOptionDeactivate from "./TransferOptionDeactivate/page";
+import TransferOptionReactivate from "./TransferOptionReactivate/page";
+import RevokeAuthority from "./RevokeAuthority/page";
+import GrantAuthority from "./GrantAuthority/page";
+import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from 'next/navigation';
 
 export default function Administrator() {
   //Define state variables;
   const [channelDropdown, setChannelDropdown] = useState(false);
   const [optionDropdown, setoptionDropdown] = useState(false);
+  const [authorityDropdown, setAuthorityDropdown] = useState(false);
 
   const [addChannel, setAddChannel] = useState(false);
   const [channelDetails, setChannelDetails] = useState(false);
   const [removeChannel, setRemoveChannel] = useState(false);
   const [priorityLevel, setPriorityLevel] = useState(false);
 
-  const [transferOption,setTransferOption] = useState(false);
+  const [transferOption, setTransferOption] = useState(false);
+  const [availableTransferOption, setAvailableTransferOption] = useState(false);
+  const [transferOptionDelete, setTransferOptionDelete] = useState(false);
+  const [transferOptionDeactivate, setTransferOptionDeactivate] = useState(false);
+  const [transferOptionReactivate, setTransferOptionReactivate] = useState(false);
+
+  const [grantAuthority, setGrantAuthority] = useState(false);
+  const [revokeAuthority, setRevokeAuthority] = useState(false);
+
+  const router = useRouter();
+  const { hasPermission } = useAuth();
 
   //Define subFunction array;
   const arraySubFunction = [
@@ -25,6 +44,12 @@ export default function Administrator() {
     setRemoveChannel,
     setPriorityLevel,
     setTransferOption,
+    setAvailableTransferOption,
+    setTransferOptionDelete,
+    setTransferOptionDeactivate,
+    setTransferOptionReactivate,
+    setGrantAuthority,
+    setRevokeAuthority
   ];
 
   //Define handleCancel function;
@@ -33,7 +58,12 @@ export default function Administrator() {
   };
 
   //Define handleSubFunction;
-  const handleSubFunction = (selectedFunction) => {
+  const handleSubFunction = (selectedFunction, requiredPermission) => {
+    // First, check for permission
+    if (requiredPermission && !hasPermission(requiredPermission)) {
+        router.push('/AccessDenied'); // Redirect if no permission
+        return;
+    }
     for (let userSelectedFunction of arraySubFunction) {
       userSelectedFunction(false);
     }
@@ -112,7 +142,7 @@ export default function Administrator() {
               aria-labelledby="menu-button"
               tabIndex="-1">
               <div
-                onClick={() => handleSubFunction(setAddChannel)}
+                onClick={() => handleSubFunction(setAddChannel, 'FUNC-032')}
                 className="py-1"
                 role="none">
                 <button
@@ -124,7 +154,7 @@ export default function Administrator() {
                 </button>
               </div>
               <div
-                onClick={() => handleSubFunction(setChannelDetails)}
+                onClick={() => handleSubFunction(setChannelDetails, 'FUNC-033')}
                 className="py-1"
                 role="none">
                 <button
@@ -136,7 +166,7 @@ export default function Administrator() {
                 </button>
               </div>
               <div
-                onClick={() => handleSubFunction(setRemoveChannel)}
+                onClick={() => handleSubFunction(setRemoveChannel, 'FUNC-034')}
                 className="py-1"
                 role="none">
                 <button
@@ -147,9 +177,9 @@ export default function Administrator() {
                   Remove Channel
                 </button>
               </div>
-              <div 
-              onClick={() => handleSubFunction(setPriorityLevel)}
-              className="py-1" role="none">
+              <div
+                onClick={() => handleSubFunction(setPriorityLevel, 'FUNC-035')}
+                className="py-1" role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
                   role="menuitem"
@@ -184,7 +214,7 @@ export default function Administrator() {
               />
             </svg>
 
-            <button            
+            <button
               type="button"
               className="inline-flex w-full border-none bg-slate-800 hover:bg-slate-700 justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm text-white shadow-xs"
               id="menu-button"
@@ -213,9 +243,9 @@ export default function Administrator() {
               aria-orientation="vertical"
               aria-labelledby="menu-button"
               tabIndex="-1">
-              <div 
-              onClick={() => handleSubFunction(setTransferOption)}
-              className="py-1" role="none">
+              <div
+                onClick={() => handleSubFunction(setTransferOption, 'FUNC-036')}
+                className="py-1" role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
                   role="menuitem"
@@ -224,7 +254,9 @@ export default function Administrator() {
                   Set New Option
                 </button>
               </div>
-              <div className="py-1" role="none">
+
+              <div onClick={() => handleSubFunction(setTransferOptionDeactivate, 'FUNC-037')}
+                className="py-1" role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
                   role="menuitem"
@@ -233,7 +265,26 @@ export default function Administrator() {
                   Option De-activate
                 </button>
               </div>
-              <div className="py-1" role="none">
+              <div onClick={() => handleSubFunction(setTransferOptionReactivate, 'FUNC-038')}
+                className="py-1" role="none">
+                <button
+                  className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
+                  role="menuitem"
+                  tabIndex="-1"
+                  id="menu-item-0">
+                  Option Re-activate
+                </button>
+              </div>
+              <div className="py-1" role="none" onClick={() => handleSubFunction(setTransferOptionDelete, 'FUNC-039')}>
+                <button
+                  className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
+                  role="menuitem"
+                  tabIndex="-1"
+                  id="menu-item-0">
+                  Option Delete
+                </button>
+              </div>
+              <div className="py-1" role="none" onClick={() => handleSubFunction(setAvailableTransferOption, 'FUNC-040')}>
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
                   role="menuitem"
@@ -246,28 +297,69 @@ export default function Administrator() {
           )}
         </div>
 
-        <div className="flex flex-row items-center justify-center ml-5">
-          <svg
-            className="w-6 h-6 text-white dark:text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24">
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
-            />
-          </svg>
-
-          <div className="text-sm text-white hover:bg-slate-700 w-[110px] h-[32] flex flex-col items-center justify-center rounded-md">
-            <button>Delete Account</button>
+        <div
+          onMouseEnter={() => setAuthorityDropdown(true)}
+          onMouseLeave={() => setAuthorityDropdown(false)}
+          className="relative inline-block text-left ml-2">
+          <div className="flex flex-row items-center">
+            <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path fillRule="evenodd" d="M17 10v1.126c.367.095.714.24 1.032.428l.796-.797 1.415 1.415-.797.796c.188.318.333.665.428 1.032H21v2h-1.126c-.095.367-.24.714-.428 1.032l.797.796-1.415 1.415-.796-.797a3.979 3.979 0 0 1-1.032.428V20h-2v-1.126a3.977 3.977 0 0 1-1.032-.428l-.796.797-1.415-1.415.797-.796A3.975 3.975 0 0 1 12.126 16H11v-2h1.126c.095-.367.24-.714.428-1.032l-.797-.796 1.415-1.415.796.797A3.977 3.977 0 0 1 15 11.126V10h2Zm.406 3.578.016.016c.354.358.574.85.578 1.392v.028a2 2 0 0 1-3.409 1.406l-.01-.012a2 2 0 0 1 2.826-2.83ZM5 8a4 4 0 1 1 7.938.703 7.029 7.029 0 0 0-3.235 3.235A4 4 0 0 1 5 8Zm4.29 5H7a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h6.101A6.979 6.979 0 0 1 9 15c0-.695.101-1.366.29-2Z" clipRule="evenodd" />
+            </svg>
+            <button
+              type="button"
+              className="inline-flex w-full border-none bg-slate-800 hover:bg-slate-700 justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm text-white shadow-xs"
+              id="menu-button"
+              aria-expanded="true"
+              aria-haspopup="true">
+              Functional Authority
+              <svg
+                className="-mr-1 size-5 text-gray-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+                data-slot="icon">
+                <path
+                  fillRule="evenodd"
+                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
           </div>
+
+          {authorityDropdown && (
+            <div
+              className="absolute right-0 z-10 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden"
+              role="menu"
+              aria-orientation="vertical"
+              aria-labelledby="menu-button"
+              tabIndex="-1">
+              <div
+                onClick={() => handleSubFunction(setGrantAuthority, 'FUNC-041')}
+                className="py-1" role="none">
+                <button
+                  className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
+                  role="menuitem"
+                  tabIndex="-1"
+                  id="menu-item-0">
+                  Grant Authority
+                </button>
+              </div>
+
+              <div onClick={() => handleSubFunction(setRevokeAuthority, 'FUNC-042')}
+                className="py-1" role="none">
+                <button
+                  className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
+                  role="menuitem"
+                  tabIndex="-1"
+                  id="menu-item-0">
+                  Revoke Authority
+                </button>
+              </div>
+            </div>
+          )}
         </div>
+
       </div>
 
       {addChannel && (
@@ -297,6 +389,42 @@ export default function Administrator() {
       {transferOption && (
         <div>
           <NewTransferOption onCancel={() => handleCancel(setTransferOption)} />
+        </div>
+      )}
+
+      {availableTransferOption && (
+        <div>
+          <AvailableTransferOptions onCancel={() => handleCancel(setAvailableTransferOption)} />
+        </div>
+      )}
+
+      {transferOptionDelete && (
+        <div>
+          <TransferOptionDelete onCancel={() => handleCancel(setTransferOptionDelete)} />
+        </div>
+      )}
+
+      {transferOptionDeactivate && (
+        <div>
+          <TransferOptionDeactivate onCancel={() => handleCancel(setTransferOptionDeactivate)} />
+        </div>
+      )}
+
+      {transferOptionReactivate && (
+        <div>
+          <TransferOptionReactivate onCancel={() => handleCancel(setTransferOptionReactivate)} />
+        </div>
+      )}
+
+      {grantAuthority && (
+        <div>
+          <GrantAuthority onCancel={() => handleCancel(setGrantAuthority)} />
+        </div>
+      )}
+
+      {revokeAuthority && (
+        <div>
+          <RevokeAuthority onCancel={() => handleCancel(setRevokeAuthority)} />
         </div>
       )}
     </div>

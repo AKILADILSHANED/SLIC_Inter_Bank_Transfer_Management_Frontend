@@ -4,6 +4,8 @@ import PaymentRegister from "./RegisterPayment/page";
 import PaymentSearch from "./PaymentSearch/page";
 import UpdatePayment from "./PaymentUpdate/page";
 import DeletePayment from "./PaymentDelete/page";
+import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from 'next/navigation';
 
 export default function AccountManagement() {
   //Define states;
@@ -11,6 +13,8 @@ export default function AccountManagement() {
   const [paymentSearch, setPaymentSearch] = useState(false);
   const [paymentUpdate, setPaymentUpdate] = useState(false);
   const [paymentDelete, setPaymentDelete] = useState(false);
+  const router = useRouter();
+  const { hasPermission } = useAuth();
 
   //Define cancel functionality;
   const handleCancel = (setterCancel) => {
@@ -26,7 +30,12 @@ export default function AccountManagement() {
   ];
 
   //Define function for handling each main function user clicks;
-  const handleClick = (setterFunction) => {
+  const handleClick = (setterFunction, requiredPermission) => {
+    // First, check for permission
+    if (requiredPermission && !hasPermission(requiredPermission)) {
+        router.push('/AccessDenied'); // Redirect if no permission
+        return;
+    }
     arraySetters.forEach((setter) => {
       setter(false);
     });
@@ -59,7 +68,7 @@ export default function AccountManagement() {
         </div>
 
         <div
-          onClick={() => handleClick(setPaymentRegister)}
+          onClick={() => handleClick(setPaymentRegister, 'FUNC-013')}
           className="flex flex-row items-center justify-center ml-[100px]">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -84,7 +93,7 @@ export default function AccountManagement() {
         </div>
 
         <div
-          onClick={() => handleClick(setPaymentSearch)}
+          onClick={() => handleClick(setPaymentSearch, 'FUNC-014')}
           className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -108,7 +117,7 @@ export default function AccountManagement() {
         </div>
 
         <div
-          onClick={() => handleClick(setPaymentUpdate)}
+          onClick={() => handleClick(setPaymentUpdate, 'FUNC-015')}
           className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -133,7 +142,7 @@ export default function AccountManagement() {
         </div>
 
         <div
-          onClick={() => handleClick(setPaymentDelete)}
+          onClick={() => handleClick(setPaymentDelete, 'FUNC-016')}
           className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"

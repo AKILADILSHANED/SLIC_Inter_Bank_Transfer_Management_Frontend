@@ -4,8 +4,10 @@ import Spinner from "@/app/Spinner/page";
 import { useState } from "react";
 import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
+import Router, { useRouter } from "next/navigation";
 
 export default function UserDelete({ onCancel }) {
+  const router = useRouter();
 
   //Define base url;
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -17,7 +19,7 @@ export default function UserDelete({ onCancel }) {
   const [loader, setLoader] = useState(false);
   const [deleteLoader, setDeleteLoader] = useState(false);
   const [userDetailsWindow, setUserDetailsWindow] = useState(false);
-  
+
   //Defined states for Updating text fields.
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -75,11 +77,15 @@ export default function UserDelete({ onCancel }) {
             setUserDetailsWindow(false);
           }
         } else {
-          setErrorMessageStatus(true);
-          setMessage(
-            "No response received from the server. Please contact the administrator!"
-          );
-          setUserDetailsWindow(false);
+          if (request.status === 403) {
+            router.push("/AccessDenied");
+          } else {
+            setErrorMessageStatus(true);
+            setMessage(
+              "No response received from the server. Please contact the administrator!"
+            );
+            setUserDetailsWindow(false);
+          }
         }
         setLoader(false);
       } catch (error) {

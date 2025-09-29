@@ -127,14 +127,14 @@ export default function DisplayBalance() {
                       Balance
                     </p>
                   </th>
-                  <th className="p-4 border-b border-slate-300 bg-slate-50 text-right">
+                  <th className="p-4 border-b border-slate-300 bg-slate-50">
                     <p className="block text-sm font-normal leading-none text-slate-500">
-                      Outstanding Balance
+                      Delete Status
                     </p>
                   </th>
                   <th className="p-4 border-b border-slate-300 bg-slate-50">
                     <p className="block text-sm font-normal leading-none text-slate-500">
-                      Delete Status
+                      Deleted By
                     </p>
                   </th>
                   <th className="p-4 border-b border-slate-300 bg-slate-50">
@@ -177,19 +177,14 @@ export default function DisplayBalance() {
                           : element.balanceAmount}
                       </p>
                     </td>
-                    <td className="p-4 border-b border-slate-200 text-right">
+                    <td className="p-4 border-b border-slate-200">
                       <p className="block text-sm text-slate-800">
-                        {typeof element.outstandingBalance === "number"
-                          ? element.outstandingBalance.toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
-                          : element.outstandingBalance}
+                        {element.deleteStatus}
                       </p>
                     </td>
                     <td className="p-4 border-b border-slate-200">
                       <p className="block text-sm text-slate-800">
-                        {element.deleteStatus}
+                        {element.deletedBy}
                       </p>
                     </td>
                     <td className="p-4 border-b border-slate-200">

@@ -4,9 +4,10 @@ import Spinner from "@/app/Spinner/page";
 import { useState } from "react";
 import ErrorMessage from "@/app/Messages/ErrorMessage/page";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
+import Router, { useRouter } from "next/navigation";
 
 export default function UpdateUser({ onCancel }) {
-  
+  const router = useRouter();
   //Define base url;
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -58,29 +59,33 @@ export default function UpdateUser({ onCancel }) {
           }
         );
         if (request.ok) {
-          const respnse = await request.json();
-          if (respnse.success == true) {
+          const response = await request.json();
+          if (response.success == true) {
             //Setting response values to text field states.
-            setFirstName(respnse.responseObject.userFirstName);
-            setLastName(respnse.responseObject.userLastName);
-            setEpf(respnse.responseObject.userEpf);
-            setEmail(respnse.responseObject.userEmail);
-            setActiveStatus(respnse.responseObject.userActiveStatus);
-            setUserLevel(respnse.responseObject.userLevel);
-            setCreatedDate(respnse.responseObject.userCreatedDate);
-            setCreatedBy(respnse.responseObject.userCreateBy);
+            setFirstName(response.responseObject.userFirstName);
+            setLastName(response.responseObject.userLastName);
+            setEpf(response.responseObject.userEpf);
+            setEmail(response.responseObject.userEmail);
+            setActiveStatus(response.responseObject.userActiveStatus);
+            setUserLevel(response.responseObject.userLevel);
+            setCreatedDate(response.responseObject.userCreatedDate);
+            setCreatedBy(response.responseObject.userCreateBy);
             setUserDetailsWindow(true);
           } else {
             setErrorMessageStatus(true);
-            setMessage(respnse.message);
+            setMessage(response.message);
             setUserDetailsWindow(false);
           }
         } else {
-          setErrorMessageStatus(true);
-          setMessage(
-            "No response received from the server. Please contact the administrator!"
-          );
-          setUserDetailsWindow(false);
+          if (request.status === 403) {
+            router.push("/AccessDenied");
+          } else {
+            setErrorMessageStatus(true);
+            setMessage(
+              "No response received from the server. Please contact the administrator!"
+            );
+            setUserDetailsWindow(false);
+          }
         }
         setLoader(false);
       } catch (error) {

@@ -93,7 +93,6 @@ export default function UpdateRequest({ onCancel }) {
             requestId: requestDetails.requestId,
             accountId: updatedAccountNumber,
             requestAmount: requestDetails.requestAmount,
-            outstandingAmount: requestDetails.outstandingAmount,
             paymentType: updatedPaymentType,
             adjustmentType: updatedAdjustmentType,
             adjustmentAmount: updatedAdjustmentAmount,
