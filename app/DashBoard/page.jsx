@@ -14,7 +14,7 @@ export default function DashBoard() {
         ibtTransfers: 0,
         rtgsTransfers: 0,
         chequeTransfers: 0,
-        pendingTransfers: 0 // Added missing property
+        pendingTransfers: 0
     });
     const [isClient, setIsClient] = useState(false);
     const [forecastDetails, setForecastDetails] = useState([]);
@@ -126,219 +126,171 @@ export default function DashBoard() {
         }, []);
 
         return (
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-xs sm:text-sm">
-                <div className='text-white'>Time: {currentTime.toLocaleTimeString()}</div>
-                <div className='text-white'>Date: {currentTime.toLocaleDateString()}</div>
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm">
+                <div className='text-white font-medium'>🕒 {currentTime.toLocaleTimeString()}</div>
+                <div className='text-white font-medium'>📅 {currentTime.toLocaleDateString()}</div>
             </div>
         );
     }
 
+    // Calculate percentages for progress bars
+    const calculatePercentage = (value) => {
+        return transactionDetails.totalTransfers > 0 ?
+            (value / transactionDetails.totalTransfers * 100).toFixed(0) : 0;
+    };
+
     return (
-        <div className={animate ? 'fade-in' : ''}>
-            {/* Alert Banner */}
-            <div className="p-3 mb-2 flex flex-col sm:flex-row items-center justify-between bg-red-700 text-white rounded-lg">
-                <div className="flex items-center mb-2 sm:mb-0">
-                    <div className='font-bold text-sm mr-2'>Messages:</div>
-                    <div className="overflow-hidden">
-                        <div className="whitespace-nowrap animate-marquee text-red-200 text-sm">
-                            No message to display.
+        <div className={`min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4 ${animate ? 'fade-in' : ''}`}>
+            {/* Header Section */}
+            <div className="mb-6">
+                <div className="bg-gradient-to-r from-blue-600 to-purple-700 rounded-2xl p-6 shadow-2xl">
+                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                        <div>
+                            <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                                Daily Inter Bank Transfers Dashboard
+                            </h1>
+                            <p className="text-blue-100 text-sm md:text-base">
+                                Real-time monitoring and financial insights
+                            </p>
+                        </div>
+                        <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-white/30">
+                            {isClient && <TimeDisplay />}
                         </div>
                     </div>
                 </div>
-                <div className='flex justify-end'>
-                    {isClient && <TimeDisplay/>}
+            </div>
+
+            {/* Alert Banner */}
+            <div className="mb-6 bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl p-4 shadow-lg">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <div className="bg-white/20 p-2 rounded-lg">
+                            <span className="text-white text-lg">📢</span>
+                        </div>
+                        <div className="text-white font-semibold">System Notification:</div>
+                    </div>
+                    <div className="text-white/90 text-sm">
+                        No critical messages to display
+                    </div>
                 </div>
             </div>
 
             {/* First Row - Transaction Summary and Forecasting */}
-            <div className='flex flex-col lg:flex-row gap-3 p-2'>
+            <div className='grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6'>
                 {/* Transaction Summary Card */}
-                <div className='w-full lg:w-1/3'>
-                    <div className="bg-white rounded-lg shadow-sm hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 p-4 h-full">
-                        <h5 className="text-lg font-bold text-red-600 tracking-tight underline dark:text-white mb-4">
-                            Transaction Summary
-                        </h5>
-                        
-                        <div className="space-y-3">
-                            {/* Total Transfers */}
-                            <div className='flex justify-between items-center'>
-                                <label className="text-sm text-blue-600 font-medium">Total Transfers:</label>
-                                <div className='flex gap-2'>
-                                    <span className="bg-green-300 text-green-800 text-xs font-medium px-3 py-1 rounded-sm dark:bg-green-900 dark:text-green-300 min-w-[50px] text-center">
-                                        {transactionDetails.totalTransfers}
-                                    </span>
-                                    <span className="bg-blue-800 text-white text-xs font-medium px-3 py-1 rounded-sm dark:bg-blue-900 dark:text-blue-300 min-w-[50px] text-center">
-                                        {transactionDetails.totalTransfers > 0 ? 
-                                            (100 / transactionDetails.totalTransfers * transactionDetails.totalTransfers).toFixed(0) : 0}%
-                                    </span>
-                                </div>
+                <div className='xl:col-span-1'>
+                    <div className="bg-white rounded-2xl shadow-xl border border-slate-200 hover:shadow-2xl transition-all duration-300 p-6 h-full">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-xl">
+                                <span className="text-white text-xl">📊</span>
                             </div>
-
-                            {/* Approved */}
-                            <div className='flex justify-between items-center'>
-                                <label className="text-sm text-blue-600 font-medium">Approved:</label>
-                                <div className='flex gap-2'>
-                                    <span className="bg-green-300 text-green-800 text-xs font-medium px-3 py-1 rounded-sm dark:bg-green-900 dark:text-green-300 min-w-[50px] text-center">
-                                        {transactionDetails.approvedTransfers}
-                                    </span>
-                                    <span className="bg-blue-800 text-white text-xs font-medium px-3 py-1 rounded-sm dark:bg-blue-900 dark:text-blue-300 min-w-[50px] text-center">
-                                        {transactionDetails.totalTransfers > 0 ? 
-                                            (100 / transactionDetails.totalTransfers * transactionDetails.approvedTransfers).toFixed(0) : 0}%
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Pending */}
-                            <div className='flex justify-between items-center'>
-                                <label className="text-sm text-blue-600 font-medium">Pending:</label>
-                                <div className='flex gap-2'>
-                                    <span className="bg-green-300 text-green-800 text-xs font-medium px-3 py-1 rounded-sm dark:bg-green-900 dark:text-green-300 min-w-[50px] text-center">
-                                        {transactionDetails.pendingTransfers || 0}
-                                    </span>
-                                    <span className="bg-blue-800 text-white text-xs font-medium px-3 py-1 rounded-sm dark:bg-blue-900 dark:text-blue-300 min-w-[50px] text-center">
-                                        {transactionDetails.totalTransfers > 0 ? 
-                                            (100 / transactionDetails.totalTransfers * (transactionDetails.pendingTransfers || 0)).toFixed(0) : 0}%
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Reversed */}
-                            <div className='flex justify-between items-center'>
-                                <label className="text-sm text-blue-600 font-medium">Reversed:</label>
-                                <div className='flex gap-2'>
-                                    <span className="bg-green-300 text-green-800 text-xs font-medium px-3 py-1 rounded-sm dark:bg-green-900 dark:text-green-300 min-w-[50px] text-center">
-                                        {transactionDetails.rejectedTransfers}
-                                    </span>
-                                    <span className="bg-blue-800 text-white text-xs font-medium px-3 py-1 rounded-sm dark:bg-blue-900 dark:text-blue-300 min-w-[50px] text-center">
-                                        {transactionDetails.totalTransfers > 0 ? 
-                                            (100 / transactionDetails.totalTransfers * transactionDetails.rejectedTransfers).toFixed(0) : 0}%
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Online */}
-                            <div className='flex justify-between items-center'>
-                                <label className="text-sm text-blue-600 font-medium">Online:</label>
-                                <div className='flex gap-2'>
-                                    <span className="bg-green-300 text-green-800 text-xs font-medium px-3 py-1 rounded-sm dark:bg-green-900 dark:text-green-300 min-w-[50px] text-center">
-                                        {transactionDetails.onlineTransfers}
-                                    </span>
-                                    <span className="bg-blue-800 text-white text-xs font-medium px-3 py-1 rounded-sm dark:bg-blue-900 dark:text-blue-300 min-w-[50px] text-center">
-                                        {transactionDetails.totalTransfers > 0 ? 
-                                            (100 / transactionDetails.totalTransfers * transactionDetails.onlineTransfers).toFixed(0) : 0}%
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* IBT */}
-                            <div className='flex justify-between items-center'>
-                                <label className="text-sm text-blue-600 font-medium">IBT:</label>
-                                <div className='flex gap-2'>
-                                    <span className="bg-green-300 text-green-800 text-xs font-medium px-3 py-1 rounded-sm dark:bg-green-900 dark:text-green-300 min-w-[50px] text-center">
-                                        {transactionDetails.ibtTransfers}
-                                    </span>
-                                    <span className="bg-blue-800 text-white text-xs font-medium px-3 py-1 rounded-sm dark:bg-blue-900 dark:text-blue-300 min-w-[50px] text-center">
-                                        {transactionDetails.totalTransfers > 0 ? 
-                                            (100 / transactionDetails.totalTransfers * transactionDetails.ibtTransfers).toFixed(0) : 0}%
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* RTGS */}
-                            <div className='flex justify-between items-center'>
-                                <label className="text-sm text-blue-600 font-medium">RTGS:</label>
-                                <div className='flex gap-2'>
-                                    <span className="bg-green-300 text-green-800 text-xs font-medium px-3 py-1 rounded-sm dark:bg-green-900 dark:text-green-300 min-w-[50px] text-center">
-                                        {transactionDetails.rtgsTransfers}
-                                    </span>
-                                    <span className="bg-blue-800 text-white text-xs font-medium px-3 py-1 rounded-sm dark:bg-blue-900 dark:text-blue-300 min-w-[50px] text-center">
-                                        {transactionDetails.totalTransfers > 0 ? 
-                                            (100 / transactionDetails.totalTransfers * transactionDetails.rtgsTransfers).toFixed(0) : 0}%
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Cheque */}
-                            <div className='flex justify-between items-center'>
-                                <label className="text-sm text-blue-600 font-medium">Cheque:</label>
-                                <div className='flex gap-2'>
-                                    <span className="bg-green-300 text-green-800 text-xs font-medium px-3 py-1 rounded-sm dark:bg-green-900 dark:text-green-300 min-w-[50px] text-center">
-                                        {transactionDetails.chequeTransfers}
-                                    </span>
-                                    <span className="bg-blue-800 text-white text-xs font-medium px-3 py-1 rounded-sm dark:bg-blue-900 dark:text-blue-300 min-w-[50px] text-center">
-                                        {transactionDetails.totalTransfers > 0 ? 
-                                            (100 / transactionDetails.totalTransfers * transactionDetails.chequeTransfers).toFixed(0) : 0}%
-                                    </span>
-                                </div>
-                            </div>
+                            <h5 className="text-xl font-bold text-slate-800">
+                                Transaction Summary
+                            </h5>
                         </div>
-                        
-                        <div className='mt-4 pt-3 border-t border-gray-200'>
-                            <label className='text-xs text-slate-500'>
-                                Last Updated on: {isClient && new Date().toLocaleDateString()}
+
+                        <div className="space-y-4">
+                            {[
+                                { label: "Total Transfers", value: transactionDetails.totalTransfers, color: "from-blue-500 to-cyan-500" },
+                                { label: "Approved", value: transactionDetails.approvedTransfers, color: "from-green-500 to-emerald-500" },
+                                { label: "Pending", value: transactionDetails.pendingTransfers || 0, color: "from-amber-500 to-orange-500" },
+                                { label: "Reversed", value: transactionDetails.rejectedTransfers, color: "from-red-500 to-rose-500" },
+                                { label: "Online", value: transactionDetails.onlineTransfers, color: "from-purple-500 to-indigo-500" },
+                                { label: "IBT", value: transactionDetails.ibtTransfers, color: "from-teal-500 to-cyan-500" },
+                                { label: "RTGS", value: transactionDetails.rtgsTransfers, color: "from-sky-500 to-blue-500" },
+                                { label: "Cheque", value: transactionDetails.chequeTransfers, color: "from-gray-500 to-slate-500" }
+                            ].map((item, index) => (
+                                <div key={index} className='flex justify-between items-center'>
+                                    <label className="text-sm font-medium text-slate-700">{item.label}:</label>
+                                    <div className='flex items-center gap-3'>
+                                        <span className={`bg-gradient-to-r ${item.color} text-white text-xs font-semibold px-3 py-2 rounded-lg min-w-[60px] text-center shadow-md`}>
+                                            {item.value}
+                                        </span>
+                                        <div className="w-16 bg-slate-200 rounded-full h-2">
+                                            <div
+                                                className={`bg-gradient-to-r ${item.color} h-2 rounded-full transition-all duration-500`}
+                                                style={{ width: `${calculatePercentage(item.value)}%` }}
+                                            ></div>
+                                        </div>
+                                        <span className="text-xs font-bold text-slate-600 min-w-[35px]">
+                                            {calculatePercentage(item.value)}%
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className='mt-6 pt-4 border-t border-slate-200'>
+                            <label className='text-xs text-slate-500 font-medium'>
+                                📍 Last Updated: {isClient && new Date().toLocaleString()}
                             </label>
                         </div>
                     </div>
                 </div>
 
                 {/* Forecasting Card */}
-                <div className='w-full lg:w-2/3'>
-                    <div className="bg-white rounded-lg shadow-sm hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 p-4 h-full">
-                        <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4'>
-                            <h5 className="text-lg font-bold text-red-600 tracking-tight underline dark:text-white">
-                                Forecasting Fund Request Details
-                            </h5>
-                            <div className='bg-green-800 text-white px-4 py-2 rounded text-sm w-full sm:w-auto text-center'>
-                                Total Forecasted Amount: {" Rs." + totalForecastAmount.toLocaleString(undefined, { 
-                                    minimumFractionDigits: 2, 
-                                    maximumFractionDigits: 2 
+                <div className='xl:col-span-2'>
+                    <div className="bg-white rounded-2xl shadow-xl border border-slate-200 hover:shadow-2xl transition-all duration-300 p-6 h-full">
+                        <div className='flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6'>
+                            <div className="flex items-center gap-3">
+                                <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-xl">
+                                    <span className="text-white text-xl">💰</span>
+                                </div>
+                                <h5 className="text-xl font-bold text-slate-800">
+                                    Forecasting Fund Requests
+                                </h5>
+                            </div>
+                            <div className='bg-gradient-to-r from-emerald-500 to-green-500 text-white px-6 py-3 rounded-xl text-lg font-bold shadow-lg w-full lg:w-auto text-center'>
+                                Total: {" Rs." + totalForecastAmount.toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
                                 })}
                             </div>
                         </div>
-                        
+
                         {forecastDetailsTable && (
-                            <div className="overflow-x-auto">
-                                <table className="min-w-full text-xs sm:text-sm bg-white shadow-md rounded-xl">
+                            <div className="overflow-x-auto rounded-xl border border-slate-200">
+                                <table className="min-w-full text-sm bg-white">
                                     <thead>
-                                        <tr className="bg-blue-100 text-gray-700">
-                                            <th className="py-3 px-2 sm:px-4 text-left">Payment</th>
-                                            <th className="py-3 px-2 sm:px-4 text-left">Account</th>
-                                            <th className="py-3 px-2 sm:px-4 text-left">Amount</th>
-                                            <th className="py-3 px-2 sm:px-4 text-left hidden sm:table-cell">Required Date</th>
-                                            <th className="py-3 px-2 sm:px-4 text-left hidden md:table-cell">Request By</th>
+                                        <tr className="bg-gradient-to-r from-slate-600 to-slate-700 text-white">
+                                            <th className="py-4 px-4 text-left font-semibold">Payment Type</th>
+                                            <th className="py-4 px-4 text-left font-semibold">Account</th>
+                                            <th className="py-4 px-4 text-left font-semibold">Amount</th>
+                                            <th className="py-4 px-4 text-left font-semibold hidden lg:table-cell">Required Date</th>
+                                            <th className="py-4 px-4 text-left font-semibold hidden xl:table-cell">Request By</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="text-gray-900">
+                                    <tbody className="divide-y divide-slate-200">
                                         {forecastDetails.map((element, index) => (
-                                            <tr key={index} className="border-b border-gray-200 hover:bg-gray-50">
-                                                <td className="py-3 px-2 sm:px-4">{element.paymentType}</td>
-                                                <td className="py-3 px-2 sm:px-4">{element.bankAccount}</td>
-                                                <td className="py-3 px-2 sm:px-4">
+                                            <tr key={index} className="hover:bg-slate-50 transition-colors duration-200">
+                                                <td className="py-3 px-4 font-medium text-slate-800">{element.paymentType}</td>
+                                                <td className="py-3 px-4 text-slate-700">{element.bankAccount}</td>
+                                                <td className="py-3 px-4 font-semibold text-green-600">
                                                     {typeof element.amount === "number"
-                                                        ? element.amount.toLocaleString(undefined, {
+                                                        ? "Rs. " + element.amount.toLocaleString(undefined, {
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2,
                                                         })
                                                         : element.amount}
                                                 </td>
-                                                <td className="py-3 px-2 sm:px-4 hidden sm:table-cell">{element.date}</td>
-                                                <td className="py-3 px-2 sm:px-4 hidden md:table-cell">{element.requestedBy}</td>
+                                                <td className="py-3 px-4 text-slate-600 hidden lg:table-cell">{element.date}</td>
+                                                <td className="py-3 px-4 text-slate-600 hidden xl:table-cell">{element.requestedBy}</td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             </div>
                         )}
-                        
+
                         {errorMessageForecast && (
-                            <div className='mt-3'>
-                                <label className='text-sm text-red-600'>{errorMessageForecast}</label>
+                            <div className='mt-4 p-4 bg-red-50 border border-red-200 rounded-xl'>
+                                <label className='text-sm text-red-700 font-medium'>{errorMessageForecast}</label>
                             </div>
                         )}
-                        
-                        <div className='mt-4 pt-3 border-t border-gray-200'>
-                            <label className='text-xs text-slate-500'>
-                                Last Updated on: {isClient && new Date().toLocaleDateString()}
+
+                        <div className='mt-6 pt-4 border-t border-slate-200'>
+                            <label className='text-xs text-slate-500 font-medium'>
+                                📍 Last Updated: {isClient && new Date().toLocaleString()}
                             </label>
                         </div>
                     </div>
@@ -346,111 +298,122 @@ export default function DashBoard() {
             </div>
 
             {/* Second Row - Balance Summary and Bank Links */}
-            <div className='flex flex-col lg:flex-row gap-3 p-2 mt-3'>
+            <div className='grid grid-cols-1 xl:grid-cols-3 gap-6'>
                 {/* Balance Summary Card */}
-                <div className='w-full lg:w-2/3'>
-                    <div className="bg-white rounded-lg shadow-sm hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 p-4 h-full">
-                        <h5 className="text-lg font-bold text-red-600 tracking-tight underline dark:text-white mb-4">
-                            Account Balance Summary
-                        </h5>
-                        
+                <div className='xl:col-span-2'>
+                    <div className="bg-white rounded-2xl shadow-xl border border-slate-200 hover:shadow-2xl transition-all duration-300 p-6 h-full">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="bg-gradient-to-r from-cyan-500 to-blue-500 p-3 rounded-xl">
+                                <span className="text-white text-xl">🏦</span>
+                            </div>
+                            <h5 className="text-xl font-bold text-slate-800">
+                                Account Balance Summary
+                            </h5>
+                        </div>
+
                         {balanceDetailsTable && (
-                            <div className="overflow-x-auto">
-                                <table className="min-w-full text-xs sm:text-sm bg-white shadow-md rounded-xl">
+                            <div className="overflow-x-auto rounded-xl border border-slate-200">
+                                <table className="min-w-full text-sm bg-white">
                                     <thead>
-                                        <tr className="bg-blue-100 text-gray-700">
-                                            <th className="py-3 px-2 sm:px-4 text-left">Account Number</th>
-                                            <th className="py-3 px-2 sm:px-4 text-left">Original Balance</th>
-                                            <th className="py-3 px-2 sm:px-4 text-left">Final Balance</th>
+                                        <tr className="bg-gradient-to-r from-slate-600 to-slate-700 text-white">
+                                            <th className="py-4 px-4 text-left font-semibold">Account Number</th>
+                                            <th className="py-4 px-4 text-left font-semibold">Original Balance</th>
+                                            <th className="py-4 px-4 text-left font-semibold">Final Balance</th>
+                                            <th className="py-4 px-4 text-left font-semibold">Difference</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="text-gray-900">
-                                        {balanceDetails.map((element, index) => (
-                                            <tr key={index} className="border-b border-gray-200 hover:bg-gray-50">
-                                                <td className="py-3 px-2 sm:px-4">{element.accountNumber}</td>
-                                                <td className="py-3 px-2 sm:px-4">
-                                                    {typeof element.originalBalance === "number"
-                                                        ? element.originalBalance.toLocaleString(undefined, {
+                                    <tbody className="divide-y divide-slate-200">
+                                        {balanceDetails.map((element, index) => {
+                                            const original = typeof element.originalBalance === "number" ? element.originalBalance : 0;
+                                            const final = typeof element.finalBalance === "number" ? element.finalBalance : 0;
+                                            const difference = final - original;
+
+                                            return (
+                                                <tr key={index} className="hover:bg-slate-50 transition-colors duration-200">
+                                                    <td className="py-3 px-4 font-medium text-slate-800">{element.accountNumber}</td>
+                                                    <td className="py-3 px-4 text-slate-700">
+                                                        Rs. {original.toLocaleString(undefined, {
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2,
-                                                        })
-                                                        : element.originalBalance}
-                                                </td>
-                                                <td className="py-3 px-2 sm:px-4">
-                                                    {typeof element.finalBalance === "number"
-                                                        ? element.finalBalance.toLocaleString(undefined, {
+                                                        })}
+                                                    </td>
+                                                    <td className="py-3 px-4 font-semibold text-slate-800">
+                                                        Rs. {final.toLocaleString(undefined, {
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2,
-                                                        })
-                                                        : element.finalBalance}
-                                                </td>
-                                            </tr>
-                                        ))}
+                                                        })}
+                                                    </td>
+                                                    <td className={`py-3 px-4 font-bold ${difference >= 0 ? 'text-green-600' : 'text-red-600'
+                                                        }`}>
+                                                        {difference >= 0 ? '+' : ''}{difference.toLocaleString(undefined, {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2,
+                                                        })}
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
                                     </tbody>
                                 </table>
                             </div>
                         )}
-                        
+
                         {errorMessageBalance && (
-                            <div className='mt-3'>
-                                <label className='text-sm text-red-600'>{errorMessageBalance}</label>
+                            <div className='mt-4 p-4 bg-red-50 border border-red-200 rounded-xl'>
+                                <label className='text-sm text-red-700 font-medium'>{errorMessageBalance}</label>
                             </div>
                         )}
-                        
-                        <div className='mt-4 pt-3 border-t border-gray-200'>
-                            <label className='text-xs text-slate-500'>
-                                Last Updated on: {isClient && new Date().toLocaleDateString()}
+
+                        <div className='mt-6 pt-4 border-t border-slate-200'>
+                            <label className='text-xs text-slate-500 font-medium'>
+                                📍 Last Updated: {isClient && new Date().toLocaleString()}
                             </label>
                         </div>
                     </div>
                 </div>
 
                 {/* Bank Links Card */}
-                <div className='w-full lg:w-1/3'>
-                    <div className="bg-white rounded-lg shadow-sm hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 p-4 h-full">
-                        <h5 className="text-lg font-bold text-red-600 tracking-tight underline dark:text-white mb-4">
-                            Useful Bank Links
-                        </h5>
-                        
-                        <div className="overflow-x-auto">
-                            <table className="min-w-full text-xs bg-white rounded-lg">
-                                <thead>
-                                    <tr className="bg-gray-100">
-                                        <th className="px-3 py-2 text-left text-gray-600 font-medium">Bank</th>
-                                        <th className="px-3 py-2 text-left text-gray-600 font-medium">Link</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-200">
-                                    {[
-                                        { name: "Commercial Bank Digital", url: "https://www.combankdigital.com/#/login" },
-                                        { name: "Commercial Bank Online", url: "https://www.commercialbk.com/online/2/2/22001.aspx" },
-                                        { name: "People's Bank", url: "https://www.digital.peoplesbank.lk/sde.cib.web/IC7Aen6rwhPuCBkeEBEyTg#1" },
-                                        { name: "Bank of Ceylon", url: "https://online.boc.lk/T001/channel.jsp" },
-                                        { name: "Sampath Vishwa", url: "https://online.boc.lk/T001/channel.jsp" },
-                                        { name: "Hatton National Bank", url: "https://hnbtxb.com/bib-webapp/app/auth/login" },
-                                        { name: "Nations Trust Bank", url: "https://hnbtxb.com/bib-webapp/app/auth/login" },
-                                        { name: "Seylan Bank", url: "https://www.seylanbank.lk/corporate/login" },
-                                        { name: "Pan Asia Bank", url: "https://online.pabcbank.com/business/login" },
-                                        { name: "DFCC Bank", url: "https://iconnect.dfcc.lk/iCashProGUI/?_gl=1*1fb53du*_ga*NDIyMDYxOTc3LjE3NTUwMjAxMTk.*_ga_NKW2NZ9CFC*czE3NTUwMjAxMTgkbzEkZzEkdDE3NTUwMjAxMjAkajU4JGwwJGgw#!/login" }
-                                    ].map((bank, index) => (
-                                        <tr key={index} className="hover:bg-gray-50">
-                                            <td className="px-3 py-2 text-gray-800 font-medium whitespace-nowrap">
-                                                {bank.name}
-                                            </td>
-                                            <td className="px-3 py-2">
-                                                <a 
-                                                    href={bank.url} 
-                                                    target="_blank" 
-                                                    rel="noopener noreferrer"
-                                                    className="text-blue-600 hover:text-blue-800 underline text-xs"
-                                                >
-                                                    Go to site
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                <div className='xl:col-span-1'>
+                    <div className="bg-white rounded-2xl shadow-xl border border-slate-200 hover:shadow-2xl transition-all duration-300 p-6 h-full">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="bg-gradient-to-r from-orange-500 to-red-500 p-3 rounded-xl">
+                                <span className="text-white text-xl">🔗</span>
+                            </div>
+                            <h5 className="text-xl font-bold text-slate-800">
+                                Useful Bank Links
+                            </h5>
+                        </div>
+
+                        <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
+                            {[
+                                { name: "Commercial Bank Digital", url: "https://www.combankdigital.com/#/login" },
+                                { name: "Commercial Bank Online", url: "https://www.commercialbk.com/online/2/2/22001.aspx" },
+                                { name: "People's Bank", url: "https://www.digital.peoplesbank.lk/sde.cib.web/IC7Aen6rwhPuCBkeEBEyTg#1" },
+                                { name: "Bank of Ceylon", url: "https://online.boc.lk/T001/channel.jsp" },
+                                { name: "Sampath Vishwa", url: "https://online.boc.lk/T001/channel.jsp" },
+                                { name: "Hatton National Bank", url: "https://hnbtxb.com/bib-webapp/app/auth/login" },
+                                { name: "Nations Trust Bank", url: "https://hnbtxb.com/bib-webapp/app/auth/login" },
+                                { name: "Seylan Bank", url: "https://www.seylanbank.lk/corporate/login" },
+                                { name: "Pan Asia Bank", url: "https://online.pabcbank.com/business/login" },
+                                { name: "DFCC Bank", url: "https://iconnect.dfcc.lk/iCashProGUI/?_gl=1*1fb53du*_ga*NDIyMDYxOTc3LjE3NTUwMjAxMTk.*_ga_NKW2NZ9CFC*czE3NTUwMjAxMTgkbzEkZzEkdDE3NTUwMjAxMjAkajU4JGwwJGgw#!/login" }
+                            ].map((bank, index) => (
+                                <a
+                                    key={index}
+                                    href={bank.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block p-4 rounded-xl bg-white border border-slate-200 text-slate-700 shadow-sm hover:shadow-md hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 group"
+                                >
+                                    <div className="flex justify-between items-center">
+                                        <span className="font-medium text-sm group-hover:text-blue-700 transition-colors">
+                                            {bank.name}
+                                        </span>
+                                        <span className="text-slate-400 group-hover:text-blue-500 transition-colors">
+                                            ↗
+                                        </span>
+                                    </div>
+                                </a>
+                            ))}
                         </div>
                     </div>
                 </div>
