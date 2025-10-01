@@ -53,3 +53,30 @@ body {
   animation: fadeIn 0.9s ease-in-out forwards;
 }
 
+
+
+
+
+/* PDF Safe Styles */
+.pdf-safe-table {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+.pdf-safe-table * {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+.pdf-safe-table th {
+  background-color: #f8f9fa !important;
+  color: #000000 !important;
+}
+
+.pdf-safe-table td {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+

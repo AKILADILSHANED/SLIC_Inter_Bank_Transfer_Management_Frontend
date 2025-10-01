@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Spinner from "@/app/Spinner/page";
 import { Suspense } from "react";
+import Printings from "@/app/Printings/page";
 
 function FullNameComponent() {
   const name = useSearchParams();
@@ -21,6 +22,7 @@ export default function DashBoard() {
   const [loaderTransfers, setLoaderTransfers] = useState(false);
   const [loaderAdmin, setLoaderAdmin] = useState(false);
   const [loaderRepoManagement, setLoaderRepoManagement] = useState(false);
+  const [loaderPrintings, setLoaderPrintings] = useState(false);
 
   // Create useStates for side panel functions.
   const [userManage, setUserManage] = useState(false);
@@ -31,6 +33,7 @@ export default function DashBoard() {
   const [transfers, setTransfers] = useState(false);
   const [repoManage, setRepoManage] = useState(false);
   const [reports, setReports] = useState(false);
+  const [printings, setPrintings] = useState(false);
   const [Admin, setAdmin] = useState(false);
   const [settings, setSettings] = useState(false);
 
@@ -44,6 +47,7 @@ export default function DashBoard() {
     setTransfers,
     setRepoManage,
     setReports,
+    setPrintings,
     setAdmin,
     setSettings,
   ];
@@ -409,14 +413,14 @@ export default function DashBoard() {
           </div>
 
           <div
-          onClick={() =>
+            onClick={() =>
               handleClickSidePanelFunction(
                 setReports,
                 "/Reports",
                 setLoaderRepoManagement
               )
             }
-          className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
+            className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
             <svg
               className="w-6 h-6 text-white dark:text-white ml-2"
               aria-hidden="true"
@@ -437,13 +441,26 @@ export default function DashBoard() {
             <label className="ml-2">Reports</label>
           </div>
 
-          <div className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
+          <div
+            onClick={() =>
+              handleClickSidePanelFunction(
+                setPrintings,
+                "/Printings",
+                setLoaderPrintings
+              )
+            }
+            className="cursor-pointer text-slate-400 hover:text-white mt-1 rounded-md h-[6%] w-[95%] hover:bg-slate-700 flex flex-row items-center">
             <svg className="w-6 h-6 text-white ml-2 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path stroke="currentColor" strokeLinejoin="round" strokeWidth="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z" />
             </svg>
 
 
             <label className="ml-2">Printing</label>
+            {loaderPrintings && (
+              <div className="ml-2">
+                <Spinner size={24}></Spinner>
+              </div>
+            )}
           </div>
 
           <div
