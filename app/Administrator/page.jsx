@@ -13,12 +13,15 @@ import RevokeAuthority from "./RevokeAuthority/page";
 import GrantAuthority from "./GrantAuthority/page";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from 'next/navigation';
+import UnlockPassword from "./UnlockPassword/page";
+import ResetPassword from "./ResetPassword/page";
 
 export default function Administrator() {
   //Define state variables;
   const [channelDropdown, setChannelDropdown] = useState(false);
   const [optionDropdown, setoptionDropdown] = useState(false);
   const [authorityDropdown, setAuthorityDropdown] = useState(false);
+  const [passwordResetDropdown, setPasswordResetDropdown] = useState(false);
 
   const [addChannel, setAddChannel] = useState(false);
   const [channelDetails, setChannelDetails] = useState(false);
@@ -33,6 +36,9 @@ export default function Administrator() {
 
   const [grantAuthority, setGrantAuthority] = useState(false);
   const [revokeAuthority, setRevokeAuthority] = useState(false);
+
+  const [unlockPassword, setUnlockPassword] = useState(false);
+  const [resetPassword, setResetPassword] = useState(false);
 
   const router = useRouter();
   const { hasPermission } = useAuth();
@@ -49,7 +55,9 @@ export default function Administrator() {
     setTransferOptionDeactivate,
     setTransferOptionReactivate,
     setGrantAuthority,
-    setRevokeAuthority
+    setRevokeAuthority,
+    setUnlockPassword,
+    setResetPassword
   ];
 
   //Define handleCancel function;
@@ -61,8 +69,8 @@ export default function Administrator() {
   const handleSubFunction = (selectedFunction, requiredPermission) => {
     // First, check for permission
     if (requiredPermission && !hasPermission(requiredPermission)) {
-        router.push('/AccessDenied'); // Redirect if no permission
-        return;
+      router.push('/AccessDenied'); // Redirect if no permission
+      return;
     }
     for (let userSelectedFunction of arraySubFunction) {
       userSelectedFunction(false);
@@ -360,6 +368,70 @@ export default function Administrator() {
           )}
         </div>
 
+
+        <div
+          onMouseEnter={() => setPasswordResetDropdown(true)}
+          onMouseLeave={() => setPasswordResetDropdown(false)}
+          className="relative inline-block text-left ml-2">
+          <div className="flex flex-row items-center">
+            <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path fillRule="evenodd" d="M17 10v1.126c.367.095.714.24 1.032.428l.796-.797 1.415 1.415-.797.796c.188.318.333.665.428 1.032H21v2h-1.126c-.095.367-.24.714-.428 1.032l.797.796-1.415 1.415-.796-.797a3.979 3.979 0 0 1-1.032.428V20h-2v-1.126a3.977 3.977 0 0 1-1.032-.428l-.796.797-1.415-1.415.797-.796A3.975 3.975 0 0 1 12.126 16H11v-2h1.126c.095-.367.24-.714.428-1.032l-.797-.796 1.415-1.415.796.797A3.977 3.977 0 0 1 15 11.126V10h2Zm.406 3.578.016.016c.354.358.574.85.578 1.392v.028a2 2 0 0 1-3.409 1.406l-.01-.012a2 2 0 0 1 2.826-2.83ZM5 8a4 4 0 1 1 7.938.703 7.029 7.029 0 0 0-3.235 3.235A4 4 0 0 1 5 8Zm4.29 5H7a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h6.101A6.979 6.979 0 0 1 9 15c0-.695.101-1.366.29-2Z" clipRule="evenodd" />
+            </svg>
+            <button
+              type="button"
+              className="inline-flex w-full border-none bg-slate-800 hover:bg-slate-700 justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm text-white shadow-xs"
+              id="menu-button"
+              aria-expanded="true"
+              aria-haspopup="true">
+              Password Reset
+              <svg
+                className="-mr-1 size-5 text-gray-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+                data-slot="icon">
+                <path
+                  fillRule="evenodd"
+                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+
+          {passwordResetDropdown && (
+            <div
+              className="absolute right-0 z-10 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden"
+              role="menu"
+              aria-orientation="vertical"
+              aria-labelledby="menu-button"
+              tabIndex="-1">
+              <div
+                onClick={() => handleSubFunction(setUnlockPassword, 'FUNC-044')}
+                className="py-1" role="none">
+                <button
+                  className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
+                  role="menuitem"
+                  tabIndex="-1"
+                  id="menu-item-0">
+                  Unlock Password
+                </button>
+              </div>
+
+              <div onClick={() => handleSubFunction(setResetPassword, 'FUNC-045')}
+                className="py-1" role="none">
+                <button
+                  className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
+                  role="menuitem"
+                  tabIndex="-1"
+                  id="menu-item-0">
+                  Reset Password
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
       </div>
 
       {addChannel && (
@@ -425,6 +497,18 @@ export default function Administrator() {
       {revokeAuthority && (
         <div>
           <RevokeAuthority onCancel={() => handleCancel(setRevokeAuthority)} />
+        </div>
+      )}
+
+      {unlockPassword && (
+        <div>
+          <UnlockPassword onCancel={() => handleCancel(setUnlockPassword)} />
+        </div>
+      )}
+
+      {resetPassword && (
+        <div>
+          <ResetPassword onCancel={() => handleCancel(setResetPassword)} />
         </div>
       )}
     </div>

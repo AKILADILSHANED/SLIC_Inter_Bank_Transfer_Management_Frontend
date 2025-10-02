@@ -159,22 +159,7 @@ export default function DashBoard() {
                     </div>
                 </div>
             </div>
-
-            {/* Alert Banner */}
-            <div className="mb-6 bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl p-4 shadow-lg">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="bg-white/20 p-2 rounded-lg">
-                            <span className="text-white text-lg">📢</span>
-                        </div>
-                        <div className="text-white font-semibold">System Notification:</div>
-                    </div>
-                    <div className="text-white/90 text-sm">
-                        No critical messages to display
-                    </div>
-                </div>
-            </div>
-
+            
             {/* First Row - Transaction Summary and Forecasting */}
             <div className='grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6'>
                 {/* Transaction Summary Card */}
