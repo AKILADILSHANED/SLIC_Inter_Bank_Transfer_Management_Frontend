@@ -3,7 +3,7 @@ import React from 'react'
 import { useState } from 'react';
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from 'next/navigation';
-import IBTSheetPrint from '../IBTSheetPrint/page';
+import IBTSheetPrint from './IBTSheetPrint/page';
 
 export default function Printings() {
     //Define states;

@@ -294,12 +294,13 @@ export default function TransferHistory({ onCancel }) {
                             <th border="1" className='border border-blue-600 text-sm px-2 py-2'>Transfer ID</th>
                             <th border="1" className='border border-blue-600 text-sm px-2 py-2'>Transfer Date</th>
                             <th border="1" className='border border-blue-600 text-sm px-2 py-2'>Transfer Amount</th>
-                            <th border="1" className='border border-blue-600 text-sm px-2 py-2'>Chanel</th>
+                            <th border="1" className='border border-blue-600 text-sm px-2 py-2'>Channel</th>
                             <th border="1" className='border border-blue-600 text-sm px-2 py-2'>From Account</th>
                             <th border="1" className='border border-blue-600 text-sm px-2 py-2'>To Account</th>
                             <th border="1" className='border border-blue-600 text-sm px-2 py-2'>From Repo</th>
                             <th border="1" className='border border-blue-600 text-sm px-2 py-2'>To Repo</th>
                             <th border="1" className='border border-blue-600 text-sm px-2 py-2'>Initiated By</th>
+                            <th border="1" className='border border-blue-600 text-sm px-2 py-2'>Checked Status</th>
                             <th border="1" className='border border-blue-600 text-sm px-2 py-2'>Approve Status</th>
                         </tr>
 
@@ -325,6 +326,7 @@ export default function TransferHistory({ onCancel }) {
                                         <td border="1" className='border border-blue-600 px-2 py-2 text-sm'>{element.fromRepo}</td>
                                         <td border="1" className='border border-blue-600 px-2 py-2 text-sm'>{element.toRepo}</td>
                                         <td border="1" className='border border-blue-600 px-2 py-2 text-sm'>{element.initiatedBy}</td>
+                                        <td border="1" className='border border-blue-600 px-2 py-2 text-sm'>{element.checkedStatus}</td>
                                         <td border="1" className='border border-blue-600 px-2 py-2 text-sm'>{element.approveStatus}</td>
                                     </tr>
                                 )

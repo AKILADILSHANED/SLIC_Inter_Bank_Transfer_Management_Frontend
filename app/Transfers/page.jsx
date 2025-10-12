@@ -8,6 +8,7 @@ import ApproveTransfers from './ApproveTransfers/page';
 import RejectTransfers from './RejectTransfers/page';
 import ReverseTransfers from './ReverseTransfers/page';
 import { useAuth } from "@/app/context/AuthContext";
+import CheckTransfer from './CheckTransfer/page';
 import { useRouter } from 'next/navigation';
 
 export default function Transfers() {
@@ -15,6 +16,7 @@ export default function Transfers() {
     const [newTransfer, setNewTransfer] = useState(false);
     const [displayTransfer, setDisplayTransfer] = useState(false);
     const [displayAllTransfer, setDisplayAllTransfer] = useState(false);
+    const [checkAllTransfer, setCheckAllTransfer] = useState(false);
     const [approveTransfers, setApproveTransfers] = useState(false);
     const [rejectTransfers, setRejectTransfers] = useState(false);
     const [reverseTransfers, setReverseTransfers] = useState(false);
@@ -31,6 +33,7 @@ export default function Transfers() {
         setNewTransfer,
         setDisplayTransfer,
         setDisplayAllTransfer,
+        setCheckAllTransfer,
         setApproveTransfers,
         setRejectTransfers,
         setReverseTransfers,
@@ -63,7 +66,7 @@ export default function Transfers() {
 
                 <div
                     onClick={() => handleClick(setNewTransfer, 'FUNC-023')}
-                    className="flex flex-row items-center justify-center ml-[75px]">
+                    className="flex flex-row items-center justify-center ml-[50px]">
                     <svg
                         className="w-6 h-6 text-white dark:text-white"
                         aria-hidden="true"
@@ -88,7 +91,7 @@ export default function Transfers() {
 
                 <div
                     onClick={() => handleClick(setDisplayTransfer, 'FUNC-024')}
-                    className="flex flex-row items-center justify-center ml-5">
+                    className="flex flex-row items-center justify-center ml-2">
                     <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 16H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1M9 12H4m8 8V9h8v11h-8Zm0 0H9m8-4a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z" />
                     </svg>
@@ -100,7 +103,7 @@ export default function Transfers() {
 
                 <div
                     onClick={() => handleClick(setDisplayAllTransfer, 'FUNC-025')}
-                    className="flex flex-row items-center justify-center ml-5">
+                    className="flex flex-row items-center justify-center ml-2">
                     <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 16H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1M9 12H4m8 8V9h8v11h-8Zm0 0H9m8-4a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z" />
                     </svg>
@@ -111,8 +114,20 @@ export default function Transfers() {
                 </div>
 
                 <div
+                    onClick={() => handleClick(setCheckAllTransfer, 'FUNC-046')}
+                    className="flex flex-row items-center justify-center ml-2">
+                    <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 16H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1M9 12H4m8 8V9h8v11h-8Zm0 0H9m8-4a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z" />
+                    </svg>
+
+                    <div className="text-sm text-white hover:bg-slate-700 w-[50px] h-[32] flex flex-col items-center justify-center rounded-md">
+                        <button>Check</button>
+                    </div>
+                </div>
+
+                <div
                     onClick={() => handleClick(setApproveTransfers, 'FUNC-026')}
-                    className="flex flex-row items-center justify-center ml-5">
+                    className="flex flex-row items-center justify-center ml-2">
                     <svg
                         className="w-6 h-6 text-white dark:text-white"
                         aria-hidden="true"
@@ -137,7 +152,7 @@ export default function Transfers() {
 
                 <div
                     onClick={() => handleClick(setRejectTransfers, 'FUNC-027')}
-                    className="flex flex-row items-center justify-center ml-5">
+                    className="flex flex-row items-center justify-center ml-2">
                     <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
@@ -150,7 +165,7 @@ export default function Transfers() {
 
                 <div
                     onClick={() => handleClick(setReverseTransfers, 'FUNC-028')}
-                    className="flex flex-row items-center justify-center ml-5">
+                    className="flex flex-row items-center justify-center ml-2">
                     <svg
                         className="w-6 h-6 text-white dark:text-white"
                         aria-hidden="true"
@@ -189,6 +204,12 @@ export default function Transfers() {
             {displayAllTransfer && (
                 <div className="mt-4">
                     <DisplayAllTransfer onCancel={() => handleCancel(setDisplayAllTransfer)} />
+                </div>
+            )}
+
+            {checkAllTransfer && (
+                <div className="mt-4">
+                    <CheckTransfer onCancel={() => handleCancel(setCheckAllTransfer)} />
                 </div>
             )}
 

@@ -114,14 +114,29 @@ export default function DisplayAllTransfer() {
                                     To Repo
                                 </th>
                                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                                    Initiated By
+                                </th>
+                                <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                                    Initiated Date
+                                </th>
+                                <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                                    Checked Status
+                                </th>
+                                <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                                    Checked By
+                                </th>
+                                <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                                    Checked Date
+                                </th>
+                                <th scope="col" className="px-6 py-3 whitespace-nowrap">
                                     Approve Status
                                 </th>
                                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
                                     Approved By
-                                </th>
+                                </th> 
                                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                                    Initiated By
-                                </th>
+                                    Approved Date
+                                </th>                               
                                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
                                     Is Reversed
                                 </th>
@@ -161,14 +176,29 @@ export default function DisplayAllTransfer() {
                                             {element.toRepo}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
+                                            {element.initiatedBy}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {element.initiatedDate}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {element.checkedStatus}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {element.checkedBy}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {element.checkedDate}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
                                             {element.approveStatus}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             {element.approvedBy}
-                                        </td>
+                                        </td>  
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            {element.initiatedBy}
-                                        </td>
+                                            {element.approveDate}
+                                        </td>                                      
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             {element.isReversed}
                                         </td>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import Spinner from '../Spinner/page'
-import ErrorMessage from '../Messages/ErrorMessage/page';
+import Spinner from '../../Spinner/page'
+import ErrorMessage from '../../Messages/ErrorMessage/page';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
