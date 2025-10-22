@@ -4,10 +4,12 @@ import { useState } from 'react';
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from 'next/navigation';
 import IBTSheetPrint from './IBTSheetPrint/page';
+import Voucher from './Voucher/page';
 
 export default function Printings() {
     //Define states;
     const [ibtSheetPrint, setIbtSheetPrint] = useState(false);
+    const [voucherPrint, setVoucherPrint] = useState(false);
     const router = useRouter();
     const { hasPermission } = useAuth();
 
@@ -19,6 +21,7 @@ export default function Printings() {
     //Define an array for setter functions;
     const arraySetters = [
         setIbtSheetPrint,
+        setVoucherPrint,
     ];
 
     //Define function for handling each main function user clicks;
@@ -35,7 +38,7 @@ export default function Printings() {
     };
     return (
         <div>
-            <div className="bg-slate-800 w-full h-[45px] flex flex-row items-center">
+            <div className="bg-slate-800 w-full h-[45px] flex flex-row items-center gap-3">
                 <svg className="w-6 h-6 ml-2 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" strokeLinejoin="round" strokeWidth="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z" />
                 </svg>
@@ -56,11 +59,26 @@ export default function Printings() {
                         <button>IBT Sheet</button>
                     </div>
                 </div>
+                <div
+                    onClick={() => handleClick(setVoucherPrint, 'FUNC-047')}
+                    className="flex flex-row items-center justify-center">
+                    <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" strokeLinejoin="round" strokeWidth="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z" />
+                    </svg>
+                    <div className="text-sm text-white hover:bg-slate-700 w-[110px] h-[32] flex flex-col items-center justify-center rounded-md">
+                        <button>Print Vouchers</button>
+                    </div>
+                </div>
             </div>
 
             {ibtSheetPrint && (
                 <div className="mt-4">
                     <IBTSheetPrint onCancel={() => handleCancel(setIbtSheetPrint)} />
+                </div>
+            )}
+            {voucherPrint && (
+                <div className="mt-4">
+                    <Voucher onCancel={() => handleCancel(setVoucherPrint)} />
                 </div>
             )}
         </div>
