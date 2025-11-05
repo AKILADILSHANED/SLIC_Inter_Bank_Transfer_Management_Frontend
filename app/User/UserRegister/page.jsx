@@ -14,12 +14,14 @@ export default function UserRegister({ onCancel }) {
   //Define State Variables
   const [userStatus, setUserStatus] = useState("");
   const [userLevel, setUserLevel] = useState("");
+  const [userPosition, setUserPosition] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [epf, setEpf] = useState("");
   const [department, setDepartment] = useState("");
   const [section, setSection] = useState("");
+  const [signatureImage, setSignatureImage] = useState(null);
 
   const [successMessage, setSuccessMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
@@ -30,12 +32,58 @@ export default function UserRegister({ onCancel }) {
     onCancel();
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setErrorMessage("Please select a valid image file");
+        return;
+      }
+
+      // Validate file size (e.g., 2MB max)
+      if (file.size > 2 * 1024 * 1024) {
+        setErrorMessage("File size should be less than 2MB");
+        return;
+      }
+
+      setSignatureImage(file);
+      setErrorMessage("");
+    }
+  };
+
+  // Define the function inside your component, before userRegister function
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const base64 = reader.result.split(',')[1]; // Remove data URL prefix
+        resolve(base64);
+      };
+      reader.onerror = error => reject(error);
+    });
+  };
+
   const userRegister = async (e) => {
     setLoader(true);
     e.preventDefault();
     setSuccessMessage("");
     setErrorMessage("");
+
     try {
+
+      // Convert image to Base64 before sending
+      let signatureBase64 = null;
+      if (signatureImage instanceof File) {
+        signatureBase64 = await convertToBase64(signatureImage);
+      } else if (typeof signatureImage === 'string' && signatureImage.startsWith('data:')) {
+        // If it's already a data URL, extract base64 part
+        signatureBase64 = signatureImage.split(',')[1];
+      } else {
+        signatureBase64 = signatureImage; // Use as-is if already base64
+      }
+
       const request = await fetch(
         `${baseUrl}/api/v1/user/user-register`,
         {
@@ -45,15 +93,18 @@ export default function UserRegister({ onCancel }) {
           body: JSON.stringify({
             userTitle: userStatus,
             userLevel: userLevel,
+            userPosition: userPosition,
             userFirstName: firstName.trim(),
             userLastName: lastName.trim(),
             department: department.trim(),
             section: section.trim(),
             userEmail: email.trim(),
             userEpf: epf.trim(),
+            userSignature: signatureBase64,
           }),
         }
       );
+
       if (request.ok) {
         const response = await request.json();
         if (response.success == false) {
@@ -62,6 +113,11 @@ export default function UserRegister({ onCancel }) {
         } else {
           setSuccessMessage(response.message);
           setLoader(false);
+          // Reset form after successful registration
+          setSignatureImage(null);
+          // Reset file input
+          const fileInput = document.getElementById('signature-image');
+          if (fileInput) fileInput.value = '';
         }
       } else {
         setErrorMessage(
@@ -81,8 +137,8 @@ export default function UserRegister({ onCancel }) {
   return (
     <div>
       <div>
-        <form onSubmit={(e) => userRegister(e)}>
-          <div className="w-full h-[330px] shadow-md">
+        <form onSubmit={(e) => userRegister(e)} encType="multipart/form-data">
+          <div className="w-full h-[380px] shadow-md"> {/* Increased height to accommodate new field */}
             <div className="bg-red-800 h-[30px] flex flex-row items-center">
               <label className="text-white ml-3 text-lg font-serif">
                 Provide User Details
@@ -98,6 +154,7 @@ export default function UserRegister({ onCancel }) {
                 </label>
                 <select
                   onChange={(e) => setUserStatus(e.target.value)}
+                  value={userStatus}
                   id="small"
                   required
                   className="block w-[200px] ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -116,12 +173,36 @@ export default function UserRegister({ onCancel }) {
                 </label>
                 <select
                   onChange={(e) => setUserLevel(e.target.value)}
+                  value={userLevel}
                   id="small"
                   required
                   className="block w-[200px] ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                   <option value="">-Select User Level-</option>
                   <option value="0">General User</option>
                   <option value="1">Administrator</option>
+                </select>
+
+                <label
+                  htmlFor="small"
+                  className="block mb-2 text-md font-medium text-gray-900 dark:text-white ml-3">
+                  User Position:
+                </label>
+                <select
+                  onChange={(e) => setUserPosition(e.target.value)}
+                  value={userPosition}
+                  id="small"
+                  required
+                  className="block w-[200px] ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option value="">-Select User Position-</option>
+                  <option value="Finance Assistant">Finance Assistant</option>
+                  <option value="Finance Executive">Finance Executive</option>
+                  <option value="Insurance Assistant">Insurance Assistant</option>
+                  <option value="Assistant Finance Manager">Assistant Finance Manager</option>
+                  <option value="Finance Manager">Finance Manager</option>
+                  <option value="Senior Finance Manager">Senior Finance Manager</option>
+                  <option value="Assistant General Manager">Assistant General Manager</option>
+                  <option value="Deputy General Manager">Deputy General Manager</option>
+                  <option value="Chief Financial Officer">Chief Financial Officer</option>
                 </select>
               </div>
 
@@ -133,6 +214,7 @@ export default function UserRegister({ onCancel }) {
                 </label>
                 <input
                   onChange={(e) => setFirstName(e.target.value)}
+                  value={firstName}
                   id="small"
                   placeholder="Enter First Name"
                   required
@@ -145,6 +227,7 @@ export default function UserRegister({ onCancel }) {
                 </label>
                 <input
                   onChange={(e) => setLastName(e.target.value)}
+                  value={lastName}
                   id="small"
                   placeholder="Enter Last Name"
                   required
@@ -159,6 +242,7 @@ export default function UserRegister({ onCancel }) {
                 </label>
                 <input
                   onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                   type="email"
                   id="small"
                   placeholder="example@slicgeneral.com"
@@ -172,6 +256,7 @@ export default function UserRegister({ onCancel }) {
                 </label>
                 <input
                   onChange={(e) => setEpf(e.target.value)}
+                  value={epf}
                   id="small"
                   placeholder="Enter EPF"
                   required
@@ -186,6 +271,7 @@ export default function UserRegister({ onCancel }) {
                 </label>
                 <select
                   onChange={(e) => setDepartment(e.target.value)}
+                  value={department}
                   id="small"
                   required
                   className="block w-[200px] ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -200,6 +286,7 @@ export default function UserRegister({ onCancel }) {
                 </label>
                 <select
                   onChange={(e) => setSection(e.target.value)}
+                  value={section}
                   id="small"
                   required
                   className="block w-[200px] ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -209,8 +296,29 @@ export default function UserRegister({ onCancel }) {
                   <option value="Salaries">Salaries</option>
                   <option value="Motor Payments">Motor Payments</option>
                   <option value="Tax">Tax</option>
-                  <option value="Investment">Miscellanious Payments</option>
+                  <option value="Miscellaneous Payments">Miscellaneous Payments</option>
                 </select>
+              </div>
+
+              <div className="flex flex-row items-center mt-5">
+                <label
+                  htmlFor="signature-image"
+                  className="block mb-2 text-md font-medium text-gray-900 dark:text-white ml-3">
+                  Signature Image:
+                </label>
+                <input
+                  onChange={handleFileChange}
+                  type="file"
+                  id="signature-image"
+                  accept="image/*"
+                  className="outline-none block w-[350px] ml-2 p-1 px-2 text-md text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+
+                {signatureImage && (
+                  <span className="ml-3 text-sm text-green-600">
+                    ✓ {signatureImage.name}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-row items-center mt-4 ml-25">
