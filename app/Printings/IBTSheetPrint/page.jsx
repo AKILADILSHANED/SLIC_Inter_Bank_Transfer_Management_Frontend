@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react'
 import Spinner from '../../Spinner/page'
 import ErrorMessage from '../../Messages/ErrorMessage/page';

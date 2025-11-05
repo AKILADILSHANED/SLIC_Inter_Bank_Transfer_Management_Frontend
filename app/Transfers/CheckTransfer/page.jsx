@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react'
 import ErrorMessage from '@/app/Messages/ErrorMessage/page';
 import SUccessMessage from '@/app/Messages/SuccessMessage/page';
