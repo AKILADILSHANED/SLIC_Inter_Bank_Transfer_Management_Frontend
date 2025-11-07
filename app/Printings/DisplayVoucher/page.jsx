@@ -226,9 +226,9 @@ export default function DisplayVoucher() {
                                             <td className="border border-black p-1">{voucherData.fromBank}, {voucherData.fromBranch}</td>
                                             <td className="border border-black p-1">{voucherData.fromAccount}</td>
                                             <td className="border border-black p-1 text-right">{voucherData.transferAmount?.toLocaleString('en-US', {
-                                            minimumFractionDigits: 0,
-                                            maximumFractionDigits: 0
-                                        })}</td>
+                                                minimumFractionDigits: 0,
+                                                maximumFractionDigits: 0
+                                            })}</td>
                                             <td className="border border-black p-1 text-right">00</td>
                                         </tr>
                                     </tbody>
@@ -254,14 +254,30 @@ export default function DisplayVoucher() {
                                         <tr>
                                             <td className="border border-black p-2 font-semibold">Prepared By</td>
                                             <td className="border border-black p-2">{voucherData.preparedBy}</td>
-                                            <td className="border border-black p-2"></td>
-                                            <td className="border border-black p-2"></td>
+                                            <td className="border border-black p-2">{voucherData.prepareUserPosition}</td>
+                                            <td className="border border-black p-2">{voucherData.preparedSignature ? (
+                                                <img
+                                                    src={`data:image/png;base64,${voucherData.preparedSignature}`}
+                                                    alt="Prepared Signature"
+                                                    className="max-h-8 mx-auto"
+                                                />
+                                            ) : (
+                                                "No signature"
+                                            )}</td>
                                         </tr>
                                         <tr>
                                             <td className="border border-black p-2 font-semibold">Checked By</td>
                                             <td className="border border-black p-2">{voucherData.checkedBy}</td>
-                                            <td className="border border-black p-2"></td>
-                                            <td className="border border-black p-2"></td>
+                                            <td className="border border-black p-2">{voucherData.checkedUserPosition}</td>
+                                            <td className="border border-black p-2">{voucherData.checkedSignature ? (
+                                                <img
+                                                    src={`data:image/png;base64,${voucherData.checkedSignature}`}
+                                                    alt="Checked Signature"
+                                                    className="max-h-8 mx-auto"
+                                                />
+                                            ) : (
+                                                "No signature"
+                                            )}</td>
                                         </tr>
                                         <tr>
                                             <td className="border border-black p-2 font-semibold">
@@ -270,8 +286,16 @@ export default function DisplayVoucher() {
                                                 (Head of Department)
                                             </td>
                                             <td className="border border-black p-2">{voucherData.approvedBy}</td>
-                                            <td className="border border-black p-2"></td>
-                                            <td className="border border-black p-2"></td>
+                                            <td className="border border-black p-2">{voucherData.approvedUserPosition}</td>
+                                            <td className="border border-black p-2">{voucherData.approvedSignature ? (
+                                                <img
+                                                    src={`data:image/png;base64,${voucherData.approvedSignature}`}
+                                                    alt="Approved Signature"
+                                                    className="max-h-8 mx-auto"
+                                                />
+                                            ) : (
+                                                "No signature"
+                                            )}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -310,18 +334,18 @@ export default function DisplayVoucher() {
                                             <td className="border border-black p-1">{voucherData.toGl}</td>
                                             <td className="border border-black p-1">{"Debit"}</td>
                                             <td className="border border-black p-1">{voucherData.transferAmount?.toLocaleString('en-US', {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        })}</td>
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            })}</td>
                                         </tr>
                                         <tr>
                                             <td className="border border-black p-1 font-semibold">From</td>
                                             <td className="border border-black p-1">{voucherData.fromGl}</td>
                                             <td className="border border-black p-1">{"Credit"}</td>
                                             <td className="border border-black p-1">{voucherData.transferAmount?.toLocaleString('en-US', {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        })}</td>
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            })}</td>
                                         </tr>
                                     </tbody>
                                 </table>

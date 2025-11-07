@@ -50,20 +50,7 @@ export default function UserRegister({ onCancel }) {
       setSignatureImage(file);
       setErrorMessage("");
     }
-  };
-
-  // Define the function inside your component, before userRegister function
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const base64 = reader.result.split(',')[1]; // Remove data URL prefix
-        resolve(base64);
-      };
-      reader.onerror = error => reject(error);
-    });
-  };
+  };  
 
   const userRegister = async (e) => {
     setLoader(true);
@@ -71,37 +58,26 @@ export default function UserRegister({ onCancel }) {
     setSuccessMessage("");
     setErrorMessage("");
 
-    try {
-
-      // Convert image to Base64 before sending
-      let signatureBase64 = null;
-      if (signatureImage instanceof File) {
-        signatureBase64 = await convertToBase64(signatureImage);
-      } else if (typeof signatureImage === 'string' && signatureImage.startsWith('data:')) {
-        // If it's already a data URL, extract base64 part
-        signatureBase64 = signatureImage.split(',')[1];
-      } else {
-        signatureBase64 = signatureImage; // Use as-is if already base64
-      }
+    try {      
+      //Create new form data object;
+      const formDataObject = new FormData();
+      formDataObject.append('userTitle', userStatus);
+      formDataObject.append('userLevel', userLevel);
+      formDataObject.append('userFirstName', firstName);
+      formDataObject.append('userLastName', lastName);
+      formDataObject.append('department', department);
+      formDataObject.append('section', section);
+      formDataObject.append('userPosition', userPosition);
+      formDataObject.append('userEmail', email);
+      formDataObject.append('userEpf', epf);
+      formDataObject.append('userSignature', signatureImage);
 
       const request = await fetch(
         `${baseUrl}/api/v1/user/user-register`,
         {
           method: "POST",
           credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userTitle: userStatus,
-            userLevel: userLevel,
-            userPosition: userPosition,
-            userFirstName: firstName.trim(),
-            userLastName: lastName.trim(),
-            department: department.trim(),
-            section: section.trim(),
-            userEmail: email.trim(),
-            userEpf: epf.trim(),
-            userSignature: signatureBase64,
-          }),
+          body: formDataObject
         }
       );
 
