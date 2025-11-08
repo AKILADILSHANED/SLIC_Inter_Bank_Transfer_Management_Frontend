@@ -176,7 +176,7 @@ export default function page() {
           </svg>
 
 
-          <div className="text-sm text-white hover:bg-slate-700 w-[120px] h-[32] flex flex-col items-center justify-center rounded-md">
+          <div className="text-sm text-white hover:bg-slate-700 w-[145px] h-[32] flex flex-col items-center justify-center rounded-md">
             <button>Adjustment Display</button>
           </div>
         </div>
