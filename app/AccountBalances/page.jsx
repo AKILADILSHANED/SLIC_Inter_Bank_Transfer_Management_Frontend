@@ -7,6 +7,7 @@ import UpdateBalance from "./BalanceUpdate/page";
 import DeleteBalance from "./BalanceDelete/page";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from 'next/navigation';
+import AdjustmentDisplay from "./AdjustmentDisplay/page";
 
 export default function page() {
   //Define states;
@@ -14,6 +15,7 @@ export default function page() {
   const [displayBalance, setDisplayBalance] = useState(false);
   const [updateBalance, setUpdateBalance] = useState(false);
   const [deleteBalance, setDeleteBalance] = useState(false);
+  const [adjustmentDisplay, setAdjustmentDisplay] = useState(false);
   const router = useRouter();
   const { hasPermission } = useAuth();
 
@@ -28,14 +30,15 @@ export default function page() {
     setDisplayBalance,
     setUpdateBalance,
     setDeleteBalance,
+    setAdjustmentDisplay,
   ];
 
   //Define function for handling each main function user clicks;
   const handleClick = (setterFunction, requiredPermission) => {
     // First, check for permission
     if (requiredPermission && !hasPermission(requiredPermission)) {
-        router.push('/AccessDenied'); // Redirect if no permission
-        return;
+      router.push('/AccessDenied'); // Redirect if no permission
+      return;
     }
     arraySetters.forEach((setter) => {
       setter(false);
@@ -164,6 +167,19 @@ export default function page() {
             <button>Delete Balance</button>
           </div>
         </div>
+
+        <div
+          onClick={() => handleClick(setAdjustmentDisplay, 'FUNC-048')}
+          className="flex flex-row items-center justify-center ml-5">
+          <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.2857 7V5.78571c0-.43393-.3482-.78571-.7778-.78571H6.06345c-.42955 0-.77777.35178-.77777.78571V16m0 0h-1c-.55229 0-1 .4477-1 1v1c0 .5523.44771 1 1 1h5m-4-3h4m7.00002-6v3c0 .5523-.4477 1-1 1h-3m8-3v8c0 .5523-.4477 1-1 1h-6c-.5523 0-1-.4477-1-1v-5.397c0-.2536.0963-.4977.2696-.683l2.434-2.603c.189-.2022.4535-.317.7304-.317h3.566c.5523 0 1 .4477 1 1Z" />
+          </svg>
+
+
+          <div className="text-sm text-white hover:bg-slate-700 w-[120px] h-[32] flex flex-col items-center justify-center rounded-md">
+            <button>Adjustment Display</button>
+          </div>
+        </div>
       </div>
 
       {newBalanceEnter && (
@@ -187,6 +203,12 @@ export default function page() {
       {deleteBalance && (
         <div>
           <DeleteBalance onCancel={() => handleCancel(setDeleteBalance)} />
+        </div>
+      )}
+
+      {adjustmentDisplay && (
+        <div>
+          <AdjustmentDisplay onCancel={() => handleCancel(setAdjustmentDisplay)} />
         </div>
       )}
     </div>
