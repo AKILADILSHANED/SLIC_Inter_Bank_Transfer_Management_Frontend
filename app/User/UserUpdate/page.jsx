@@ -15,6 +15,7 @@ export default function UpdateUser({ onCancel }) {
   const [userId, setUserId] = useState("");
   const [errorMessageStatus, setErrorMessageStatus] = useState(false);
   const [successMessageStatus, setSuccessMessageStatus] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
   const [message, setMessage] = useState("");
   const [loader, setLoader] = useState(false);
   const [updateLoader, setUpdateLoader] = useState(false);
@@ -29,6 +30,8 @@ export default function UpdateUser({ onCancel }) {
   const [activeStatus, setActiveStatus] = useState("");
   const [createdDate, setCreatedDate] = useState("");
   const [createdBy, setCreatedBy] = useState("");
+  const [userPosition, setUserPosition] = useState("");
+  const [signatureImage, setSignatureImage] = useState(null);
 
   const handleCancel = () => {
     onCancel();
@@ -70,6 +73,7 @@ export default function UpdateUser({ onCancel }) {
             setUserLevel(response.responseObject.userLevel);
             setCreatedDate(response.responseObject.userCreatedDate);
             setCreatedBy(response.responseObject.userCreateBy);
+            setUserPosition(response.responseObject.userPosition);
             setUserDetailsWindow(true);
           } else {
             setErrorMessageStatus(true);
@@ -104,21 +108,24 @@ export default function UpdateUser({ onCancel }) {
     setMessage(false);
     setSuccessMessageStatus(false);
     try {
+      const formData = new FormData();
+      formData.append("userId", userId);
+      formData.append("userFirstName", firstName);
+      formData.append("userLastName", lastName);
+      formData.append("userEpf", epf);
+      formData.append("userEmail", email);
+      formData.append("userPosition", userPosition);
+      if(signatureImage !== null){
+        formData.append("userSignature", signatureImage);
+      }     
+
       setUpdateLoader(true);
       const request = await fetch(
         `${baseUrl}/api/v1/user/user-update`,
         {
           method: "PUT",
           credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userId: userId,
-            userFirstName: firstName,
-            userLastName: lastName,
-            userEpf: epf,
-            userEmail: email,
-            userLevel: userLevel,
-          }),
+          body: formData,
         }
       );
       if (request.ok) {
@@ -143,12 +150,33 @@ export default function UpdateUser({ onCancel }) {
       setErrorMessageStatus(true);
       setMessage("Un-expected error occurred. Please contact administrator!");
       setUpdateLoader(false);
+    }finally{
+      setSignatureImage(null);
     }
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setErrorMessage("Please select a valid image file");
+        return;
+      }
+
+      // Validate file size (e.g., 2MB max)
+      if (file.size > 2 * 1024 * 1024) {
+        setErrorMessage("File size should be less than 2MB");
+        return;
+      }
+
+      setSignatureImage(file);
+      setErrorMessage("");
+    }
+  };
   return (
     <div>
-      <div className="h-[120px] w-full shadow-md mt-4">
+      <div className="h-[110px] w-full shadow-md mt-4">
         <div className="bg-red-800 h-[30px] flex flex-row items-center">
           <label className="text-white text-lg ml-2 font-serif">
             Update User Details
@@ -195,7 +223,7 @@ export default function UpdateUser({ onCancel }) {
 
       {userDetailsWindow && (
         <div>
-          <div className="shadow mt-5 h-[374px]">
+          <div className="shadow mt-5 h-[450px]">
             <div className="bg-slate-600 h-[30px] flex flex-row items-center">
               <label className="text-white text-lg font-serif ml-2">
                 User Details for provided User ID
@@ -288,16 +316,13 @@ export default function UpdateUser({ onCancel }) {
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     User Level:
                   </label>
-                  <select
+                  <input
                     type="text"
-                    onChange={(e) => setUserLevel(e.target.value)}
+                    readOnly
                     value={userLevel}
                     id="small-input"
-                    className="block w-[500px] outline-blue-400 px-2 py-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option value={0}>Administrator</option>
-                    <option value={1}>Authorizer</option>
-                    <option value={2}>Initiator</option>
-                  </select>
+                    className="block w-[500px] outline-blue-400 px-2 py-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  />
                 </div>
               </div>
 
@@ -330,6 +355,53 @@ export default function UpdateUser({ onCancel }) {
                     id="small-input"
                     className="block w-[500px] outline-blue-400 px-2 py-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   />
+                </div>
+              </div>
+
+              <div className="flex flex-row">
+                <div className="ml-2 mt-3">
+                  <label
+                    htmlFor="small-input"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    User Position:
+                  </label>
+                  <select
+                    onChange={(e) => setUserPosition(e.target.value)}
+                    value={userPosition}
+                    id="small"
+                    required
+                    className="block w-[500px] p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="">-Select User Position-</option>
+                    <option value="Finance Assistant">Finance Assistant</option>
+                    <option value="Finance Executive">Finance Executive</option>
+                    <option value="Insurance Assistant">Insurance Assistant</option>
+                    <option value="Assistant Finance Manager">Assistant Finance Manager</option>
+                    <option value="Finance Manager">Finance Manager</option>
+                    <option value="Senior Finance Manager">Senior Finance Manager</option>
+                    <option value="Assistant General Manager">Assistant General Manager</option>
+                    <option value="Deputy General Manager">Deputy General Manager</option>
+                    <option value="Chief Financial Officer">Chief Financial Officer</option>
+                  </select>
+                </div>
+                <div className="ml-2 mt-3">
+                  <label
+                    htmlFor="small-input"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Signature Image:
+                  </label>
+                  <input
+                    onChange={handleFileChange}
+                    type="file"
+                    id="signature-image"
+                    accept="image/*"
+                    className="block w-[500px] p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  />
+
+                  {signatureImage && (
+                    <span className="ml-3 text-sm text-green-600">
+                      ✓ {signatureImage.name}
+                    </span>
+                  )}
                 </div>
               </div>
 

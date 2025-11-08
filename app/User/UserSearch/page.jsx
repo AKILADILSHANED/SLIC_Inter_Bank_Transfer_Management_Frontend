@@ -26,6 +26,7 @@ export default function SearchUser({ onCancel }) {
     userLevel: "",
     userCreatedDate: "",
     userCreateBy: "",
+    userPosition: "",
   });
   const [userDetailsWindow, setUserDetailsWindow] = useState(false);
 
@@ -119,7 +120,7 @@ export default function SearchUser({ onCancel }) {
 
       {userDetailsWindow && (
         <div>
-          <div className="shadow mt-5 h-[374px]">
+          <div className="shadow mt-5 h-[450px]">
             <div className="bg-slate-600 h-[30px] flex flex-row items-center">
               <label className="text-white text-lg font-serif ml-2">
                 User Details for provided User ID
@@ -248,6 +249,22 @@ export default function SearchUser({ onCancel }) {
                     type="text"
                     readOnly
                     value={currentUser.userCreateBy}
+                    id="small-input"
+                    className="block w-[500px] outline-blue-400 px-2 py-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-row">
+                <div className="ml-2 mt-3">
+                  <label
+                    htmlFor="small-input"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    User Position:
+                  </label>
+                  <input
+                    type="text"
+                    readOnly
+                    value={currentUser.userPosition}
                     id="small-input"
                     className="block w-[500px] outline-blue-400 px-2 py-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   />
