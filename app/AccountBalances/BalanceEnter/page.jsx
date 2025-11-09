@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import SUccessMessage from "@/app/Messages/SuccessMessage/page";
 
 export default function EnterBalance() {
-
   //Define base url;
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -15,32 +14,52 @@ export default function EnterBalance() {
   const [successMessage, setSuccessMessage] = useState(false);
   const [spinner, setSpinner] = useState(false);
   const [accountObject, setAccountObject] = useState([{}]);
-  const [balance, setBalance] = useState({accountId:null, balanceAmount:null});
+  const [balances, setBalances] = useState({}); // Store balances for each account
 
-  const handleKeyDown = (e) => {
-    // Allow: Backspace, Delete, Tab, Arrow Keys
-    if (
-      ["Backspace", "Delete", "Tab", "ArrowLeft", "ArrowRight"].includes(
-        e.key
-      ) ||
-      // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
-      (e.ctrlKey && ["a", "c", "v", "x"].includes(e.key)) ||
-      // Allow: Numbers (0-9) and a single decimal point (.)
-      /^[0-9.]$/.test(e.key)
-    ) {
-      // Prevent multiple decimal points
-      if (e.key === "." && balance.includes(".")) {
-        e.preventDefault();
-      }
-      return; // Allow the key
+  const handleChange = (e, accountId) => {
+    const value = e.target.value;
+
+    // Allow: empty, numbers, negative numbers (minus only at start), and decimal numbers
+    if (value === '' || /^-?\d*\.?\d*$/.test(value)) {
+      setBalances(prev => ({
+        ...prev,
+        [accountId]: value
+      }));
     }
-    e.preventDefault(); // Block everything else
   };
 
-  const handleChange = (e) => {
-    // Final sanitization (in case of paste or autofill)
-    const sanitizedValue = e.target.value.replace(/[^0-9]/g, "");
-    setBalance(sanitizedValue);
+  const handleKeyDown = (e) => {
+    // Allow: Backspace, Delete, Tab, Escape, Enter
+    if ([8, 9, 27, 13, 46].includes(e.keyCode) ||
+      // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+      (e.ctrlKey && [65, 67, 86, 88].includes(e.keyCode)) ||
+      // Allow: Home, End, Left, Right
+      (e.keyCode >= 35 && e.keyCode <= 39)) {
+      return;
+    }
+
+    // Allow minus sign only at the beginning
+    if ((e.key === '-' || e.keyCode === 189) && e.target.selectionStart === 0) {
+      // Check if minus sign already exists
+      if (!e.target.value.includes('-')) {
+        return;
+      }
+    }
+
+    // Allow decimal point (only one)
+    if (e.key === '.' || e.keyCode === 190) {
+      if (!e.target.value.includes('.')) {
+        return;
+      }
+    }
+
+    // Allow numbers (both main keyboard and numpad)
+    if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
+      return;
+    }
+
+    // Prevent any other key
+    e.preventDefault();
   };
 
   //Define displayTable function;
@@ -81,42 +100,51 @@ export default function EnterBalance() {
   };
 
   //Define balance saving function;
-  const handleSave = async (accountId, balanceAmount) => {
+  const handleSave = async (accountId) => {
     setErrorMessage(false);
     setSuccessMessage(false);
-    if (balanceAmount == 0) {
+    
+    const balanceAmount = balances[accountId];
+    
+    if (!balanceAmount || balanceAmount === '' || balanceAmount == 0) {
       setErrorMessage("Please provide Account Balance!");
-    } else {
-      try {
-        const request = await fetch(
-          `${baseUrl}/api/v1/account-balance/save-balance?accountId=${encodeURIComponent(
-            accountId
-          )}&balanceAmount=${encodeURIComponent(balance)}`,
-          {
-            method: "POST",
-            credentials: "include",
-          }
-        );
-        if (request.ok) {
-          const response = await request.json();
-          if (response.success == false) {
-            setErrorMessage(response.message);
-          } else {
-            setSuccessMessage(response.message);
-          }
-        } else {
-          setErrorMessage(
-            "No response from server. Please contact administrator!"
-          );
+      return;
+    }
+
+    try {
+      const request = await fetch(
+        `${baseUrl}/api/v1/account-balance/save-balance?accountId=${encodeURIComponent(
+          accountId
+        )}&balanceAmount=${encodeURIComponent(balanceAmount)}`,
+        {
+          method: "POST",
+          credentials: "include",
         }
-      } catch (error) {
+      );
+      if (request.ok) {
+        const response = await request.json();
+        if (response.success == false) {
+          setErrorMessage(response.message);
+        } else {
+          setSuccessMessage(response.message);
+          // Clear the balance for this account after successful save
+          setBalances(prev => {
+            const newBalances = { ...prev };
+            delete newBalances[accountId];
+            return newBalances;
+          });
+        }
+      } else {
         setErrorMessage(
-          "Un-expected error occurred. Please contact administrator!"
+          "No response from server. Please contact administrator!"
         );
-      } finally {
-        setBalance("");
-        await handleDisplayAccount();
       }
+    } catch (error) {
+      setErrorMessage(
+        "Un-expected error occurred. Please contact administrator!"
+      );
+    } finally {
+      await handleDisplayAccount();
     }
   };
 
@@ -194,7 +222,10 @@ export default function EnterBalance() {
                       </td>
                       <td className="p-3">
                         <input
-                          onChange={handleChange}
+                          type="text"
+                          inputMode="decimal"
+                          value={balances[element.accountId] || ''}
+                          onChange={(e) => handleChange(e, element.accountId)}
                           onKeyDown={handleKeyDown}
                           placeholder="Enter Account Balance"
                           className="border px-2 border-blue-600 text-black rounded-md outline-none h-[30px]"
@@ -202,8 +233,8 @@ export default function EnterBalance() {
                       </td>
                       <td className="p-3">
                         <button
-                          onClick={() => handleSave(element.accountId, balance)}
-                          data-ripple-light="true"                          
+                          onClick={() => handleSave(element.accountId)}
+                          data-ripple-light="true"
                           className="rounded-md px-3 h-[30px] bg-slate-800 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2"
                           type="button">
                           Submit

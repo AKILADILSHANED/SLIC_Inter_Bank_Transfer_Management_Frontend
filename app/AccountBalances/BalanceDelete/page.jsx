@@ -16,12 +16,16 @@ export default function DeleteBalance({ onCancel }) {
   const [balanceData, setBalanceData] = useState({});
   const [balanceDisplayWindow, setBalanceDisplayWindow] = useState(false);
   const [deleteSpinner, setDeleteSpinner] = useState(false);
+  const [showTransferIdsSpinner, setShowTransferIdsSpinner] = useState(false);
+  const [transferDataTable, setTransferDataTable] = useState(false);
+  const [transferIdList, setTransferIdList] = useState([]);
 
   //Define handleSearch function;
   const handleSearch = async () => {
     setErrorMessage("");
     setSucceessMessage("");
     setBalanceDisplayWindow(false);
+    setTransferDataTable(false);
     if (textBalanceId == "") {
       setErrorMessage("Please provide a valid Balance ID!");
     } else {
@@ -72,14 +76,22 @@ export default function DeleteBalance({ onCancel }) {
           credentials: "include",
         }
       );
-      if (request.ok) {
+      if (request.status === 200) {
         const response = await request.json();
-        if (response.success == false) {
-          setErrorMessage(response.message);
-        } else {
-          setSucceessMessage(response.message);
-          setBalanceDisplayWindow(false);
-        }
+        setSucceessMessage(response.message);
+        setBalanceDisplayWindow(false);
+
+      } else if (request.status === 409) {
+        const response = await request.json();
+        setErrorMessage(response.message);
+
+      } else if (request.status === 404) {
+        const response = await request.json();
+        setErrorMessage(response.message);
+      }
+      else if (request.status === 500) {
+        const response = await request.json();
+        setErrorMessage(response.message);
       } else {
         setErrorMessage(
           "No response from server. Please contact administrator!"
@@ -93,6 +105,39 @@ export default function DeleteBalance({ onCancel }) {
       setDeleteSpinner(false);
     }
   };
+
+  //Define getRelatedTransfers function;
+  const getRelatedTransfers = async () => {
+    setTransferDataTable(false);
+    setShowTransferIdsSpinner(true);
+    setErrorMessage(false);
+    try {
+      const request = await fetch(
+        `${baseUrl}/api/v1/account-balance/get-transferId-list?balanceId=${balanceData.balanceId}`,
+        {
+          method: "GET",
+          credentials: "include"
+        }
+      );
+      if (request.status === 200) {
+        const response = await request.json();
+        setTransferIdList(response.responseObject);
+        setTransferDataTable(true);
+      } else if(request.status === 409) {
+        const response = await request.json();
+        setErrorMessage(response.message);
+      }else{
+        const response = await request.json();
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      setErrorMessage(
+        "Un-expected error occurred. Please contact administrator!!!"
+      );
+    } finally {
+      setShowTransferIdsSpinner(false);
+    }
+  }
 
   return (
     <div>
@@ -205,19 +250,19 @@ export default function DeleteBalance({ onCancel }) {
                     </td>
                     <td className="p-4 border-b border-slate-200">
                       <p className="block text-sm text-slate-800">
-                        {balanceData.accountNumber}
+                        {balanceData.balanceDate}
                       </p>
                     </td>
                     <td className="p-4 border-b border-slate-200 text-right">
                       <p className="block text-sm text-slate-800">
                         {typeof balanceData.balanceAmount === "number"
                           ? balanceData.balanceAmount.toLocaleString(
-                              undefined,
-                              {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              }
-                            )
+                            undefined,
+                            {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            }
+                          )
                           : balanceData.balanceAmount}
                       </p>
                     </td>
@@ -234,14 +279,59 @@ export default function DeleteBalance({ onCancel }) {
               </table>
             </div>
           </div>
-          <div>
+          <div className="flex flex-row">
             <button
               onClick={() => onCancel()}
               type="button"
               className="text-white ml-2 mt-3 h-[32px] flex flex-row items-center bg-red-700 hover:bg-red-600 outline-none focus:ring-4 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
               Cancel
             </button>
+
+            <button
+              onClick={() => getRelatedTransfers()}
+              type="button"
+              className="text-white ml-2 mt-3 h-[32px] flex flex-row items-center bg-blue-700 hover:bg-blue-600 outline-none focus:ring-4 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900">
+              {showTransferIdsSpinner && <Spinner size={20} />}
+              <label className="ml-1">Show Transfer Ids</label>
+            </button>
           </div>
+
+          {
+            transferDataTable && (
+              <div className="max-w-2xl mt-6 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+
+                {/* Card Header */}
+                <div className="bg-gradient-to-r from-slate-500 to-slate-400 px-6 py-4 border-b border-slate-500">
+                  <h3 className="text-lg font-semibold text-white">
+                    Available Transfer IDs for provided Balance ID | Showing {transferIdList.length} transfer{transferIdList.length !== 1 ? 's' : ''}
+                  </h3>
+                </div>
+
+                {/* Card Content */}
+                <div className="p-6">
+                  <div className="mb-4">
+                    <h4 className="text-sm font-semibold text-slate-700 uppercase tracking-wider">
+                      Transfer IDs
+                    </h4>
+                  </div>
+
+                  <div className="space-y-3 max-h-96 overflow-y-auto">
+                    {transferIdList.map((event) => (
+                      <div
+                        key={event}
+                        className="flex items-center space-x-3 p-3 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-150 group"
+                      >
+                        <div className="w-2 h-2 bg-blue-500 rounded-full group-hover:bg-blue-600 transition-colors flex-shrink-0"></div>
+                        <span className="font-medium text-slate-800 group-hover:text-slate-900 break-all">
+                          {event}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )
+          }
         </div>
       )}
     </div>
