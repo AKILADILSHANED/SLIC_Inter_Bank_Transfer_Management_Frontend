@@ -6,11 +6,13 @@ import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from 'next/navigation';
 import RepoAdjustments from './RepoAdjustments/page';
 import DisplayRepo from './DisplayRepo/page';
+import Adjustments from './Adjustments/page';
 
 export default function RepoManagement() {
     //Define states;
     const [newRepo, setNewRepo] = useState(false);
     const [displayRepo, setDisplayRepo] = useState(false);
+    const [adjustments, setAdjustments] = useState(false);
     const [adjustmentDisplay, setAdjustmentDisplay] = useState(false);
 
 
@@ -27,6 +29,7 @@ export default function RepoManagement() {
         setNewRepo,
         setDisplayRepo,
         setAdjustmentDisplay,
+        setAdjustments,
     ];
 
     //Define function for handling each main function user clicks;
@@ -89,6 +92,17 @@ export default function RepoManagement() {
                     </div>
                 </div>
 
+                <div
+                    onClick={() => handleClick(setAdjustments, 'FUNC-050')}
+                    className="flex flex-row items-center justify-center ml-5">
+                    <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                    </svg>
+                    <div className="text-sm text-white hover:bg-slate-700 w-[110px] h-[32] flex flex-col items-center justify-center rounded-md">
+                        <button>Adjustments</button>
+                    </div>
+                </div>
+
 
                 <div
                     onClick={() => handleClick(setAdjustmentDisplay, 'FUNC-049')}
@@ -115,6 +129,11 @@ export default function RepoManagement() {
             {displayRepo && (
                 <div className="mt-4">
                     <DisplayRepo onCancel={() => handleCancel(setDisplayRepo)} />
+                </div>
+            )}
+            {adjustments && (
+                <div className="mt-4">
+                    <Adjustments onCancel={() => handleCancel(setAdjustments)} />
                 </div>
             )}
         </div>

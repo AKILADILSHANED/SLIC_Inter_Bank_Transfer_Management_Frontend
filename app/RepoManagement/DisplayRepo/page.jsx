@@ -107,6 +107,9 @@ export default function DisplayRepo() {
                   Closing Balance
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Maturity Value
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Interest Rate
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -159,6 +162,14 @@ export default function DisplayRepo() {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2
                         }).format(element.closingBalance)}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-600">
+                        {new Intl.NumberFormat('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        }).format(element.maturityValue)}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
