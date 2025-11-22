@@ -1,5 +1,5 @@
+"use client"
 import React, { useState } from 'react'
-import CreateNewRepo from '../CreateNewRepo/page'
 import { useEffect } from 'react';
 import Spinner from '@/app/Spinner/page';
 import ErrorMessage from '@/app/Messages/ErrorMessage/page';
@@ -12,29 +12,51 @@ export default function Adjustments() {
 
     //Define state variables;
     const [saveSpinner, setSaveSpinner] = useState(false);
+
     const [newRepo, setNewRepo] = useState(false);
     const [existingRepo, setExistingRepo] = useState(false);
     const [fromRepo, setFromRepo] = useState("");
     const [toRepo, setToRepo] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
-    const [bankAccountList, setBankAccountList] = useState([]);
+    const [adjustmentType, setAdjustmentType] = useState("");
     const [accountNumber, setAccountNumber] = useState("");
     const [repoType, setRepoType] = useState("");
     const [repoValue, setRepoValue] = useState("");
     const [eligibility, setEligibility] = useState("0");
+    const [transferChanel, setTransferChanel] = useState("0");
+
+    const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const [bankAccountList, setBankAccountList] = useState([]);
     const [fromRepoList, setFromRepoList] = useState([]);
     const [toRepoList, setToRepoList] = useState([]);
+    const [transferChanelList, setTransferChanelList] = useState([]);
+    const [chanelDropdown, setChanelDropdown] = useState(false);    
 
     //Define adjustmentChange function;
-    const adjustmentChange = (adjustmentType) => {
-        if (adjustmentType === "1") {
+    const adjustmentChange = (adjustmentType, fromRepo) => {
+        if (adjustmentType === "1" && fromRepo !== "") {
+            setAdjustmentType(adjustmentType);
             setExistingRepo(false);
             setNewRepo(true);
         } else if (adjustmentType === "2") {
+            setAdjustmentType(adjustmentType);
             setExistingRepo(true);
             setNewRepo(false);
         } else {
+            setAdjustmentType(adjustmentType);
+            setExistingRepo(false);
+            setNewRepo(false);
+        }
+    }
+
+    //Define fromRepoChange function;
+    const fromRepoChange = (fromRepo, adjustmentType) => {
+        if (fromRepo !== "" && adjustmentType !== "") {
+            setFromRepo(fromRepo);
+            setExistingRepo(false);
+            setNewRepo(true);
+        } else {
+            setFromRepo(fromRepo);
             setExistingRepo(false);
             setNewRepo(false);
         }
@@ -122,10 +144,35 @@ export default function Adjustments() {
         }
     }
 
+    //Define getChannels function;
+    const getChannels = async () => {
+        setErrorMessage(false);
+        try {
+            const request = await fetch(
+                `${baseUrl}/api/v1/channel/getChanel`,
+                {
+                    method: "GET",
+                    credentials: "include",
+                }
+            );
+            if (request.status === 200) {
+                const response = await request.json();
+                setTransferChanelList(response.responseObject);
+            } else if (request.status === 409) {
+                const response = await request.json();
+                setErrorMessage(response.message);
+            }
+        } catch (error) {
+            const response = await request.json();
+            setErrorMessage(response.message);
+        }
+    }
+
     useEffect(() => {
         getBankAccount();
         fromrepoList();
         torepoList();
+        getChannels();
     }, []);
 
     //define handleKeyDown function; This will be restricted typing minus values in the text box;
@@ -134,6 +181,71 @@ export default function Adjustments() {
             e.preventDefault();
         } else {
             //No code block to be run;
+        }
+    }
+
+    //Define createNewRepo function;
+    const createNewRepo = async (e) => {
+        e.preventDefault();
+        setErrorMessage("");
+        setSuccessMessage("");
+        setSaveSpinner(true);
+        try {
+            const request = await fetch(
+                `${baseUrl}/api/v1/repo/create-new-repo`,
+                {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(
+                        {
+                            fromRepo: fromRepo,
+                            adjustmentType: adjustmentType,
+                            repoAccount: accountNumber,
+                            repoType: repoType,
+                            repoValue: repoValue,
+                            eligibility: eligibility,
+                            transferChanel: transferChanel
+                        }
+                    )
+                },
+            );
+            if (request.status === 200) {
+                const response = await request.json();
+                setSuccessMessage(response.message);
+            } else if (request.status === 409) {
+                const response = await request.json();
+                setErrorMessage(response.message);
+            }
+        } catch (error) {
+            errorMessage("Un-expected error occurred. Please contact administrator!");
+        }finally{
+            setSaveSpinner(false);
+        }
+    }
+
+    //Define setUpTransferChannel function;
+    const setUpTransferChannel = async (newRepoAccountId, fromRepoId) => {
+        setAccountNumber(newRepoAccountId);
+        try {
+            const request = await fetch(
+                `${baseUrl}/api/v1/bank-account/checkBankAccountForNewRepo?newRepoAccountId=${encodeURIComponent(newRepoAccountId)}&fromRepoId=${encodeURIComponent(fromRepoId)}`,
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            );
+            if (request.status === 200) {
+                const response = await request.json();
+                if (response.responseObject == true) {
+                    setChanelDropdown(false);
+                } else {
+                    setChanelDropdown(true);
+                }
+                setAccountNumber(newRepoAccountId);
+            }
+        } catch (error) {
+            setErrorMessage("Un-expected error occurred, while fetching Bank Accounts!");
         }
     }
 
@@ -155,7 +267,7 @@ export default function Adjustments() {
                         <select
                             required
                             placeholder="- Select From Repo ID -"
-                            onChange={(e) => setFromRepo(e.target.value)}
+                            onChange={(e) => fromRepoChange(e.target.value, adjustmentType)}
                             id="small-input"
                             className="block ml-2 w-[300px] p-1 px-2 outline-none text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         >
@@ -176,7 +288,7 @@ export default function Adjustments() {
                         </label>
                         <select
                             type="text"
-                            onChange={(e) => adjustmentChange(e.target.value)}
+                            onChange={(e) => adjustmentChange(e.target.value, fromRepo)}
                             required
                             placeholder="Enter REPO ID"
                             id="small-input"
@@ -199,7 +311,7 @@ export default function Adjustments() {
             {
                 newRepo &&
                 <div>
-                    <form onSubmit={(e) => handleSubmit(e)} className='border-none shadow-md py-5'>
+                    <form onSubmit={(e) => createNewRepo(e)} className='border-none shadow-md py-5'>
                         <div className='flex flex-col gap-4'>
                             <div className='flex flex-row gap-5'>
                                 <div>
@@ -211,7 +323,7 @@ export default function Adjustments() {
                                     <select
                                         id="small"
                                         placeholder="Enter Payment Name"
-                                        onChange={(e) => setAccountNumber(e.target.value)}
+                                        onChange={(e) => setUpTransferChannel(e.target.value, fromRepo)}
                                         required
                                         className="outline-none block w-[400px] ml-2 p-1 px-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value={""}>- Select Account Number -</option>
@@ -242,6 +354,28 @@ export default function Adjustments() {
                                         <option value={4}>Excess</option>
                                     </select>
                                 </div>
+
+                                {chanelDropdown &&
+                                    <div>
+                                        <label
+                                            htmlFor="small"
+                                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white ml-3">
+                                            Chanel:
+                                        </label>
+                                        <select
+                                            onChange={(e) => setTransferChanel(e.target.value)}
+                                            id="small"
+                                            placeholder="Enter Payment Name"
+                                            required
+                                            className="outline-none block w-[250px] ml-2 p-1 px-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <option value={""}>- Select Transfer Chanel -</option>
+                                            {
+                                                transferChanelList.map((element) => (
+                                                    <option key={element.channelId} value={element.channelId}>{element.channelType}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </div>}
                             </div>
                             <div className='flex flex-row gap-5'>
                                 <div>
@@ -405,7 +539,6 @@ export default function Adjustments() {
                     </form>
                 </div>
             }
-
             <div>{errorMessage && <ErrorMessage messageValue={errorMessage} />}</div>
             <div>{successMessage && <SUccessMessage messageValue={successMessage} />}</div>
         </div>

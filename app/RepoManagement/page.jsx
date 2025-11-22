@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import RepoAdjustments from './RepoAdjustments/page';
 import DisplayRepo from './DisplayRepo/page';
 import Adjustments from './Adjustments/page';
+import AdjustmentDelete from './AdjustmentDelete/page';
 
 export default function RepoManagement() {
     //Define states;
@@ -14,6 +15,8 @@ export default function RepoManagement() {
     const [displayRepo, setDisplayRepo] = useState(false);
     const [adjustments, setAdjustments] = useState(false);
     const [adjustmentDisplay, setAdjustmentDisplay] = useState(false);
+    const [adjustmentDelete, setAdjustmentDelete] = useState(false);
+    const [adjustmentDropDown, setAdjustmentDropDown] = useState(false);
 
 
     const router = useRouter();
@@ -30,6 +33,7 @@ export default function RepoManagement() {
         setDisplayRepo,
         setAdjustmentDisplay,
         setAdjustments,
+        setAdjustmentDelete,
     ];
 
     //Define function for handling each main function user clicks;
@@ -92,28 +96,88 @@ export default function RepoManagement() {
                     </div>
                 </div>
 
+
                 <div
-                    onClick={() => handleClick(setAdjustments, 'FUNC-050')}
-                    className="flex flex-row items-center justify-center ml-5">
-                    <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                    </svg>
-                    <div className="text-sm text-white hover:bg-slate-700 w-[110px] h-[32] flex flex-col items-center justify-center rounded-md">
-                        <button>Adjustments</button>
+                    onMouseEnter={() => setAdjustmentDropDown(true)}
+                    onMouseLeave={() => setAdjustmentDropDown(false)}
+                    className="relative inline-block text-left ml-5">
+                    <div className="flex flex-row items-center">
+                        <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="M6 4v10m0 0a2 2 0 1 0 0 4m0-4a2 2 0 1 1 0 4m0 0v2m6-16v2m0 0a2 2 0 1 0 0 4m0-4a2 2 0 1 1 0 4m0 0v10m6-16v10m0 0a2 2 0 1 0 0 4m0-4a2 2 0 1 1 0 4m0 0v2" />
+                        </svg>
+                        <button
+                            type="button"
+                            className="inline-flex w-full border-none bg-slate-800 hover:bg-slate-700 justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm text-white shadow-xs"
+                            id="menu-button"
+                            aria-expanded="true"
+                            aria-haspopup="true">
+                            Adjustments
+                            <svg
+                                className="-mr-1 size-5 text-gray-400"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                aria-hidden="true"
+                                data-slot="icon">
+                                <path
+                                    fillRule="evenodd"
+                                    d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                    clipRule="evenodd"
+                                />
+                            </svg>
+                        </button>
                     </div>
+
+                    {adjustmentDropDown && (
+                        <div
+                            className="absolute right-0 z-10 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden"
+                            role="menu"
+                            aria-orientation="vertical"
+                            aria-labelledby="menu-button"
+                            tabIndex="-1">
+                            <div
+                                onClick={() => handleClick(setAdjustments, 'FUNC-050')}
+                                className="py-1"
+                                role="none">
+                                <button
+                                    className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
+                                    role="menuitem"
+                                    tabIndex="-1"
+                                    id="menu-item-0">
+                                    New REPO Adjustment
+                                </button>
+                            </div>
+
+                            <div
+                                onClick={() => handleClick(setAdjustmentDisplay, 'FUNC-049')}
+                                className="py-1"
+                                role="none">
+                                <button
+                                    className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
+                                    role="menuitem"
+                                    tabIndex="-1"
+                                    id="menu-item-0">
+                                    REPO Adjustment Display
+                                </button>
+                            </div>
+
+                            <div
+                                onClick={() => handleClick(setAdjustmentDelete, 'FUNC-049')}
+                                className="py-1"
+                                role="none">
+                                <button
+                                    className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
+                                    role="menuitem"
+                                    tabIndex="-1"
+                                    id="menu-item-0">
+                                    Adjustment Delete
+                                </button>
+                            </div>
+
+                        </div>
+                    )}
                 </div>
 
 
-                <div
-                    onClick={() => handleClick(setAdjustmentDisplay, 'FUNC-049')}
-                    className="flex flex-row items-center justify-center ml-5">
-                    <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.2857 7V5.78571c0-.43393-.3482-.78571-.7778-.78571H6.06345c-.42955 0-.77777.35178-.77777.78571V16m0 0h-1c-.55229 0-1 .4477-1 1v1c0 .5523.44771 1 1 1h5m-4-3h4m7.00002-6v3c0 .5523-.4477 1-1 1h-3m8-3v8c0 .5523-.4477 1-1 1h-6c-.5523 0-1-.4477-1-1v-5.397c0-.2536.0963-.4977.2696-.683l2.434-2.603c.189-.2022.4535-.317.7304-.317h3.566c.5523 0 1 .4477 1 1Z" />
-                    </svg>
-                    <div className="text-sm text-white hover:bg-slate-700 w-[145px] h-[32] flex flex-col items-center justify-center rounded-md">
-                        <button>Adjustment Display</button>
-                    </div>
-                </div>
             </div>
 
             {newRepo && (
@@ -134,6 +198,11 @@ export default function RepoManagement() {
             {adjustments && (
                 <div className="mt-4">
                     <Adjustments onCancel={() => handleCancel(setAdjustments)} />
+                </div>
+            )}
+            {adjustmentDelete && (
+                <div className="mt-4">
+                    <AdjustmentDelete onCancel={() => handleCancel(setAdjustmentDelete)} />
                 </div>
             )}
         </div>
