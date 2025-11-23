@@ -12,11 +12,13 @@ export default function Adjustments() {
 
     //Define state variables;
     const [saveSpinner, setSaveSpinner] = useState(false);
+    const [transferSpinner, setTransferSpinner] = useState(false);
 
     const [newRepo, setNewRepo] = useState(false);
     const [existingRepo, setExistingRepo] = useState(false);
     const [fromRepo, setFromRepo] = useState("");
     const [toRepo, setToRepo] = useState("");
+    const [transferValue, setTransferValue] = useState("");
     const [adjustmentType, setAdjustmentType] = useState("");
     const [accountNumber, setAccountNumber] = useState("");
     const [repoType, setRepoType] = useState("");
@@ -30,7 +32,7 @@ export default function Adjustments() {
     const [fromRepoList, setFromRepoList] = useState([]);
     const [toRepoList, setToRepoList] = useState([]);
     const [transferChanelList, setTransferChanelList] = useState([]);
-    const [chanelDropdown, setChanelDropdown] = useState(false);    
+    const [chanelDropdown, setChanelDropdown] = useState(false);
 
     //Define adjustmentChange function;
     const adjustmentChange = (adjustmentType, fromRepo) => {
@@ -51,11 +53,16 @@ export default function Adjustments() {
 
     //Define fromRepoChange function;
     const fromRepoChange = (fromRepo, adjustmentType) => {
-        if (fromRepo !== "" && adjustmentType !== "") {
+        if (fromRepo !== "" && adjustmentType === "1") {
             setFromRepo(fromRepo);
             setExistingRepo(false);
             setNewRepo(true);
-        } else {
+        } else if (fromRepo !== "" && adjustmentType === "2") {
+            setFromRepo(fromRepo);
+            setExistingRepo(true);
+            setNewRepo(false);
+        }
+        else {
             setFromRepo(fromRepo);
             setExistingRepo(false);
             setNewRepo(false);
@@ -219,8 +226,50 @@ export default function Adjustments() {
             }
         } catch (error) {
             errorMessage("Un-expected error occurred. Please contact administrator!");
-        }finally{
+        } finally {
             setSaveSpinner(false);
+        }
+    }
+
+    //Define existingRepoTransfer function;
+    const existingRepoTransfer = async (e) => {
+        e.preventDefault();
+        setErrorMessage("");
+        setSuccessMessage("");
+        setTransferSpinner(true);
+        try {
+            const request = await fetch(
+                `${baseUrl}/api/v1/repo/transfer-repo`,
+                {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(
+                        {
+                            fromRepo: fromRepo,
+                            toRepo: toRepo,
+                            repoValue: repoValue,
+                            transferChanel: transferChanel
+                        }
+                    )
+                },
+                
+            );
+            if (request.status === 200) {
+                const response = await request.json();
+                setSuccessMessage(response.message);
+            } else if (request.status === 409) {
+                const response = await request.json();
+                setErrorMessage(response.message);
+            }else if(request.status === 500){
+                const response = await request.json();
+                setErrorMessage(response.message);
+            }
+        } catch (error) {
+            console.log(error)
+            setErrorMessage("Un-expected error occurred. Please contact administrator!");
+        } finally {
+            setTransferSpinner(false);
         }
     }
 
@@ -243,6 +292,31 @@ export default function Adjustments() {
                     setChanelDropdown(true);
                 }
                 setAccountNumber(newRepoAccountId);
+            }
+        } catch (error) {
+            setErrorMessage("Un-expected error occurred, while fetching Bank Accounts!");
+        }
+    }
+
+    //Define setUpTransferChannel function;
+    const setUpTransferChannelForExistingRepo = async (toRepo, fromRepoId) => {
+        setToRepo(toRepo);
+        try {
+            const request = await fetch(
+                `${baseUrl}/api/v1/bank-account/checkBankAccountForExistingRepo?toRepoId=${encodeURIComponent(toRepo)}&fromRepoId=${encodeURIComponent(fromRepoId)}`,
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            );
+            if (request.status === 200) {
+                const response = await request.json();
+                if (response.responseObject == true) {
+                    setChanelDropdown(false);
+                } else {
+                    setChanelDropdown(true);
+                }
+                setToRepo(toRepo);
             }
         } catch (error) {
             setErrorMessage("Un-expected error occurred, while fetching Bank Accounts!");
@@ -476,22 +550,22 @@ export default function Adjustments() {
             {
                 existingRepo &&
                 <div>
-                    <form onSubmit={(e) => handleSubmit(e)} className='border-none shadow-md py-5'>
+                    <form onSubmit={(e) => existingRepoTransfer(e)} className='border-none shadow-md py-5'>
                         <div className='flex flex-col gap-4'>
                             <div className='flex flex-row gap-5'>
                                 <div>
                                     <label
                                         htmlFor="small"
                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white ml-3">
-                                        Transfer To:
+                                        To Repo:
                                     </label>
                                     <select
                                         id="small"
                                         placeholder="Enter Payment Name"
-                                        onChange={(e) => setToRepo(e.target.value)}
+                                        onChange={(e) => setUpTransferChannelForExistingRepo(e.target.value, fromRepo)}
                                         required
                                         className="outline-none block w-[400px] ml-2 p-1 px-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value={""}>- Select Account Number -</option>
+                                        <option value={""}>- Select Repo ID -</option>
                                         {
                                             toRepoList.map((element) => (
                                                 <option key={element.repoId} value={element.repoId}>{element.repoId}</option>
@@ -516,13 +590,34 @@ export default function Adjustments() {
                                         required
                                         className="outline-none block w-[400px] ml-2 p-1 px-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
                                 </div>
+                                {chanelDropdown &&
+                                    <div>
+                                        <label
+                                            htmlFor="small"
+                                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white ml-3">
+                                            Chanel:
+                                        </label>
+                                        <select
+                                            onChange={(e) => setTransferChanel(e.target.value)}
+                                            id="small"
+                                            placeholder="Enter Payment Name"
+                                            required
+                                            className="outline-none block w-[250px] ml-2 p-1 px-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <option value={""}>- Select Transfer Chanel -</option>
+                                            {
+                                                transferChanelList.map((element) => (
+                                                    <option key={element.channelId} value={element.channelId}>{element.channelType}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </div>}
                             </div>
                             <div className='flex flex-row gap-1'>
                                 <div>
                                     <button
                                         type="submit"
                                         className="border flex flex-row ml-2 gap-0.5 h-[30px] items-center justify-center w-[80px] text-white bg-blue-700 hover:bg-blue-600 rounded-md border-none">
-                                        {saveSpinner && <Spinner size={20} />}
+                                        {transferSpinner && <Spinner size={20} />}
                                         <label>Transfer</label>
                                     </button>
                                 </div>
