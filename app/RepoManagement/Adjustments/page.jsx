@@ -33,6 +33,7 @@ export default function Adjustments() {
     const [toRepoList, setToRepoList] = useState([]);
     const [transferChanelList, setTransferChanelList] = useState([]);
     const [chanelDropdown, setChanelDropdown] = useState(false);
+    const [repoLoading, setRepoLoading] = useState("Load Repos");
 
     //Define adjustmentChange function;
     const adjustmentChange = (adjustmentType, fromRepo) => {
@@ -108,7 +109,7 @@ export default function Adjustments() {
         setErrorMessage(false);
         try {
             const request = await fetch(
-                `${baseUrl}/api/v1/repo/get-Repo-List`,
+                `${baseUrl}/api/v1/repo/get-from-Repo-List`,
                 {
                     method: "GET",
                     credentials: "include",
@@ -130,9 +131,10 @@ export default function Adjustments() {
     //Define torepoList function;
     const torepoList = async () => {
         setErrorMessage(false);
+        setRepoLoading("Loadnig...");
         try {
             const request = await fetch(
-                `${baseUrl}/api/v1/repo/get-Repo-List`,
+                `${baseUrl}/api/v1/repo/get-To-Repo-List?selectedRepo=${fromRepo}`,
                 {
                     method: "GET",
                     credentials: "include",
@@ -141,13 +143,16 @@ export default function Adjustments() {
             if (request.status === 200) {
                 const response = await request.json();
                 setToRepoList(response.responseObject);
+                setRepoLoading("Repo Loaded Successfully");
             } else if (request.status === 409) {
                 const response = await request.json();
                 setErrorMessage(response.message);
+                setRepoLoading("Error");
             }
         } catch (error) {
             const response = await request.json();
             setErrorMessage(response.message);
+            setRepoLoading("Error");
         }
     }
 
@@ -178,7 +183,6 @@ export default function Adjustments() {
     useEffect(() => {
         getBankAccount();
         fromrepoList();
-        torepoList();
         getChannels();
     }, []);
 
@@ -253,7 +257,7 @@ export default function Adjustments() {
                         }
                     )
                 },
-                
+
             );
             if (request.status === 200) {
                 const response = await request.json();
@@ -261,7 +265,7 @@ export default function Adjustments() {
             } else if (request.status === 409) {
                 const response = await request.json();
                 setErrorMessage(response.message);
-            }else if(request.status === 500){
+            } else if (request.status === 500) {
                 const response = await request.json();
                 setErrorMessage(response.message);
             }
@@ -554,14 +558,24 @@ export default function Adjustments() {
                         <div className='flex flex-col gap-4'>
                             <div className='flex flex-row gap-5'>
                                 <div>
-                                    <label
-                                        htmlFor="small"
-                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white ml-3">
-                                        To Repo:
-                                    </label>
+                                    <div className='flex flex-row'>
+                                        <label
+                                            htmlFor="small"
+                                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white ml-3">
+                                            To Repo:
+                                        </label>
+                                        {repoLoading &&
+                                            <a
+                                                htmlFor="small"
+                                                onClick={() => torepoList()}
+                                                className="block mb-2 hover:underline cursor-pointer text-sm font-medium text-blue-500 dark:text-white ml-3">
+                                                {repoLoading}
+                                            </a>
+                                        }
+
+                                    </div>
                                     <select
                                         id="small"
-                                        placeholder="Enter Payment Name"
                                         onChange={(e) => setUpTransferChannelForExistingRepo(e.target.value, fromRepo)}
                                         required
                                         className="outline-none block w-[400px] ml-2 p-1 px-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">

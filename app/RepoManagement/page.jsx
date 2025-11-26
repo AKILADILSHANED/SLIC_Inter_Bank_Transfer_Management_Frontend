@@ -8,6 +8,7 @@ import RepoAdjustments from './RepoAdjustments/page';
 import DisplayRepo from './DisplayRepo/page';
 import Adjustments from './Adjustments/page';
 import AdjustmentDelete from './AdjustmentDelete/page';
+import RepoDelete from './RepoDelete/page';
 
 export default function RepoManagement() {
     //Define states;
@@ -17,6 +18,7 @@ export default function RepoManagement() {
     const [adjustmentDisplay, setAdjustmentDisplay] = useState(false);
     const [adjustmentDelete, setAdjustmentDelete] = useState(false);
     const [adjustmentDropDown, setAdjustmentDropDown] = useState(false);
+    const [repoDelete, setRepoDelete] = useState(false);
 
 
     const router = useRouter();
@@ -34,6 +36,7 @@ export default function RepoManagement() {
         setAdjustmentDisplay,
         setAdjustments,
         setAdjustmentDelete,
+        setRepoDelete,
     ];
 
     //Define function for handling each main function user clicks;
@@ -178,7 +181,7 @@ export default function RepoManagement() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setDisplayRepo, 'FUNC-050')}
+                    onClick={() => handleClick(setRepoDelete, 'FUNC-050')}
                     className="flex flex-row items-center justify-center ml-5">
                     <svg className="w-6 h-6 text-white  cursor-pointer"
                         fill="none"
@@ -193,6 +196,18 @@ export default function RepoManagement() {
                     </svg>
                     <div className="text-sm text-white hover:bg-slate-700 w-[110px] h-[32] flex flex-col items-center justify-center rounded-md">
                         <button>Delete REPO</button>
+                    </div>
+                </div>
+
+                <div
+                    onClick={() => handleClick(setDisplayRepo, 'FUNC-050')}
+                    className="flex flex-row items-center justify-center ml-5">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                    <div className="text-sm text-white hover:bg-slate-700 w-[100px] h-[32] flex flex-col items-center justify-center rounded-md">
+                        <button>Investments</button>
                     </div>
                 </div>
 
@@ -222,6 +237,11 @@ export default function RepoManagement() {
             {adjustmentDelete && (
                 <div className="mt-4">
                     <AdjustmentDelete onCancel={() => handleCancel(setAdjustmentDelete)} />
+                </div>
+            )}
+            {repoDelete && (
+                <div className="mt-4">
+                    <RepoDelete onCancel={() => handleCancel(setRepoDelete)} />
                 </div>
             )}
         </div>
