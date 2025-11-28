@@ -2,6 +2,8 @@
 import React from 'react'
 import Spinner from '@/app/Spinner/page'
 import { useState } from 'react';
+import ErrorMessage from '@/app/Messages/ErrorMessage/page';
+import SUccessMessage from '@/app/Messages/SuccessMessage/page';
 
 export default function RepoDelete({ onCancel }) {
 
@@ -11,9 +13,11 @@ export default function RepoDelete({ onCancel }) {
     //Define state variables
     const [textRepoId, setTextRepoId] = useState("");
     const [spinnerSearch, setSpinnerSearch] = useState(false);
+    const [spinnerDelete, setSpinnerDelete] = useState(false);
     const [repoDataTable, setRepoDataTable] = useState(false);
     const [repoDetails, setRepoDetails] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
 
 
     //Define getRepoDetails function;
@@ -21,6 +25,7 @@ export default function RepoDelete({ onCancel }) {
         e.preventDefault();
         setErrorMessage("");
         setRepoDataTable(false);
+        setSpinnerSearch(true);
         try {
             const request = await fetch(
                 `${baseUrl}/api/v1/repo/display-repo?repoId=${textRepoId}`,
@@ -45,6 +50,36 @@ export default function RepoDelete({ onCancel }) {
             }
         } catch (rror) {
             setErrorMessage("Un-expected error occurred. Please contact administrator!");
+        } finally {
+            setSpinnerSearch(false);
+        }
+    }
+
+    //Define deleteRepo function;
+    const deleteRepo = async () => {
+        setErrorMessage("");
+        setSuccessMessage("");
+        setSpinnerDelete(true);
+        try {
+            const request = await fetch(
+                `${baseUrl}/api/v1/repo/repo-delete?repoId=${textRepoId}`,
+                {
+                    method: "PUT",
+                    credentials: "include"
+                }
+            );
+            const response = await request.json();
+            if (request.status === 200) {
+                setSuccessMessage(response.message);
+            } else if (request.status === 409) {
+                setErrorMessage(response.message);
+            } else {
+                setErrorMessage(response.message);
+            }
+        } catch (error) {
+            setErrorMessage("Un-expected error occurred. Please contact administrator!!!");
+        } finally {
+            setSpinnerDelete(false);
         }
     }
 
@@ -86,6 +121,7 @@ export default function RepoDelete({ onCancel }) {
             </div>
 
             <div>{errorMessage && <ErrorMessage messageValue={errorMessage} />}</div>
+            <div>{successMessage && <SUccessMessage messageValue={successMessage} />}</div>
 
             {
                 repoDataTable &&
@@ -114,6 +150,9 @@ export default function RepoDelete({ onCancel }) {
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     REPO Type
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Investment Status
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Invest Date
@@ -179,6 +218,9 @@ export default function RepoDelete({ onCancel }) {
                                             <div className="text-sm text-gray-600">{element.repoType}</div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="text-sm text-gray-600">{element.investmentStatus}</div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="text-sm text-gray-600">{element.investDate}</div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -202,7 +244,13 @@ export default function RepoDelete({ onCancel }) {
                         </tbody>
                     </table>
                     <div className='flex flex-row gap-2 mb-2'>
-                        <button className="bg-red-600 mt-3 ml-6 hover:bg-red-700 text-white w-[100px] p-2 rounded-md shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-xs whitespace-nowrap">
+                        <button onClick={() => deleteRepo()} className="bg-red-600 mt-3 ml-6 hover:bg-red-700 text-white w-[100px] p-2 rounded-md shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-xs whitespace-nowrap">
+
+                            {spinnerDelete && (
+                                <div className="mr-1">
+                                    <Spinner size={20}></Spinner>
+                                </div>
+                            )}
                             <label>Delete</label>
                         </button>
                         <button onClick={() => onCancel()} className="bg-red-500 mt-3 hover:bg-red-500 text-white w-[100px] p-2 rounded-md shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-xs whitespace-nowrap">
