@@ -118,9 +118,9 @@ export default function UserLogin() {
         <div className="text-center mb-3">
           <div className="w-full bg-white/10 backdrop-blur-lg rounded-2xl p-1 border border-white/20 shadow-2xl">
             <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent mb-2">
-              Daily Inter Bank Transfers Management
+              Investment Management System
             </h1>
-            <p className="text-blue-100 text-sm md:text-base font-medium">SLICGL</p>
+            <p className="text-blue-100 text-sm md:text-base font-medium">Sri Lanka Insurance Corporation General Ltd.</p>
           </div>
         </div>
 

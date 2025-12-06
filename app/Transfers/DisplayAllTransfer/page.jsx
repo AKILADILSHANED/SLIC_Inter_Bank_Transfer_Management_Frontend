@@ -143,6 +143,9 @@ export default function DisplayAllTransfer() {
                                     <th scope="col" className="px-6 py-3 whitespace-nowrap">
                                         Reversed By
                                     </th>
+                                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                                        Cross Adjustment ID
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -207,6 +210,9 @@ export default function DisplayAllTransfer() {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             {element.reversedBy}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {element.crossAdjustment}
                                         </td>
                                     </tr>
                                 ))}

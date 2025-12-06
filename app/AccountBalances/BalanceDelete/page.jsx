@@ -301,7 +301,7 @@ export default function DeleteBalance({ onCancel }) {
               <div className="max-w-2xl mt-6 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
 
                 {/* Card Header */}
-                <div className="bg-gradient-to-r from-slate-500 to-slate-400 px-6 py-4 border-b border-slate-500">
+                <div className="bg-gradient-to-r from-slate-500 to-slate-400 text-center border-b border-slate-500">
                   <h3 className="text-lg font-semibold text-white">
                     Available Transfer IDs for provided Balance ID | Showing {transferIdList.length} transfer{transferIdList.length !== 1 ? 's' : ''}
                   </h3>

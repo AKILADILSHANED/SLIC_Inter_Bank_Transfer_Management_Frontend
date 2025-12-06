@@ -24,6 +24,7 @@ export default function RepoDelete({ onCancel }) {
     const getRepoDetails = async (e) => {
         e.preventDefault();
         setErrorMessage("");
+        setSuccessMessage("");
         setRepoDataTable(false);
         setSpinnerSearch(true);
         try {
@@ -83,6 +84,13 @@ export default function RepoDelete({ onCancel }) {
         }
     }
 
+    //Define getAdjustments function;
+    const getAdjustments = async ()=>{
+        const request = await fetch(
+            
+        );
+    }
+
     return (
         <div>
             <div className="h-[120px] w-full shadow-md">
@@ -127,7 +135,6 @@ export default function RepoDelete({ onCancel }) {
                 repoDataTable &&
                 <div className="overflow-x-auto rounded-lg border border-gray-200">
                     <table className="min-w-full divide-y divide-gray-200">
-
                         <thead className="bg-gray-50">
                             <tr>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -244,6 +251,15 @@ export default function RepoDelete({ onCancel }) {
                         </tbody>
                     </table>
                     <div className='flex flex-row gap-2 mb-2'>
+                        <button className="bg-green-600 mt-3 ml-6 hover:bg-green-700 text-white w-[120px] p-2 rounded-md shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 text-xs whitespace-nowrap">
+
+                            {spinnerDelete && (
+                                <div className="mr-1">
+                                    <Spinner size={20}></Spinner>
+                                </div>
+                            )}
+                            <label>Show Adjustments</label>
+                        </button>
                         <button onClick={() => deleteRepo()} className="bg-red-600 mt-3 ml-6 hover:bg-red-700 text-white w-[100px] p-2 rounded-md shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-xs whitespace-nowrap">
 
                             {spinnerDelete && (
@@ -257,6 +273,22 @@ export default function RepoDelete({ onCancel }) {
                             <label>Cancel</label>
                         </button>
                     </div>
+                    <table className='ml-6'>
+                        <thead className='border-1'>
+                            <tr className='border-1'>
+                                <th className='border-1'>
+                                    Adjustment ID
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className='border-1'>
+                            <tr className='border-1'>
+                                <td className='border-1'>
+                                    qweq
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             }
         </div>

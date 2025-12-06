@@ -145,55 +145,62 @@ export default function DisplayBalance() {
                 </tr>
               </thead>
               <tbody>
-                {balancesObject.map((element) => (
-                  <tr key={element.balanceId} className="hover:bg-slate-50">
-                    <td className="p-4 border-b border-slate-200">
-                      <p className="block text-sm text-slate-800">
-                        {element.balanceId}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-slate-200">
-                      <p className="block text-sm text-slate-800">
-                        {element.bank}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-slate-200">
-                      <p className="block text-sm text-slate-800">
-                        {element.accountNumber}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-slate-200">
-                      <p className="block text-sm text-slate-800">
-                        {element.balanceDate}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-slate-200 text-right">
-                      <p className="block text-sm text-slate-800">
-                        {typeof element.balanceAmount === "number"
-                          ? element.balanceAmount.toLocaleString(undefined, {
+                {balancesObject.map((element) => {
+                  const isDeleted = element.deleteStatus === "Deleted";
+
+                  return (
+                    <tr
+                      key={element.balanceId}
+                      className={`hover:bg-slate-50 ${isDeleted ? "bg-red-50" : ""}`}
+                    >
+                      <td className={`p-4 border-b ${isDeleted ? "border-red-200" : "border-slate-200"}`}>
+                        <p className={`block text-sm ${isDeleted ? "text-red-800" : "text-slate-800"}`}>
+                          {element.balanceId}
+                        </p>
+                      </td>
+                      <td className={`p-4 border-b ${isDeleted ? "border-red-200" : "border-slate-200"}`}>
+                        <p className={`block text-sm ${isDeleted ? "text-red-800" : "text-slate-800"}`}>
+                          {element.bank}
+                        </p>
+                      </td>
+                      <td className={`p-4 border-b ${isDeleted ? "border-red-200" : "border-slate-200"}`}>
+                        <p className={`block text-sm ${isDeleted ? "text-red-800" : "text-slate-800"}`}>
+                          {element.accountNumber}
+                        </p>
+                      </td>
+                      <td className={`p-4 border-b ${isDeleted ? "border-red-200" : "border-slate-200"}`}>
+                        <p className={`block text-sm ${isDeleted ? "text-red-800" : "text-slate-800"}`}>
+                          {element.balanceDate}
+                        </p>
+                      </td>
+                      <td className={`p-4 border-b ${isDeleted ? "border-red-200" : "border-slate-200"} text-right`}>
+                        <p className={`block text-sm ${isDeleted ? "text-red-800" : "text-slate-800"}`}>
+                          {typeof element.balanceAmount === "number"
+                            ? element.balanceAmount.toLocaleString(undefined, {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             })
-                          : element.balanceAmount}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-slate-200">
-                      <p className="block text-sm text-slate-800">
-                        {element.deleteStatus}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-slate-200">
-                      <p className="block text-sm text-slate-800">
-                        {element.deletedBy}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-slate-200">
-                      <p className="block text-sm text-slate-800">
-                        {element.enteredBy}
-                      </p>
-                    </td>
-                  </tr>
-                ))}
+                            : element.balanceAmount}
+                        </p>
+                      </td>
+                      <td className={`p-4 border-b ${isDeleted ? "border-red-200" : "border-slate-200"}`}>
+                        <p className={`block text-sm ${isDeleted ? "text-red-800" : "text-slate-800"}`}>
+                          {element.deleteStatus}
+                        </p>
+                      </td>
+                      <td className={`p-4 border-b ${isDeleted ? "border-red-200" : "border-slate-200"}`}>
+                        <p className={`block text-sm ${isDeleted ? "text-red-800" : "text-slate-800"}`}>
+                          {element.deletedBy}
+                        </p>
+                      </td>
+                      <td className={`p-4 border-b ${isDeleted ? "border-red-200" : "border-slate-200"}`}>
+                        <p className={`block text-sm ${isDeleted ? "text-red-800" : "text-slate-800"}`}>
+                          {element.enteredBy}
+                        </p>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

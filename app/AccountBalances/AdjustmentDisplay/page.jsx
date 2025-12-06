@@ -97,6 +97,7 @@ export default function AdjustmentDisplay({ onCancel }) {
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Adjustment ID</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cross Adjustment ID</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remark</th>
                                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Adjustment</th>
                                 </tr>
@@ -104,6 +105,7 @@ export default function AdjustmentDisplay({ onCancel }) {
                             <tbody className="bg-white divide-y divide-gray-200">
 
                                 <tr className="bg-blue-50">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"></td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"></td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Opening Balance</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 text-right">
@@ -124,6 +126,7 @@ export default function AdjustmentDisplay({ onCancel }) {
                                         (element) => (
                                             <tr key={element.adjustmentId} className="hover:bg-gray-50">
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{element.adjustmentId}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{element.crossAdjustment}</td>
                                                 <td className="px-6 py-4 text-sm text-gray-600">{element.remark}</td>
                                                 <td className={`px-6 py-4 whitespace-nowrap text-sm font-semibold text-right ${(element.adjustmentAmount || 0) < 0 ? 'text-red-600' : 'text-green-600'
                                                     }`}>
@@ -145,6 +148,7 @@ export default function AdjustmentDisplay({ onCancel }) {
                                 }
 
                                 <tr className="bg-purple-50 border-t-2 border-purple-200">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"></td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"></td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">Closing Balance</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-purple-800 text-right">

@@ -119,6 +119,9 @@ export default function DisplayTransfer() {
                                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
                                     Initiated By
                                 </th>
+                                <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                                    Cross Adjustment
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -154,6 +157,9 @@ export default function DisplayTransfer() {
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     {transferData.initiatedBy}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    {transferData.crossAdjustment}
                                 </td>
                             </tr>
                         </tbody>

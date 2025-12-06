@@ -11,7 +11,7 @@ export default function AdjustmentDelete() {
 
     //Define state variables;
     const [adjustmentId, setAdjustmentId] = useState("");
-    const [adjustmentDetails, setAdjustmentDetails] = useState("");
+    const [adjustmentDetails, setAdjustmentDetails] = useState([]);
     const [adjustmentDetailsComponent, setAdjustmentDetailsComponent] = useState(false);
     const [viewSinner, setViewSinner] = useState(false);
     const [deleteSinner, setDeleteSinner] = useState(false);
@@ -77,7 +77,7 @@ export default function AdjustmentDelete() {
             }
         } catch (error) {
             setErrorMessage(error + ":Un-expected error occurred. Please contact administrator!");
-        }finally{
+        } finally {
             setDeleteSinner(false);
         }
     }
@@ -96,7 +96,7 @@ export default function AdjustmentDelete() {
                         <label
                             htmlFor="small-input"
                             className="block mb-2 text-md font-medium text-gray-900 dark:text-white ml-5">
-                            Adjustment ID:
+                            Cross Adjustment ID:
                         </label>
                         <input
                             onChange={(e) => setAdjustmentId(e.target.value)}
@@ -126,37 +126,26 @@ export default function AdjustmentDelete() {
                         {/* Table Head */}
                         <thead>
                             <tr className="bg-gray-100">
-                                <th className="border border-gray-300 px-4 py-2 text-left">Adjustment ID</th>
-                                <th className="border border-gray-300 px-4 py-2 text-left">Remark</th>
-                                <th className="border border-gray-300 px-4 py-2 text-left">Amount</th>
-                                <th className="border border-gray-300 px-4 py-2 text-left">Adjust Date</th>
-                                <th className="border border-gray-300 px-4 py-2 text-left">Repo</th>
-                                <th className="border border-gray-300 px-4 py-2 text-left">Transfer</th>
-                                <th className="border border-gray-300 px-4 py-2 text-left">Status</th>
+                                <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Cross Adjustment ID</th>
+                                <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Adjustment Date</th>
+                                <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Status</th>                                
                             </tr>
                         </thead>
 
                         {/* Table Body */}
                         <tbody>
-
-                            <tr>
-                                <td className="border border-gray-300 px-4 py-2">{adjustmentDetails.adjustmentId}</td>
-                                <td className="border border-gray-300 px-4 py-2">{adjustmentDetails.remark}</td>
-                                <td className="border border-gray-300 px-4 py-2">
-                                    {Number(adjustmentDetails.adjustedAmount).toLocaleString('en-US', {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })}
-                                </td>
-                                <td className="border border-gray-300 px-4 py-2">{adjustmentDetails.adjustedDate}</td>
-                                <td className="border border-gray-300 px-4 py-2">{adjustmentDetails.repoId}</td>
-                                <td className="border border-gray-300 px-4 py-2">{adjustmentDetails.transferId}</td>
-                                <td className="border border-gray-300 px-4 py-2">{adjustmentDetails.deleteStatus}</td>
-                            </tr>
-
+                            {
+                                adjustmentDetails.map((element) => (
+                                    <tr key={element.adjustmentId}>
+                                        <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{element.adjustmentId}</td>
+                                        <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{element.adjustmentDate}</td>
+                                        <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{element.status}</td>                                        
+                                    </tr>
+                                ))
+                            }
                         </tbody>
                     </table>
-                    <button onClick={()=>handleDelete()} className="bg-red-600 mt-3 hover:bg-red-700 text-white w-[100px] p-2 rounded-md shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-xs whitespace-nowrap">
+                    <button onClick={() => handleDelete()} className="bg-red-600 mt-3 hover:bg-red-700 text-white w-[100px] p-2 rounded-md shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-xs whitespace-nowrap">
                         {deleteSinner && <Spinner size={20} />}
                         <label>Delete</label>
                     </button>
