@@ -85,9 +85,9 @@ export default function RepoDelete({ onCancel }) {
     }
 
     //Define getAdjustments function;
-    const getAdjustments = async ()=>{
+    const getAdjustments = async () => {
         const request = await fetch(
-            
+
         );
     }
 
@@ -251,44 +251,28 @@ export default function RepoDelete({ onCancel }) {
                         </tbody>
                     </table>
                     <div className='flex flex-row gap-2 mb-2'>
-                        <button className="bg-green-600 mt-3 ml-6 hover:bg-green-700 text-white w-[120px] p-2 rounded-md shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 text-xs whitespace-nowrap">
-
+                        <button onClick={() => deleteRepo()} className="flex flex-row items-center justify-center bg-red-600 mt-3 ml-6 hover:bg-red-700 text-white w-[100px] p-2 rounded-md shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-xs whitespace-nowrap">
                             {spinnerDelete && (
                                 <div className="mr-1">
                                     <Spinner size={20}></Spinner>
                                 </div>
                             )}
-                            <label>Show Adjustments</label>
-                        </button>
-                        <button onClick={() => deleteRepo()} className="bg-red-600 mt-3 ml-6 hover:bg-red-700 text-white w-[100px] p-2 rounded-md shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-xs whitespace-nowrap">
-
-                            {spinnerDelete && (
-                                <div className="mr-1">
-                                    <Spinner size={20}></Spinner>
-                                </div>
-                            )}
+                            <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                </path>
+                            </svg>
                             <label>Delete</label>
                         </button>
-                        <button onClick={() => onCancel()} className="bg-red-500 mt-3 hover:bg-red-500 text-white w-[100px] p-2 rounded-md shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-xs whitespace-nowrap">
+                        <button onClick={() => onCancel()} className="flex flex-row items-center justify-center bg-red-500 mt-3 hover:bg-red-500 text-white w-[100px] p-2 rounded-md shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-xs whitespace-nowrap">
+                            <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                    d="M6 18L18 6M6 6l12 12">
+                                </path>
+                            </svg>
                             <label>Cancel</label>
                         </button>
                     </div>
-                    <table className='ml-6'>
-                        <thead className='border-1'>
-                            <tr className='border-1'>
-                                <th className='border-1'>
-                                    Adjustment ID
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className='border-1'>
-                            <tr className='border-1'>
-                                <td className='border-1'>
-                                    qweq
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             }
         </div>

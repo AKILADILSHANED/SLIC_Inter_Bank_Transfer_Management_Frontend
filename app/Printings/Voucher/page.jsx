@@ -56,6 +56,26 @@ export default function Voucher() {
         }
     }
 
+    // Function to handle print ibt letter
+    const handlePrintLetter = (voucherId) => {
+        // Open new tab with voucher details
+        const newTab = window.open(`/Printings/DisplayIBTLtter?voucherId=${voucherId}`, '_blank');        
+        // Optional: focus on the new tab
+        if (newTab) {
+            newTab.focus();
+        }
+    }
+
+    // Function to handle print rtgs letter
+    const handlePrintRtgsLetter = (voucherId) => {
+        // Open new tab with voucher details
+        const newTab = window.open(`/Printings/DisplayRTGSLetter?voucherId=${voucherId}`, '_blank');        
+        // Optional: focus on the new tab
+        if (newTab) {
+            newTab.focus();
+        }
+    }
+
     return (
         <div>
             <div className="bg-red-800 h-[30px] flex flex-row items-center">
@@ -114,6 +134,7 @@ export default function Voucher() {
                                     <th className="border border-blue-600 text-sm px-2 py-3 font-semibold text-gray-700 text-left whitespace-nowrap w-32">To Account</th>
                                     <th className="border border-blue-600 text-sm px-2 py-3 font-semibold text-gray-700 text-left whitespace-nowrap w-28">Amount</th>
                                     <th className="border border-blue-600 text-sm px-2 py-3 font-semibold text-gray-700 text-left whitespace-nowrap w-24">Channel</th>
+                                    <th className="border border-blue-600 text-sm px-2 py-3 font-semibold text-gray-700 text-left whitespace-nowrap w-32">RTGS Letters</th>
                                     <th className="border border-blue-600 text-sm px-2 py-3 font-semibold text-gray-700 text-left whitespace-nowrap w-32">Letters</th>
                                     <th className="border border-blue-600 text-sm px-2 py-3 font-semibold text-gray-700 text-left whitespace-nowrap w-36">Vouchers</th>
                                 </tr>
@@ -135,7 +156,13 @@ export default function Voucher() {
                                                 : element.requestAmount}
                                         </td>
                                         <td className="border border-blue-600 text-sm px-2 py-2 text-gray-600 whitespace-nowrap">{element.channel}</td>
-                                        <td className="border border-blue-600 text-sm px-2 py-2 text-gray-600 whitespace-nowrap">
+                                        
+                                        <td onClick={()=>handlePrintRtgsLetter(element.transferId)} className="border border-blue-600 text-sm px-2 py-2 text-gray-600 whitespace-nowrap">
+                                            <button className="bg-green-600 hover:bg-green-700 text-white w-full p-2 rounded-md shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 text-xs whitespace-nowrap">
+                                                Print RTGS Letter
+                                            </button>
+                                        </td>
+                                        <td onClick={()=>handlePrintLetter(element.transferId)} className="border border-blue-600 text-sm px-2 py-2 text-gray-600 whitespace-nowrap">
                                             <button className="bg-green-600 hover:bg-green-700 text-white w-full p-2 rounded-md shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 text-xs whitespace-nowrap">
                                                 Print Letter
                                             </button>

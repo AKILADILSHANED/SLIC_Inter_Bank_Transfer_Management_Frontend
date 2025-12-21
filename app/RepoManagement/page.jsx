@@ -9,6 +9,8 @@ import DisplayRepo from './DisplayRepo/page';
 import Adjustments from './Adjustments/page';
 import AdjustmentDelete from './AdjustmentDelete/page';
 import RepoDelete from './RepoDelete/page';
+import RepoInvestment from './RepoInvestment/page';
+import InvestmentReverse from './InvestmentReverse/page';
 
 export default function RepoManagement() {
     //Define states;
@@ -18,7 +20,10 @@ export default function RepoManagement() {
     const [adjustmentDisplay, setAdjustmentDisplay] = useState(false);
     const [adjustmentDelete, setAdjustmentDelete] = useState(false);
     const [adjustmentDropDown, setAdjustmentDropDown] = useState(false);
+    const [investmentDropDown, setInvestmentDropDown] = useState(false);
+    const [investmentReverse, setInvestmentReverse] = useState(false);
     const [repoDelete, setRepoDelete] = useState(false);
+    const [repoInvestment, setRepoInvestment] = useState(false);
 
 
     const router = useRouter();
@@ -37,6 +42,8 @@ export default function RepoManagement() {
         setAdjustments,
         setAdjustmentDelete,
         setRepoDelete,
+        setRepoInvestment,
+        setInvestmentReverse
     ];
 
     //Define function for handling each main function user clicks;
@@ -200,18 +207,70 @@ export default function RepoManagement() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setDisplayRepo, 'FUNC-050')}
-                    className="flex flex-row items-center justify-center ml-5">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                    </svg>
-                    <div className="text-sm text-white hover:bg-slate-700 w-[100px] h-[32] flex flex-col items-center justify-center rounded-md">
-                        <button>Investments</button>
+                    onMouseEnter={() => setInvestmentDropDown(true)}
+                    onMouseLeave={() => setInvestmentDropDown(false)}
+                    className="relative inline-block text-left ml-5">
+                    <div className="flex flex-row items-center">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                        <button
+                            type="button"
+                            className="inline-flex w-full border-none bg-slate-800 hover:bg-slate-700 justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm text-white shadow-xs"
+                            id="menu-button"
+                            aria-expanded="true"
+                            aria-haspopup="true">
+                            Investments
+                            <svg
+                                className="-mr-1 size-5 text-gray-400"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                aria-hidden="true"
+                                data-slot="icon">
+                                <path
+                                    fillRule="evenodd"
+                                    d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                    clipRule="evenodd"
+                                />
+                            </svg>
+                        </button>
                     </div>
+
+                    {investmentDropDown && (
+                        <div
+                            className="absolute right-0 z-10 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden"
+                            role="menu"
+                            aria-orientation="vertical"
+                            aria-labelledby="menu-button"
+                            tabIndex="-1">
+                            <div
+                                onClick={() => handleClick(setRepoInvestment, 'FUNC-050')}
+                                className="py-1"
+                                role="none">
+                                <button
+                                    className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
+                                    role="menuitem"
+                                    tabIndex="-1"
+                                    id="menu-item-0">
+                                    Invest Repo
+                                </button>
+                            </div>
+                            <div
+                                onClick={() => handleClick(setInvestmentReverse, 'FUNC-050')}
+                                className="py-1"
+                                role="none">
+                                <button
+                                    className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
+                                    role="menuitem"
+                                    tabIndex="-1"
+                                    id="menu-item-0">
+                                    Reverse Investment
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
-
-
             </div>
 
             {newRepo && (
@@ -242,6 +301,16 @@ export default function RepoManagement() {
             {repoDelete && (
                 <div className="mt-4">
                     <RepoDelete onCancel={() => handleCancel(setRepoDelete)} />
+                </div>
+            )}
+            {repoInvestment && (
+                <div className="mt-4">
+                    <RepoInvestment onCancel={() => handleCancel(setRepoInvestment)} />
+                </div>
+            )}
+            {investmentReverse && (
+                <div className="mt-4">
+                    <InvestmentReverse onCancel={() => handleCancel(setInvestmentReverse)} />
                 </div>
             )}
         </div>
