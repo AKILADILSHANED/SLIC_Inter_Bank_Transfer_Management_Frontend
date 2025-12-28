@@ -46,6 +46,16 @@ export default function RepoLetterPrint() {
         showRepoDetails();
     }, []);
 
+    //Define repoLetterPrint function;
+    const repoLetterPrint = async (repoId) => {
+        // Open new tab with voucher details
+        const newTab = window.open(`/Printings/DisplayRepoLetter?repoId=${repoId}`, '_blank');
+        // Optional: focus on the new tab
+        if (newTab) {
+            newTab.focus();
+        }
+    }
+
     return (
         <div>
             <div className="bg-red-800 my-4 h-[30px] flex flex-row items-center">
@@ -114,7 +124,7 @@ export default function RepoLetterPrint() {
                                         : item.investmentValue}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <button onClick={() => investmentDetails(item.repoId, item.investmentValue)} className="flex items-center px-3 py-1.5 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700 transition-colors">
+                                    <button onClick={() => repoLetterPrint(item.repoId)} className="flex items-center px-3 py-1.5 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700 transition-colors">
                                         <svg
                                             className="w-4 h-4 mr-1.5"
                                             fill="none"
