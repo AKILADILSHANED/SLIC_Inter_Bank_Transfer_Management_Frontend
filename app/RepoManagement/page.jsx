@@ -71,7 +71,7 @@ export default function RepoManagement() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setNewRepo, 'FUNC-029')}
+                    onClick={() => handleClick(setNewRepo, 'FUNC-031')}
                     className="flex flex-row items-center justify-center ml-[75px]">
                     <svg
                         className="w-6 h-6 text-white dark:text-white"
@@ -96,7 +96,7 @@ export default function RepoManagement() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setDisplayRepo, 'FUNC-050')}
+                    onClick={() => handleClick(setDisplayRepo, 'FUNC-032')}
                     className="flex flex-row items-center justify-center ml-5">
                     <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
@@ -145,7 +145,7 @@ export default function RepoManagement() {
                             aria-labelledby="menu-button"
                             tabIndex="-1">
                             <div
-                                onClick={() => handleClick(setAdjustments, 'FUNC-050')}
+                                onClick={() => handleClick(setAdjustments, 'FUNC-033')}
                                 className="py-1"
                                 role="none">
                                 <button
@@ -158,7 +158,7 @@ export default function RepoManagement() {
                             </div>
 
                             <div
-                                onClick={() => handleClick(setAdjustmentDisplay, 'FUNC-049')}
+                                onClick={() => handleClick(setAdjustmentDisplay, 'FUNC-034')}
                                 className="py-1"
                                 role="none">
                                 <button
@@ -171,7 +171,7 @@ export default function RepoManagement() {
                             </div>
 
                             <div
-                                onClick={() => handleClick(setAdjustmentDelete, 'FUNC-049')}
+                                onClick={() => handleClick(setAdjustmentDelete, 'FUNC-035')}
                                 className="py-1"
                                 role="none">
                                 <button
@@ -188,7 +188,7 @@ export default function RepoManagement() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setRepoDelete, 'FUNC-050')}
+                    onClick={() => handleClick(setRepoDelete, 'FUNC-036')}
                     className="flex flex-row items-center justify-center ml-5">
                     <svg className="w-6 h-6 text-white  cursor-pointer"
                         fill="none"
@@ -245,7 +245,7 @@ export default function RepoManagement() {
                             aria-labelledby="menu-button"
                             tabIndex="-1">
                             <div
-                                onClick={() => handleClick(setRepoInvestment, 'FUNC-050')}
+                                onClick={() => handleClick(setRepoInvestment, 'FUNC-037')}
                                 className="py-1"
                                 role="none">
                                 <button
@@ -257,7 +257,7 @@ export default function RepoManagement() {
                                 </button>
                             </div>
                             <div
-                                onClick={() => handleClick(setInvestmentReverse, 'FUNC-050')}
+                                onClick={() => handleClick(setInvestmentReverse, 'FUNC-038')}
                                 className="py-1"
                                 role="none">
                                 <button

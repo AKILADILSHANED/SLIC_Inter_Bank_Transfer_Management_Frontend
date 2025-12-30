@@ -27,8 +27,8 @@ export default function UserManagement() {
   const handleClick = (setterFunction, requiredPermission) => {
     // First, check for permission
     if (requiredPermission && !hasPermission(requiredPermission)) {
-        router.push('/AccessDenied'); // Redirect if no permission
-        return;
+      router.push('/AccessDenied'); // Redirect if no permission
+      return;
     }
     arraySetters.forEach((setter) => {
       setter(false);
@@ -145,9 +145,9 @@ export default function UserManagement() {
           </div>
         </div>
 
-        <div 
-        onClick={() => handleClick(setClickDeleteUser, 'FUNC-004')}
-        className="flex flex-row items-center justify-center ml-5">
+        <div
+          onClick={() => handleClick(setClickDeleteUser, 'FUNC-004')}
+          className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
             aria-hidden="true"

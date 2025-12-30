@@ -68,7 +68,7 @@ export default function AccountManagement() {
         </div>
 
         <div
-          onClick={() => handleClick(setPaymentRegister, 'FUNC-013')}
+          onClick={() => handleClick(setPaymentRegister, 'FUNC-014')}
           className="flex flex-row items-center justify-center ml-[100px]">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -93,7 +93,7 @@ export default function AccountManagement() {
         </div>
 
         <div
-          onClick={() => handleClick(setPaymentSearch, 'FUNC-014')}
+          onClick={() => handleClick(setPaymentSearch, 'FUNC-015')}
           className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -117,7 +117,7 @@ export default function AccountManagement() {
         </div>
 
         <div
-          onClick={() => handleClick(setPaymentUpdate, 'FUNC-015')}
+          onClick={() => handleClick(setPaymentUpdate, 'FUNC-016')}
           className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -142,7 +142,7 @@ export default function AccountManagement() {
         </div>
 
         <div
-          onClick={() => handleClick(setPaymentDelete, 'FUNC-016')}
+          onClick={() => handleClick(setPaymentDelete, 'FUNC-017')}
           className="flex flex-row items-center justify-center ml-5">
           <svg
             className="w-6 h-6 text-white dark:text-white"

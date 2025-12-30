@@ -65,7 +65,7 @@ export default function Transfers() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setNewTransfer, 'FUNC-023')}
+                    onClick={() => handleClick(setNewTransfer, 'FUNC-024')}
                     className="flex flex-row items-center justify-center ml-[50px]">
                     <svg
                         className="w-6 h-6 text-white dark:text-white"
@@ -90,7 +90,7 @@ export default function Transfers() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setDisplayTransfer, 'FUNC-024')}
+                    onClick={() => handleClick(setDisplayTransfer, 'FUNC-025')}
                     className="flex flex-row items-center justify-center ml-2">
                     <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 16H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1M9 12H4m8 8V9h8v11h-8Zm0 0H9m8-4a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z" />
@@ -102,7 +102,7 @@ export default function Transfers() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setDisplayAllTransfer, 'FUNC-025')}
+                    onClick={() => handleClick(setDisplayAllTransfer, 'FUNC-026')}
                     className="flex flex-row items-center justify-center ml-2">
                     <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 16H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1M9 12H4m8 8V9h8v11h-8Zm0 0H9m8-4a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z" />
@@ -114,7 +114,7 @@ export default function Transfers() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setCheckAllTransfer, 'FUNC-046')}
+                    onClick={() => handleClick(setCheckAllTransfer, 'FUNC-027')}
                     className="flex flex-row items-center justify-center ml-2">
                     <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 16H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1M9 12H4m8 8V9h8v11h-8Zm0 0H9m8-4a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z" />
@@ -126,7 +126,7 @@ export default function Transfers() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setApproveTransfers, 'FUNC-026')}
+                    onClick={() => handleClick(setApproveTransfers, 'FUNC-028')}
                     className="flex flex-row items-center justify-center ml-2">
                     <svg
                         className="w-6 h-6 text-white dark:text-white"
@@ -151,7 +151,7 @@ export default function Transfers() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setRejectTransfers, 'FUNC-027')}
+                    onClick={() => handleClick(setRejectTransfers, 'FUNC-029')}
                     className="flex flex-row items-center justify-center ml-2">
                     <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -164,7 +164,7 @@ export default function Transfers() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setReverseTransfers, 'FUNC-028')}
+                    onClick={() => handleClick(setReverseTransfers, 'FUNC-030')}
                     className="flex flex-row items-center justify-center ml-2">
                     <svg
                         className="w-6 h-6 text-white dark:text-white"

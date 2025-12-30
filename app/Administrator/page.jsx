@@ -150,7 +150,7 @@ export default function Administrator() {
               aria-labelledby="menu-button"
               tabIndex="-1">
               <div
-                onClick={() => handleSubFunction(setAddChannel, 'FUNC-032')}
+                onClick={() => handleSubFunction(setAddChannel, 'FUNC-050')}
                 className="py-1"
                 role="none">
                 <button
@@ -162,7 +162,7 @@ export default function Administrator() {
                 </button>
               </div>
               <div
-                onClick={() => handleSubFunction(setChannelDetails, 'FUNC-033')}
+                onClick={() => handleSubFunction(setChannelDetails, 'FUNC-051')}
                 className="py-1"
                 role="none">
                 <button
@@ -174,7 +174,7 @@ export default function Administrator() {
                 </button>
               </div>
               <div
-                onClick={() => handleSubFunction(setRemoveChannel, 'FUNC-034')}
+                onClick={() => handleSubFunction(setRemoveChannel, 'FUNC-052')}
                 className="py-1"
                 role="none">
                 <button
@@ -186,7 +186,7 @@ export default function Administrator() {
                 </button>
               </div>
               <div
-                onClick={() => handleSubFunction(setPriorityLevel, 'FUNC-035')}
+                onClick={() => handleSubFunction(setPriorityLevel, 'FUNC-053')}
                 className="py-1" role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
@@ -252,7 +252,7 @@ export default function Administrator() {
               aria-labelledby="menu-button"
               tabIndex="-1">
               <div
-                onClick={() => handleSubFunction(setTransferOption, 'FUNC-036')}
+                onClick={() => handleSubFunction(setTransferOption, 'FUNC-054')}
                 className="py-1" role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
@@ -263,7 +263,7 @@ export default function Administrator() {
                 </button>
               </div>
 
-              <div onClick={() => handleSubFunction(setTransferOptionDeactivate, 'FUNC-037')}
+              <div onClick={() => handleSubFunction(setTransferOptionDeactivate, 'FUNC-055')}
                 className="py-1" role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
@@ -273,7 +273,7 @@ export default function Administrator() {
                   Option De-activate
                 </button>
               </div>
-              <div onClick={() => handleSubFunction(setTransferOptionReactivate, 'FUNC-038')}
+              <div onClick={() => handleSubFunction(setTransferOptionReactivate, 'FUNC-056')}
                 className="py-1" role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
@@ -283,7 +283,7 @@ export default function Administrator() {
                   Option Re-activate
                 </button>
               </div>
-              <div className="py-1" role="none" onClick={() => handleSubFunction(setTransferOptionDelete, 'FUNC-039')}>
+              <div className="py-1" role="none" onClick={() => handleSubFunction(setTransferOptionDelete, 'FUNC-057')}>
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
                   role="menuitem"
@@ -292,7 +292,7 @@ export default function Administrator() {
                   Option Delete
                 </button>
               </div>
-              <div className="py-1" role="none" onClick={() => handleSubFunction(setAvailableTransferOption, 'FUNC-040')}>
+              <div className="py-1" role="none" onClick={() => handleSubFunction(setAvailableTransferOption, 'FUNC-058')}>
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
                   role="menuitem"
@@ -343,7 +343,7 @@ export default function Administrator() {
               aria-labelledby="menu-button"
               tabIndex="-1">
               <div
-                onClick={() => handleSubFunction(setGrantAuthority, 'FUNC-041')}
+                onClick={() => handleSubFunction(setGrantAuthority, 'FUNC-059')}
                 className="py-1" role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
@@ -354,7 +354,7 @@ export default function Administrator() {
                 </button>
               </div>
 
-              <div onClick={() => handleSubFunction(setRevokeAuthority, 'FUNC-042')}
+              <div onClick={() => handleSubFunction(setRevokeAuthority, 'FUNC-060')}
                 className="py-1" role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
@@ -407,7 +407,7 @@ export default function Administrator() {
               aria-labelledby="menu-button"
               tabIndex="-1">
               <div
-                onClick={() => handleSubFunction(setUnlockPassword, 'FUNC-044')}
+                onClick={() => handleSubFunction(setUnlockPassword, 'FUNC-061')}
                 className="py-1" role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"
@@ -418,7 +418,7 @@ export default function Administrator() {
                 </button>
               </div>
 
-              <div onClick={() => handleSubFunction(setResetPassword, 'FUNC-045')}
+              <div onClick={() => handleSubFunction(setResetPassword, 'FUNC-062')}
                 className="py-1" role="none">
                 <button
                   className="block text-left px-4 py-2 w-56 text-sm text-gray-700 hover:bg-slate-300"

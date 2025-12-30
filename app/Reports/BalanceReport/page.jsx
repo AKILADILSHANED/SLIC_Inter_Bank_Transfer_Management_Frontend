@@ -133,7 +133,7 @@ export default function BalanceReport() {
                                     required
                                     onChange={(e) => setFromDate(e.target.value)}
                                     id="small"
-                                    placeholder="Enter Request Amount"
+                                    placeholder="Select From Date"
                                     className="outline-none block w-[400px] ml-2 p-1 px-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
                             </div>
                         </div>
@@ -148,7 +148,7 @@ export default function BalanceReport() {
                                 required
                                 onChange={(e) => setToDate(e.target.value)}
                                 id="small"
-                                placeholder="Enter Request Amount"
+                                placeholder="Select To Date"
                                 className="outline-none block w-[400px] ml-2 p-1 px-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
                         </div>
                     </div>
@@ -163,7 +163,7 @@ export default function BalanceReport() {
                                 </label>
                                 <select
                                     id="small"
-                                    placeholder="Enter Payment Name"
+                                    placeholder="Select Bank"
                                     onChange={(e) => setBankName(e.target.value)}
                                     value={bankName}
                                     className="outline-none block w-[400px] ml-2 p-1 px-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -191,7 +191,7 @@ export default function BalanceReport() {
                             </label>
                             <select
                                 id="small"
-                                placeholder="Enter Payment Name"
+                                placeholder="Select Account Number"
                                 onChange={(e) => setAccount(e.target.value)}
                                 value={account}
                                 className="outline-none block w-[400px] ml-2 p-1 px-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -222,7 +222,7 @@ export default function BalanceReport() {
                                 </label>
                                 <select
                                     id="small"
-                                    placeholder="Enter Status"
+                                    placeholder="Select Status"
                                     onChange={(e) => setStatus(e.target.value)}
                                     value={status}
                                     className="outline-none block w-[400px] ml-2 p-1 px-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">

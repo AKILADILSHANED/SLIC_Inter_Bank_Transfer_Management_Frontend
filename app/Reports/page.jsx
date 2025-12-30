@@ -62,7 +62,7 @@ export default function Reports() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setUserReport, 'FUNC-030')}
+                    onClick={() => handleClick(setUserReport, 'FUNC-039')}
                     className="flex flex-row items-center justify-center ml-[75px]">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +85,7 @@ export default function Reports() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setAccountsReport, 'FUNC-030')}
+                    onClick={() => handleClick(setAccountsReport, 'FUNC-040')}
                     className="flex flex-row items-center justify-center ml-[20px]">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +107,7 @@ export default function Reports() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setBalanceReport, 'FUNC-030')}
+                    onClick={() => handleClick(setBalanceReport, 'FUNC-041')}
                     className="flex flex-row items-center justify-center ml-[20px]">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +127,7 @@ export default function Reports() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setPaymentsReport, 'FUNC-030')}
+                    onClick={() => handleClick(setPaymentsReport, 'FUNC-042')}
                     className="flex flex-row items-center justify-center ml-[20px]">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -150,7 +150,7 @@ export default function Reports() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setRequestHistory, 'FUNC-030')}
+                    onClick={() => handleClick(setRequestHistory, 'FUNC-043')}
                     className="flex flex-row items-center justify-center ml-[20px]">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -172,7 +172,7 @@ export default function Reports() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setTransfertHistory, 'FUNC-031')}
+                    onClick={() => handleClick(setTransfertHistory, 'FUNC-044')}
                     className="flex flex-row items-center justify-center ml-[20px]">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -193,7 +193,7 @@ export default function Reports() {
                 </div>
 
                 <div
-                    onClick={() => handleClick(setRepoReport, 'FUNC-031')}
+                    onClick={() => handleClick(setRepoReport, 'FUNC-045')}
                     className="flex flex-row items-center justify-center ml-[20px]">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

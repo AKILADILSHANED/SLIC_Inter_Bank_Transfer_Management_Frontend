@@ -71,7 +71,7 @@ export default function FundRequest() {
         </div>
 
         <div
-          onClick={() => handleClick(setNewRequest, 'FUNC-017')}
+          onClick={() => handleClick(setNewRequest, 'FUNC-018')}
           className="flex flex-row items-center justify-center ml-[75px]">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -96,7 +96,7 @@ export default function FundRequest() {
         </div>
 
         <div
-          onClick={() => handleClick(setRequestDetails, 'FUNC-018')}
+          onClick={() => handleClick(setRequestDetails, 'FUNC-019')}
           className="flex flex-row items-center justify-center ml-1">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -120,7 +120,7 @@ export default function FundRequest() {
         </div>
 
         <div
-          onClick={() => handleClick(setRequestUpdate, 'FUNC-019')}
+          onClick={() => handleClick(setRequestUpdate, 'FUNC-020')}
           className="flex flex-row items-center justify-center ml-1">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -145,7 +145,7 @@ export default function FundRequest() {
         </div>
 
         <div
-          onClick={() => handleClick(setRequestDelete, 'FUNC-020')}
+          onClick={() => handleClick(setRequestDelete, 'FUNC-021')}
           className="flex flex-row items-center justify-center ml-1">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -170,7 +170,7 @@ export default function FundRequest() {
         </div>
 
         <div
-          onClick={() => handleClick(setRequestApprove, 'FUNC-021')}
+          onClick={() => handleClick(setRequestApprove, 'FUNC-022')}
           className="flex flex-row items-center justify-center ml-1">
           <svg
             className="w-6 h-6 text-white dark:text-white"
@@ -195,7 +195,7 @@ export default function FundRequest() {
         </div>
 
         <div
-          onClick={() => handleClick(setReverseApprove, 'FUNC-022')}
+          onClick={() => handleClick(setReverseApprove, 'FUNC-023')}
           className="flex flex-row items-center justify-center ml-1">
           <svg
             className="w-6 h-6 text-white dark:text-white"
