@@ -6,6 +6,8 @@ import Spinner from "@/app/Spinner/page";
 import { Suspense } from "react";
 import Printings from "@/app/Printings/page";
 
+export const dynamic = 'force-dynamic';
+
 function FullNameComponent() {
   const name = useSearchParams();
   return <div>Welcome {name.get("userFullName")}</div>;
