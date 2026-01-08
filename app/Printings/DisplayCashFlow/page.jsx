@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import ErrorMessage from '@/app/Messages/ErrorMessage/page';
 import { useSearchParams } from 'next/navigation'
-
+export const dynamic = 'force-dynamic';
 export default function DisplayCashFlow() {
-    export const dynamic = 'force-dynamic';
+    
     //Define base url;
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
