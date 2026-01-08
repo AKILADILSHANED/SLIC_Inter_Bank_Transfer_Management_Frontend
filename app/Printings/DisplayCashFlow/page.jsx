@@ -6,6 +6,7 @@ import ErrorMessage from '@/app/Messages/ErrorMessage/page';
 import { useSearchParams } from 'next/navigation'
 
 export default function DisplayCashFlow() {
+    export const dynamic = 'force-dynamic';
     //Define base url;
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
