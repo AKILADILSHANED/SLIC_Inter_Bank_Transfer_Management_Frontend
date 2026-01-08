@@ -1,10 +1,11 @@
 "use client"
+export const dynamic = 'force-dynamic';
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation'
 import { amountToWords } from '@/app/utills/numberToWords'
 
-export const dynamic = 'force-dynamic';
+
 
 export default function Page() {
 
