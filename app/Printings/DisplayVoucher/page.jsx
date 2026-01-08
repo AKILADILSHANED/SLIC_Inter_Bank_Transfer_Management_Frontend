@@ -1,4 +1,5 @@
 "use client"
+export const dynamic = 'force-dynamic';
 import React from 'react'
 import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
@@ -6,7 +7,7 @@ import { useEffect } from 'react'
 import ErrorMessage from '@/app/Messages/ErrorMessage/page'
 import { amountToWords } from '@/app/utills/numberToWords'
 
-export const dynamic = 'force-dynamic';
+
 
 export default function DisplayVoucher() {
 
