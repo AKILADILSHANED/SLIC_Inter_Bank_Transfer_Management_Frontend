@@ -1,11 +1,12 @@
 "use client"
+export const dynamic = 'force-dynamic';
 import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react';
 import ErrorMessage from '@/app/Messages/ErrorMessage/page';
 import { useSearchParams } from 'next/navigation'
 
-export const dynamic = 'force-dynamic';
+
 
 export default function DisplayCashFlow() {
     
