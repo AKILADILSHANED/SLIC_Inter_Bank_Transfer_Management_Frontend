@@ -9,7 +9,7 @@ export default function DisplayCashFlow() {
     
     //Define base url;
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-export const dynamic = 'force-dynamic';
+
     //Define state variables;
     const searchParams = useSearchParams();
     const [cashFlowComponent, setCashFlowComponent] = useState(false);
