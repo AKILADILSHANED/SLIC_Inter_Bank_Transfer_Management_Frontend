@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = 'force-dynamic';
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -6,7 +7,7 @@ import Spinner from "@/app/Spinner/page";
 import { Suspense } from "react";
 import Printings from "@/app/Printings/page";
 
-export const dynamic = 'force-dynamic';
+
 
 function FullNameComponent() {
   const name = useSearchParams();
